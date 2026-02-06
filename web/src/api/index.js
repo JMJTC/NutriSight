@@ -39,4 +39,8 @@ export default {
   deleteDept: (params = {}) => request.delete('/dept/delete', { params }),
   // auditlog
   getAuditLogList: (params = {}) => request.get('/auditlog/list', { params }),
+  // food
+  recognizeFood: (data) => request.post('/food/recognize', data),
+  getFoodHistory: (params = {}) => request.get('/food/history', { params }),
+  getFoodRecordDetail: (id) => request.get(`/food/record/${id}`),
 }

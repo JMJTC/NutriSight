@@ -1,0 +1,188 @@
+<template>
+  <div class="food-history">
+    <n-card title="识别历史记录">
+      <n-data-table
+        :columns="columns"
+        :data="historyList"
+        :pagination="pagination"
+        :loading="loading"
+        @update:page="handlePageChange"
+      />
+    </n-card>
+
+    <n-modal v-model:show="showDetail" preset="card" style="width: 800px" title="识别详情">
+      <div v-if="currentRecord" class="record-detail">
+        <div class="image-area">
+          <n-image :src="getImageUrl(currentRecord.image_path)" object-fit="contain" />
+        </div>
+        <n-divider />
+        <div class="analysis-result">
+          <n-descriptions bordered title="营养分析">
+            <n-descriptions-item label="总热量">
+              {{ currentRecord.analysis?.total_calories?.toFixed(2) }} kcal
+            </n-descriptions-item>
+            <n-descriptions-item label="总碳水">
+              {{ currentRecord.analysis?.total_carbs?.toFixed(2) }} g
+            </n-descriptions-item>
+            <n-descriptions-item label="总蛋白质">
+              {{ currentRecord.analysis?.total_protein?.toFixed(2) }} g
+            </n-descriptions-item>
+            <n-descriptions-item label="总脂肪">
+              {{ currentRecord.analysis?.total_fat?.toFixed(2) }} g
+            </n-descriptions-item>
+          </n-descriptions>
+          
+          <n-divider dashed>识别物品</n-divider>
+          <n-table size="small" :single-line="false">
+            <thead>
+              <tr>
+                <th>食物名称</th>
+                <th>置信度</th>
+                <th>数量</th>
+                <th>热量(kcal)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="item in currentRecord.details" :key="item.id">
+                <td>{{ item.food_name }}</td>
+                <td>{{ (item.confidence * 100).toFixed(1) }}%</td>
+                <td>{{ item.count }}</td>
+                <td>{{ item.calories }}</td>
+              </tr>
+            </tbody>
+          </n-table>
+        </div>
+      </div>
+    </n-modal>
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted, h } from 'vue'
+import { NButton, NTag, useMessage } from 'naive-ui'
+import api from '@/api'
+
+const message = useMessage()
+const loading = ref(false)
+const historyList = ref([])
+const showDetail = ref(false)
+const currentRecord = ref(null)
+const pagination = ref({
+  page: 1,
+  pageSize: 10,
+  itemCount: 0
+})
+
+const columns = [
+  {
+    title: 'ID',
+    key: 'id',
+    width: 80
+  },
+  {
+    title: '图片预览',
+    key: 'image_path',
+    render(row) {
+      return h('img', {
+        src: getImageUrl(row.image_path),
+        style: 'width: 50px; height: 50px; object-fit: cover; border-radius: 4px;'
+      })
+    }
+  },
+  {
+    title: '识别状态',
+    key: 'status',
+    render(row) {
+      return h(
+        NTag,
+        {
+          type: row.status === 'success' ? 'success' : 'error',
+          bordered: false
+        },
+        { default: () => (row.status === 'success' ? '成功' : '失败') }
+      )
+    }
+  },
+  {
+    title: '识别时间',
+    key: 'created_at'
+  },
+  {
+    title: '操作',
+    key: 'actions',
+    render(row) {
+      return h(
+        NButton,
+        {
+          size: 'small',
+          onClick: () => viewDetail(row)
+        },
+        { default: () => '查看详情' }
+      )
+    }
+  }
+]
+
+const getImageUrl = (path) => {
+  if (!path) return ''
+  // Assuming the backend serves static files at /static
+  // Adjust base URL as needed based on your backend configuration
+  return `${import.meta.env.VITE_APP_BASE_API}${path}`
+}
+
+const fetchHistory = async () => {
+  loading.value = true
+  try {
+    const res = await api.getFoodHistory({
+      page: pagination.value.page,
+      page_size: pagination.value.pageSize
+    })
+    if (res.code === 200) {
+      historyList.value = res.data
+      pagination.value.itemCount = res.total
+    }
+  } catch (error) {
+    message.error('获取历史记录失败')
+  } finally {
+    loading.value = false
+  }
+}
+
+const viewDetail = async (row) => {
+  try {
+    const res = await api.getFoodRecordDetail(row.id)
+    if (res.code === 200) {
+      currentRecord.value = res.data
+      showDetail.value = true
+    }
+  } catch (error) {
+    message.error('获取详情失败')
+  }
+}
+
+const handlePageChange = (page) => {
+  pagination.value.page = page
+  fetchHistory()
+}
+
+onMounted(() => {
+  fetchHistory()
+})
+</script>
+
+<style scoped>
+.food-history {
+  padding: 24px;
+}
+.record-detail {
+  padding: 12px;
+}
+.image-area {
+  text-align: center;
+  margin-bottom: 24px;
+}
+.image-area img {
+  max-width: 100%;
+  max-height: 400px;
+}
+</style>

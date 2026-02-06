@@ -47,6 +47,36 @@ export const basicRoutes = [
     meta: { order: 99 },
   },
   {
+    name: 'Food',
+    path: '/food',
+    component: Layout,
+    meta: {
+      title: '食物识别',
+      icon: 'fast-food-outline',
+      order: 2,
+    },
+    children: [
+      {
+        path: 'recognition',
+        component: () => import('@/views/food/recognition/index.vue'),
+        name: 'FoodRecognition',
+        meta: {
+          title: '识别分析',
+          icon: 'scan-outline',
+        },
+      },
+      {
+        path: 'history',
+        component: () => import('@/views/food/history/index.vue'),
+        name: 'FoodHistory',
+        meta: {
+          title: '历史记录',
+          icon: 'time-outline',
+        },
+      },
+    ],
+  },
+  {
     name: 'ErrorPage',
     path: '/error-page',
     component: Layout,
