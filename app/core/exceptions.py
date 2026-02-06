@@ -11,6 +11,14 @@ from tortoise.exceptions import DoesNotExist, IntegrityError
 class SettingNotFound(Exception):
     pass
 
+class CustomException(HTTPException):
+    def __init__(self, message: str, code: int = 400):
+        super().__init__(status_code=code, detail=message)
+
+async def CustomExceptionHandle(_: Request, exc: CustomException) -> JSONResponse:
+    content = dict(code=exc.status_code, msg=exc.detail, data=None)
+    return JSONResponse(content=content, status_code=exc.status_code)
+
 
 async def DoesNotExistHandle(req: Request, exc: DoesNotExist) -> JSONResponse:
     content = dict(
