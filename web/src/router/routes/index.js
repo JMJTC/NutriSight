@@ -52,7 +52,7 @@ export const basicRoutes = [
     component: Layout,
     meta: {
       title: '食物识别',
-      icon: 'fast-food-outline',
+      icon: 'mdi:food',
       order: 2,
     },
     children: [
@@ -62,7 +62,7 @@ export const basicRoutes = [
         name: 'FoodRecognition',
         meta: {
           title: '识别分析',
-          icon: 'scan-outline',
+          icon: 'mdi:barcode-scan',
         },
       },
       {
@@ -71,7 +71,7 @@ export const basicRoutes = [
         name: 'FoodHistory',
         meta: {
           title: '历史记录',
-          icon: 'time-outline',
+          icon: 'mdi:history',
         },
       },
     ],
