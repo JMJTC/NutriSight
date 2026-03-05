@@ -1,10 +1,10 @@
 import logging
 from typing import Optional
 
-from fastapi import APIRouter, Query, UploadFile, File, Depends
+from fastapi import APIRouter, Query, UploadFile, File, Depends, Header
 
 from app.controllers.food import FoodController
-from app.core.dependency import DependAuth
+from app.core.dependency import DependAuth, AuthControl
 from app.core.ctx import CTX_USER_ID
 from app.schemas.base import Fail, Success, SuccessExtra
 from app.schemas.food import (
@@ -22,7 +22,7 @@ food_router = APIRouter()
 @food_router.post("/recognize", summary="上传图片进行食物识别")
 async def recognize_food(
     file: UploadFile = File(..., description="食物图片"),
-    current_user = DependAuth,
+    token: str = Header(..., description="认证token"),
 ):
     """
     上传食物图片进行识别
@@ -31,8 +31,9 @@ async def recognize_food(
     - 返回识别结果和营养分析
     """
     try:
-        # 从认证用户获取 user_id
-        user_id = current_user.id
+        # 验证 token
+        user = await AuthControl.is_authed(token)
+        user_id = user.id
         result = await FoodController.recognize_food(file, user_id)
         return Success(data=result)
     except CustomException as e:
@@ -42,17 +43,16 @@ async def recognize_food(
         return Fail(code=500, msg=f"识别失败: {str(e)}")
 
 
-@food_router.get("/history", summary="获取用户的食物识别历史")
+@food_router.get("/history", summary="获取用户的食物识别历史", dependencies=[DependAuth])
 async def get_recognition_history(
     page: int = Query(1, ge=1, description="页码"),
     page_size: int = Query(10, ge=1, le=100, description="每页数量"),
-    current_user = DependAuth,
 ):
     """
     获取当前用户的食物识别历史记录
     """
     try:
-        user_id = current_user.id
+        user_id = CTX_USER_ID.get()
         data = await FoodController.get_history(user_id, page, page_size)
         return SuccessExtra(
             data=data["items"],
@@ -65,16 +65,15 @@ async def get_recognition_history(
         return Fail(code=500, msg=f"获取历史记录失败: {str(e)}")
 
 
-@food_router.get("/record/{record_id}", summary="获取识别记录的详细信息")
+@food_router.get("/record/{record_id}", summary="获取识别记录的详细信息", dependencies=[DependAuth])
 async def get_record_detail(
     record_id: int,
-    current_user = DependAuth,
 ):
     """
     获取单条识别记录的详细信息，包括识别的食物、营养信息等
     """
     try:
-        user_id = current_user.id
+        user_id = CTX_USER_ID.get()
         result = await FoodController.get_record_detail(record_id, user_id)
         return Success(data=result)
     except CustomException as e:
