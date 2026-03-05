@@ -64,8 +64,18 @@ class HttpAuditLogMiddleware(BaseHTTPMiddleware):
         if request.method in ["POST", "PUT", "PATCH"]:
             content_type = request.headers.get("content-type", "").lower()
             
-            # 如果是 multipart/form-data，直接尝试解析为 form
+            # 跳过 multipart/form-data，避免消耗请求体
+            # multipart 请求需要保留原始请求流供处理器使用
             if "multipart/form-data" in content_type:
+                # 只记录是文件上传，不进行具体解析
+                args["_has_file_upload"] = True
+                return args
+            
+            # 处理 JSON 请求
+            try:
+                body = await request.json()
+                args.update(body)
+            except (json.JSONDecodeError, UnicodeDecodeError):
                 try:
                     body = await request.form()
                     for k, v in body.items():
@@ -77,24 +87,6 @@ class HttpAuditLogMiddleware(BaseHTTPMiddleware):
                             args[k] = v
                 except Exception:
                     pass
-            else:
-                # 否则尝试解析为 JSON
-                try:
-                    body = await request.json()
-                    args.update(body)
-                except (json.JSONDecodeError, UnicodeDecodeError):
-                    try:
-                        body = await request.form()
-                        # args.update(body)
-                        for k, v in body.items():
-                            if hasattr(v, "filename"):  # 文件上传行为
-                                args[k] = v.filename
-                            elif isinstance(v, list) and v and hasattr(v[0], "filename"):
-                                args[k] = [file.filename for file in v]
-                            else:
-                                args[k] = v
-                    except Exception:
-                        pass
 
         return args
 

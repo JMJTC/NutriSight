@@ -1,10 +1,10 @@
 import logging
 from typing import Optional
 
-from fastapi import APIRouter, Query, UploadFile, File, Depends, Header
+from fastapi import APIRouter, Query, UploadFile, File, Depends
 
 from app.controllers.food import FoodController
-from app.core.dependency import DependAuth, AuthControl
+from app.core.dependency import DependAuth
 from app.core.ctx import CTX_USER_ID
 from app.schemas.base import Fail, Success, SuccessExtra
 from app.schemas.food import (
@@ -19,10 +19,9 @@ logger = logging.getLogger(__name__)
 food_router = APIRouter()
 
 
-@food_router.post("/recognize", summary="上传图片进行食物识别")
+@food_router.post("/recognize", summary="上传图片进行食物识别", dependencies=[DependAuth])
 async def recognize_food(
     file: UploadFile = File(..., description="食物图片"),
-    token: str = Header(..., description="认证token"),
 ):
     """
     上传食物图片进行识别
@@ -31,9 +30,10 @@ async def recognize_food(
     - 返回识别结果和营养分析
     """
     try:
-        # 验证 token
-        user = await AuthControl.is_authed(token)
-        user_id = user.id
+        # 从上下文获取认证用户的id
+        user_id = CTX_USER_ID.get()
+        if not user_id:
+            return Fail(code=401, msg="未授权")
         result = await FoodController.recognize_food(file, user_id)
         return Success(data=result)
     except CustomException as e:
