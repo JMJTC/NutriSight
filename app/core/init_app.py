@@ -228,9 +228,28 @@ async def init_roles():
         await user_role.apis.add(*basic_apis)
 
 
+async def init_food_data():
+    """初始化食物识别模块数据"""
+    try:
+        from app.models.food import FoodCategory
+        from app.scripts.init_food_data import init_food_data as init_food_categories
+        
+        # 检查是否已有食物类别数据
+        count = await FoodCategory.all().count()
+        if count == 0:
+            logger.info("No food categories found, initializing food data...")
+            result = await init_food_categories()
+            logger.info(f"Food data initialization complete. Created: {result['created']}, Skipped: {result['skipped']}")
+        else:
+            logger.info(f"Food categories already initialized. Total: {count}")
+    except Exception as e:
+        logger.error(f"Failed to initialize food data: {str(e)}")
+
+
 async def init_data():
     await init_db()
     await init_superuser()
     await init_menus()
     await init_apis()
     await init_roles()
+    await init_food_data()
