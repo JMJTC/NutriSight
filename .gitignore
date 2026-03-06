@@ -16,4 +16,4 @@ db.sqlite3-wal
 ._.DS_Store
 
 .trae/
-./deploy/static/uploads/
+deploy/static/uploads/
