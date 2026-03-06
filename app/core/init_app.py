@@ -246,8 +246,22 @@ async def init_food_data():
         logger.error(f"Failed to initialize food data: {str(e)}")
 
 
+def init_yolo_model():
+    """在应用启动时初始化 YOLO 模型"""
+    try:
+        from app.services.yolo_service import yolo_service
+        logger.info("Initializing YOLO model...")
+        if yolo_service.load_model():
+            logger.info("✓ YOLO model loaded successfully")
+        else:
+            logger.warning(f"✗ YOLO model failed to load: {yolo_service._load_error}")
+    except Exception as e:
+        logger.error(f"Failed to initialize YOLO model: {str(e)}")
+
+
 async def init_data():
     await init_db()
+    init_yolo_model()  # 初始化 YOLO 模型
     await init_superuser()
     await init_menus()
     await init_apis()

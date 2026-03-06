@@ -96,6 +96,9 @@ class YoloService:
         if not self.is_ready():
             raise Exception(f"YOLO model is not ready: {self._load_error}")
         
+        if self._model is None:
+            raise Exception("YOLO model is None, model not properly loaded")
+        
         if not os.path.exists(image_path):
             raise FileNotFoundError(f"Image file not found: {image_path}")
         
@@ -103,19 +106,42 @@ class YoloService:
             logger.info(f"Running YOLO prediction on {image_path}")
             results = self._model.predict(image_path, conf=conf, save=False, verbose=False)
             
+            # 检查 results 是否为 None
+            if results is None:
+                logger.warning("YOLO predict returned None")
+                return []
+            
+            # 检查 results 是否可迭代
+            try:
+                iter(results)
+            except TypeError:
+                logger.warning(f"YOLO predict returned non-iterable result: {type(results)}")
+                return []
+            
             parsed_results = []
             for result in results:
-                names = result.names
-                for box in result.boxes:
-                    cls_id = int(box.cls[0].item())
-                    confidence = float(box.conf[0].item())
+                if result is None:
+                    continue
                     
-                    parsed_results.append({
-                        "class_id": cls_id,
-                        "class_name": names.get(cls_id, f"Unknown_{cls_id}"),
-                        "confidence": confidence,
-                        "bbox": box.xyxy[0].tolist()  # [x1, y1, x2, y2]
-                    })
+                names = result.names
+                if result.boxes is None or len(result.boxes) == 0:
+                    logger.debug(f"No objects detected in image")
+                    continue
+                    
+                for box in result.boxes:
+                    try:
+                        cls_id = int(box.cls[0].item())
+                        confidence = float(box.conf[0].item())
+                        
+                        parsed_results.append({
+                            "class_id": cls_id,
+                            "class_name": names.get(cls_id, f"Unknown_{cls_id}"),
+                            "confidence": confidence,
+                            "bbox": box.xyxy[0].tolist()  # [x1, y1, x2, y2]
+                        })
+                    except (IndexError, AttributeError) as e:
+                        logger.warning(f"Failed to parse box data: {str(e)}")
+                        continue
             
             logger.info(f"Prediction completed. Found {len(parsed_results)} objects")
             return parsed_results

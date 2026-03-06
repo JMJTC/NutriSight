@@ -169,13 +169,47 @@ class FoodController:
 
         logger.info(f"Recognition record {record.id} created for user {user_id}")
         
-        return RecognitionResponse(
-            record_id=record.id,
-            image_path=relative_path,
-            results=results,
-            total_nutrition=NutritionBase(**total_nutrition),
-            created_at=record.created_at.strftime("%Y-%m-%d %H:%M:%S")
-        )
+        # 处理识别详情，转换为前端期望的格式
+        details = []
+        for result in results:
+            details.append({
+                "food_name": result.class_name,
+                "class_id": result.class_id,
+                "confidence": result.confidence,
+                "count": 1,  # 每个识别结果默认数量为1
+                "box": result.bbox,
+                "nutrition": {
+                    "calories": result.nutrition.energy if result.nutrition else 0,
+                    "protein": result.nutrition.protein if result.nutrition else 0,
+                    "carbs": result.nutrition.carbohydrate if result.nutrition else 0,
+                    "fat": result.nutrition.fat if result.nutrition else 0,
+                    "fiber": result.nutrition.fiber if result.nutrition else 0,
+                    "sodium": result.nutrition.sodium if result.nutrition else 0,
+                } if result.nutrition else {
+                    "calories": 0, "protein": 0, "carbs": 0, "fat": 0, "fiber": 0, "sodium": 0
+                }
+            })
+        
+        # 转换营养数据格式为前端期望的格式
+        nutrition_info = {
+            "total_calories": total_nutrition["energy"],
+            "total_protein": total_nutrition["protein"],
+            "total_carbs": total_nutrition["carbohydrate"],
+            "total_fat": total_nutrition["fat"],
+            "total_fiber": total_nutrition["fiber"],
+            "total_sodium": total_nutrition["sodium"],
+        }
+        
+        # 将响应对象转换为字典以便 JSON 序列化，使用前端期望的格式
+        response_dict = {
+            "record_id": record.id,
+            "image_path": relative_path,
+            "details": details,
+            "nutrition": nutrition_info,
+            "created_at": record.created_at.strftime("%Y-%m-%d %H:%M:%S")
+        }
+        
+        return response_dict
 
     @staticmethod
     async def get_history(user_id: int, page: int = 1, page_size: int = 10) -> Dict:
@@ -234,42 +268,69 @@ class FoodController:
             if not record:
                 raise CustomException(message="识别记录不存在", code=404)
             
-            results = []
+            # 处理识别详情，转换为前端期望的格式
+            details = []
             for d in record.details:
-                nut = None
+                nut_dict = {}
                 if d.food and d.food.nutrition:
                     n = d.food.nutrition
-                    nut = NutritionBase(
-                        energy=n.energy, 
-                        protein=n.protein, 
-                        fat=n.fat, 
-                        carbohydrate=n.carbohydrate, 
-                        fiber=n.fiber, 
-                        sodium=n.sodium
-                    )
+                    nut_dict = {
+                        "calories": n.energy,
+                        "protein": n.protein,
+                        "carbs": n.carbohydrate,
+                        "fat": n.fat,
+                        "fiber": n.fiber,
+                        "sodium": n.sodium,
+                    }
+                else:
+                    nut_dict = {
+                        "calories": 0,
+                        "protein": 0,
+                        "carbs": 0,
+                        "fat": 0,
+                        "fiber": 0,
+                        "sodium": 0,
+                    }
                 
-                results.append(RecognitionResult(
-                    class_id=d.food.code if d.food else -1,
-                    class_name=d.food.name if d.food else "Unknown",
-                    confidence=d.confidence,
-                    bbox=d.bbox,
-                    nutrition=nut
-                ))
-                
-            return RecognitionResponse(
-                record_id=record.id,
-                image_path=record.image_path,
-                results=results,
-                total_nutrition=NutritionBase(
-                    energy=record.analysis.total_energy if record.analysis else 0,
-                    protein=record.analysis.total_protein if record.analysis else 0,
-                    fat=record.analysis.total_fat if record.analysis else 0,
-                    carbohydrate=record.analysis.total_carbohydrate if record.analysis else 0,
-                    fiber=0, 
-                    sodium=0
-                ) if record.analysis else None,
-                created_at=record.created_at.strftime("%Y-%m-%d %H:%M:%S")
-            )
+                details.append({
+                    "id": d.id,
+                    "food_name": d.food.name if d.food else "Unknown",
+                    "class_id": d.food.code if d.food else -1,
+                    "confidence": d.confidence,
+                    "count": 1,
+                    "box": d.bbox,
+                    "nutrition": nut_dict
+                })
+            
+            # 转换营养数据格式为前端期望的格式
+            nutrition_info = {}
+            if record.analysis:
+                nutrition_info = {
+                    "total_calories": record.analysis.total_energy,
+                    "total_protein": record.analysis.total_protein,
+                    "total_carbs": record.analysis.total_carbohydrate,
+                    "total_fat": record.analysis.total_fat,
+                    "total_fiber": 0,
+                    "total_sodium": 0,
+                }
+            else:
+                nutrition_info = {
+                    "total_calories": 0,
+                    "total_protein": 0,
+                    "total_carbs": 0,
+                    "total_fat": 0,
+                    "total_fiber": 0,
+                    "total_sodium": 0,
+                }
+            
+            # 返回前端期望的格式
+            return {
+                "record_id": record.id,
+                "image_path": record.image_path,
+                "details": details,
+                "analysis": nutrition_info,
+                "created_at": record.created_at.strftime("%Y-%m-%d %H:%M:%S")
+            }
         except CustomException:
             raise
         except Exception as e:
