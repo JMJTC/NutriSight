@@ -39,7 +39,8 @@ class Nutrition(BaseModel, TimestampMixin):
 class RecognitionRecord(BaseModel, TimestampMixin):
     """识别记录表"""
     user = fields.ForeignKeyField("models.User", related_name="recognition_records", description="关联用户")
-    image_path = fields.CharField(max_length=255, description="图片路径")
+    image_path = fields.CharField(max_length=255, description="原始图片路径")
+    annotated_image_path = fields.CharField(max_length=255, null=True, description="标注图片路径")
     status = fields.CharField(max_length=20, default="pending", description="状态: pending/success/failed")
     
     class Meta:

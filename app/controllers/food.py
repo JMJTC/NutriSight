@@ -72,7 +72,7 @@ class FoodController:
         try:
             if not yolo_service.is_ready():
                 raise CustomException(message="YOLO 模型未就绪，请检查模型文件", code=500)
-            predictions = yolo_service.predict(file_path)
+            predictions, annotated_image_path = yolo_service.predict_with_annotation(file_path)
             logger.info(f"YOLO prediction returned {len(predictions)} results")
         except CustomException:
             raise
@@ -90,6 +90,7 @@ class FoodController:
         record = await RecognitionRecord.create(
             user=user,
             image_path=relative_path,
+            annotated_image_path=annotated_image_path,
             status="success" if predictions else "failed"
         )
 
@@ -204,6 +205,7 @@ class FoodController:
         response_dict = {
             "record_id": record.id,
             "image_path": relative_path,
+            "annotated_image_path": annotated_image_path,
             "details": details,
             "nutrition": nutrition_info,
             "created_at": record.created_at.strftime("%Y-%m-%d %H:%M:%S")
@@ -237,6 +239,7 @@ class FoodController:
                 data.append({
                     "id": r.id,
                     "image_path": r.image_path,
+                    "annotated_image_path": r.annotated_image_path,
                     "created_at": r.created_at.strftime("%Y-%m-%d %H:%M:%S"),
                     "status": r.status,
                     "total_energy": r.analysis.total_energy if r.analysis else 0,
@@ -327,6 +330,7 @@ class FoodController:
             return {
                 "record_id": record.id,
                 "image_path": record.image_path,
+                "annotated_image_path": record.annotated_image_path,
                 "details": details,
                 "analysis": nutrition_info,
                 "created_at": record.created_at.strftime("%Y-%m-%d %H:%M:%S")

@@ -1,8 +1,9 @@
 import os
 import logging
-from typing import List, Dict, Optional
+from typing import List, Dict, Optional, Tuple
 from pathlib import Path
 from ultralytics import YOLO
+from PIL import Image, ImageDraw, ImageFont
 
 from app.settings.config import settings
 
@@ -149,6 +150,98 @@ class YoloService:
             error_msg = f"Prediction failed: {str(e)}"
             logger.error(error_msg)
             raise Exception(error_msg)
+
+    def generate_annotated_image(self, image_path: str, predictions: List[Dict], output_path: str) -> bool:
+        """
+        生成带有识别框的图片
+        
+        Args:
+            image_path (str): 原始图片路径
+            predictions (List[Dict]): 预测结果
+            output_path (str): 输出图片路径
+            
+        Returns:
+            bool: 是否成功生成
+        """
+        try:
+            # 打开原始图片
+            image = Image.open(image_path)
+            draw = ImageDraw.Draw(image)
+            
+            # 尝试加载字体，如果失败则使用默认字体
+            try:
+                font = ImageFont.truetype("arial.ttf", 20)
+            except:
+                font = ImageFont.load_default()
+            
+            # 绘制识别框和标签
+            for pred in predictions:
+                bbox = pred["bbox"]
+                class_name = pred["class_name"]
+                confidence = pred["confidence"]
+                
+                # 绘制边界框
+                x1, y1, x2, y2 = bbox
+                draw.rectangle([x1, y1, x2, y2], outline="red", width=3)
+                
+                # 绘制标签背景
+                label = f"{class_name} {confidence:.1%}"
+                bbox_text = draw.textbbox((x1, y1 - 25), label, font=font)
+                draw.rectangle([bbox_text[0], bbox_text[1], bbox_text[2], bbox_text[3]], fill="red")
+                
+                # 绘制标签文字
+                draw.text((x1, y1 - 25), label, fill="white", font=font)
+            
+            # 保存带标注的图片
+            image.save(output_path)
+            logger.info(f"Annotated image saved to {output_path}")
+            return True
+            
+        except Exception as e:
+            logger.error(f"Failed to generate annotated image: {str(e)}")
+            return False
+
+    def predict_with_annotation(self, image_path: str, conf: float = 0.25) -> Tuple[List[Dict], str]:
+        """
+        执行预测并生成带标注的图片
+        
+        Args:
+            image_path (str): 图片路径
+            conf (float): 置信度阈值
+            
+        Returns:
+            Tuple[List[Dict], str]: (预测结果, 标注图片相对路径)
+        """
+        # 执行预测
+        predictions = self.predict(image_path, conf)
+        
+        if not predictions:
+            return predictions, None
+        
+        # 生成带标注的图片
+        try:
+            # 创建标注图片文件名
+            base_name = os.path.basename(image_path)
+            name_without_ext = os.path.splitext(base_name)[0]
+            annotated_filename = f"{name_without_ext}_annotated.jpg"
+            
+            # 确定输出路径
+            output_dir = os.path.dirname(image_path)
+            output_path = os.path.join(output_dir, annotated_filename)
+            
+            # 生成标注图片
+            success = self.generate_annotated_image(image_path, predictions, output_path)
+            
+            if success:
+                # 返回相对路径
+                relative_path = f"/static/uploads/{annotated_filename}"
+                return predictions, relative_path
+            else:
+                return predictions, None
+                
+        except Exception as e:
+            logger.error(f"Failed to create annotated image: {str(e)}")
+            return predictions, None
 
     def get_status(self) -> Dict[str, any]:
         """获取服务状态"""

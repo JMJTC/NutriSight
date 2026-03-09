@@ -13,7 +13,7 @@
     <n-modal v-model:show="showDetail" preset="card" style="width: 800px" title="识别详情">
       <div v-if="currentRecord" class="record-detail">
         <div class="image-area">
-          <n-image :src="getImageUrl(currentRecord.image_path)" object-fit="contain" />
+          <n-image :src="getImageUrl(currentRecord)" object-fit="contain" />
         </div>
         <n-divider />
         <div class="analysis-result">
@@ -84,7 +84,7 @@ const columns = [
     key: 'image_path',
     render(row) {
       return h('img', {
-        src: getImageUrl(row.image_path),
+        src: getImageUrl(row),
         style: 'width: 50px; height: 50px; object-fit: cover; border-radius: 4px;'
       })
     }
@@ -123,11 +123,14 @@ const columns = [
   }
 ]
 
-const getImageUrl = (path) => {
-  if (!path) return ''
+const getImageUrl = (row) => {
+  if (!row) return ''
+  // 优先显示标注图片，如果没有则显示原图
+  const imagePath = row.annotated_image_path || row.image_path
+  if (!imagePath) return ''
   // Assuming the backend serves static files at /static
   // Adjust base URL as needed based on your backend configuration
-  return `${import.meta.env.VITE_APP_BASE_API}${path}`
+  return `${import.meta.env.VITE_APP_BASE_API}${imagePath}`
 }
 
 const fetchHistory = async () => {
@@ -180,9 +183,11 @@ onMounted(() => {
 .image-area {
   text-align: center;
   margin-bottom: 24px;
+  max-height: 600px;
+  overflow: auto;
 }
 .image-area img {
   max-width: 100%;
-  max-height: 400px;
+  height: auto;
 }
 </style>

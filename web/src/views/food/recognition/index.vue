@@ -38,8 +38,8 @@
         <n-divider>识别结果</n-divider>
         <div class="result-container">
           <div class="image-wrapper" ref="imageWrapper">
-            <img :src="imageUrl" alt="Original Image" @load="drawImage" ref="imageRef" />
-            <canvas ref="canvasRef" class="overlay-canvas"></canvas>
+            <img :src="getImageUrl(result.annotated_image_path || result.image_path)" alt="识别结果" @load="onImageLoad" ref="imageRef" />
+            <canvas ref="canvasRef" class="overlay-canvas" v-if="!result.annotated_image_path"></canvas>
           </div>
           
           <div class="nutrition-info">
@@ -135,8 +135,11 @@ const handleUpload = async ({ file, onFinish, onError }) => {
       result.value = res.data
       message.success('识别成功')
       onFinish()
-      await nextTick()
-      drawImage()
+      // 如果有标注图片，则不需要绘制canvas
+      if (!result.value.annotated_image_path) {
+        await nextTick()
+        drawImage()
+      }
     } else {
       message.error(res.msg || '识别失败')
       onError()
@@ -149,49 +152,17 @@ const handleUpload = async ({ file, onFinish, onError }) => {
   }
 }
 
-const drawImage = () => {
-  if (!result.value || !imageRef.value || !canvasRef.value) return
+const getImageUrl = (path) => {
+  if (!path) return ''
+  // Assuming the backend serves static files at /static
+  return `${import.meta.env.VITE_APP_BASE_API}${path}`
+}
 
-  const img = imageRef.value
-  const canvas = canvasRef.value
-  const ctx = canvas.getContext('2d')
-  
-  // Match canvas size to image display size
-  canvas.width = img.width
-  canvas.height = img.height
-  
-  // Calculate scaling factor if image is resized by CSS
-  const scaleX = img.width / img.naturalWidth
-  const scaleY = img.height / img.naturalHeight
-
-  // Draw bounding boxes
-  ctx.lineWidth = 3
-  ctx.strokeStyle = '#18a058'
-  ctx.font = '16px Arial'
-  ctx.fillStyle = '#18a058'
-
-  result.value.details.forEach(item => {
-    if (item.box) {
-      const [x1, y1, x2, y2] = item.box
-      const rectX = x1 * scaleX
-      const rectY = y1 * scaleY
-      const rectW = (x2 - x1) * scaleX
-      const rectH = (y2 - y1) * scaleY
-
-      // Draw box
-      ctx.strokeRect(rectX, rectY, rectW, rectH)
-      
-      // Draw label background
-      const label = `${item.food_name} ${(item.confidence * 100).toFixed(0)}%`
-      const textWidth = ctx.measureText(label).width
-      ctx.fillRect(rectX, rectY - 25, textWidth + 10, 25)
-      
-      // Draw text
-      ctx.fillStyle = '#ffffff'
-      ctx.fillText(label, rectX + 5, rectY - 7)
-      ctx.fillStyle = '#18a058' // Reset fill style for next box
-    }
-  })
+const onImageLoad = () => {
+  // 如果没有标注图片，则绘制canvas
+  if (!result.value.annotated_image_path) {
+    drawImage()
+  }
 }
 </script>
 
@@ -220,12 +191,22 @@ const drawImage = () => {
   position: relative;
   flex: 1;
   min-width: 300px;
-  max-width: 800px;
+  max-width: 100%;
+  max-height: 80vh; /* 限制最大高度为视窗高度的80% */
+  overflow: auto; /* 添加滚动条 */
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
 }
 .image-wrapper img {
-  width: 100%;
+  max-width: 100%;
+  height: auto;
   display: block;
   border-radius: 4px;
+  object-fit: contain; /* 保持图片比例 */
+  flex-shrink: 0; /* 防止图片被压缩 */
 }
 .overlay-canvas {
   position: absolute;
