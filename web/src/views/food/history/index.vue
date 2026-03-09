@@ -128,9 +128,9 @@ const getImageUrl = (row) => {
   // 优先显示标注图片，如果没有则显示原图
   const imagePath = row.annotated_image_path || row.image_path
   if (!imagePath) return ''
-  // Assuming the backend serves static files at /static
-  // Adjust base URL as needed based on your backend configuration
-  return `${import.meta.env.VITE_APP_BASE_API}${imagePath}`
+  // Assuming the backend serves static files at the root
+  // Use the proxy target for images
+  return `http://127.0.0.1:9999${imagePath}`
 }
 
 const fetchHistory = async () => {

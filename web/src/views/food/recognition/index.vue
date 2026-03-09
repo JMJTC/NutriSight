@@ -36,10 +36,20 @@
 
       <div v-if="result" class="result-area">
         <n-divider>识别结果</n-divider>
+        <div class="debug-info">
+          <p>原始图片路径: {{ result.image_path }}</p>
+          <p>标注图片路径: {{ result.annotated_image_path }}</p>
+          <p>最终图片URL: {{ getImageUrl(result.annotated_image_path || result.image_path) }}</p>
+        </div>
         <div class="result-container">
           <div class="image-wrapper" ref="imageWrapper">
-            <img :src="getImageUrl(result.annotated_image_path || result.image_path)" alt="识别结果" @load="onImageLoad" ref="imageRef" />
-            <canvas ref="canvasRef" class="overlay-canvas" v-if="!result.annotated_image_path"></canvas>
+            <img 
+              :src="getImageUrl(result.annotated_image_path || result.image_path)" 
+              alt="识别结果" 
+              @load="onImageLoad" 
+              @error="onImageError"
+              ref="imageRef" 
+            />
           </div>
           
           <div class="nutrition-info">
@@ -117,7 +127,6 @@ const loading = ref(false)
 const result = ref(null)
 const imageUrl = ref('')
 const imageRef = ref(null)
-const canvasRef = ref(null)
 
 const handleUpload = async ({ file, onFinish, onError }) => {
   loading.value = true
@@ -133,18 +142,15 @@ const handleUpload = async ({ file, onFinish, onError }) => {
     const res = await api.recognizeFood(formData)
     if (res.code === 200) {
       result.value = res.data
+      console.log('Recognition result:', result.value)
       message.success('识别成功')
       onFinish()
-      // 如果有标注图片，则不需要绘制canvas
-      if (!result.value.annotated_image_path) {
-        await nextTick()
-        drawImage()
-      }
     } else {
       message.error(res.msg || '识别失败')
       onError()
     }
   } catch (error) {
+    console.error('Upload error:', error)
     message.error('请求出错')
     onError()
   } finally {
@@ -154,15 +160,18 @@ const handleUpload = async ({ file, onFinish, onError }) => {
 
 const getImageUrl = (path) => {
   if (!path) return ''
-  // Assuming the backend serves static files at /static
-  return `${import.meta.env.VITE_APP_BASE_API}${path}`
+  // Assuming the backend serves static files at the root
+  // Use the proxy target for images
+  return `http://127.0.0.1:9999${path}`
 }
 
 const onImageLoad = () => {
-  // 如果没有标注图片，则绘制canvas
-  if (!result.value.annotated_image_path) {
-    drawImage()
-  }
+  console.log('Image loaded successfully')
+}
+
+const onImageError = (event) => {
+  console.error('Image load failed:', event)
+  message.error('图片加载失败')
 }
 </script>
 
@@ -181,6 +190,18 @@ const onImageLoad = () => {
 }
 .result-area {
   margin-top: 24px;
+}
+.debug-info {
+  background-color: #f5f5f5;
+  padding: 12px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+  font-size: 12px;
+  color: #666;
+}
+.debug-info p {
+  margin: 4px 0;
+  word-break: break-all;
 }
 .result-container {
   display: flex;
@@ -207,12 +228,6 @@ const onImageLoad = () => {
   border-radius: 4px;
   object-fit: contain; /* 保持图片比例 */
   flex-shrink: 0; /* 防止图片被压缩 */
-}
-.overlay-canvas {
-  position: absolute;
-  top: 0;
-  left: 0;
-  pointer-events: none;
 }
 .nutrition-info {
   flex: 1;

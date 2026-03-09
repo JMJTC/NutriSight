@@ -1,6 +1,8 @@
+import os
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 from tortoise import Tortoise
 
 from app.core.exceptions import SettingNotFound
@@ -33,6 +35,14 @@ def create_app() -> FastAPI:
         middleware=make_middlewares(),
         lifespan=lifespan,
     )
+    
+    # Mount static files with absolute path
+    static_path = os.path.join(settings.BASE_DIR, "deploy", "static")
+    if os.path.exists(static_path):
+        app.mount("/static", StaticFiles(directory=static_path), name="static")
+    else:
+        print(f"Warning: Static files directory not found at {static_path}")
+    
     register_exceptions(app)
     register_routers(app, prefix="/api")
     return app
