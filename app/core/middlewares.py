@@ -96,6 +96,11 @@ class HttpAuditLogMiddleware(BaseHTTPMiddleware):
         if content_length and int(content_length) > self.max_body_size:
             return {"code": 0, "msg": "Response too large to log", "data": None}
 
+        # 仅针对 JSON 响应解析，避免二进制数据（如图片）写入 JSONField 时失败
+        content_type = response.headers.get("content-type", "").lower()
+        if "application/json" not in content_type and "text/" not in content_type:
+            return None
+
         if hasattr(response, "body"):
             body = response.body
         else:

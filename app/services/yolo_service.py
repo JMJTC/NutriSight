@@ -123,27 +123,56 @@ class YoloService:
             for result in results:
                 if result is None:
                     continue
-                    
+
                 names = result.names
-                if result.boxes is None or len(result.boxes) == 0:
-                    logger.debug(f"No objects detected in image")
-                    continue
-                    
-                for box in result.boxes:
+
+                # 检测模型输出
+                if hasattr(result, "boxes") and result.boxes is not None and len(result.boxes) > 0:
+                    for box in result.boxes:
+                        try:
+                            cls_id = int(box.cls[0].item())
+                            confidence = float(box.conf[0].item())
+                            parsed_results.append({
+                                "class_id": cls_id,
+                                "class_name": names.get(cls_id, f"Unknown_{cls_id}"),
+                                "confidence": confidence,
+                                "bbox": box.xyxy[0].tolist()  # [x1, y1, x2, y2]
+                            })
+                        except (IndexError, AttributeError) as e:
+                            logger.warning(f"Failed to parse box data: {str(e)}")
+                            continue
+
+                # 分类模型输出（或检测未检测到bbox时回退）
+                elif hasattr(result, "probs") and result.probs is not None:
                     try:
-                        cls_id = int(box.cls[0].item())
-                        confidence = float(box.conf[0].item())
-                        
-                        parsed_results.append({
-                            "class_id": cls_id,
-                            "class_name": names.get(cls_id, f"Unknown_{cls_id}"),
-                            "confidence": confidence,
-                            "bbox": box.xyxy[0].tolist()  # [x1, y1, x2, y2]
-                        })
-                    except (IndexError, AttributeError) as e:
-                        logger.warning(f"Failed to parse box data: {str(e)}")
-                        continue
-            
+                        if hasattr(result.probs, "top5") and result.probs.top5 is not None:
+                            top5 = result.probs.top5
+                            top5conf = result.probs.top5conf
+                            for i in range(min(3, len(top5))):
+                                cls_idx = int(top5[i].item()) if hasattr(top5[i], "item") else int(top5[i])
+                                conf = float(top5conf[i].item()) if hasattr(top5conf[i], "item") else float(top5conf[i])
+                                parsed_results.append({
+                                    "class_id": cls_idx,
+                                    "class_name": names.get(cls_idx, f"Unknown_{cls_idx}"),
+                                    "confidence": conf,
+                                    "bbox": [0, 0, 0, 0]
+                                })
+                        elif hasattr(result.probs, "top1") and result.probs.top1 is not None:
+                            cls_idx = int(result.probs.top1.item()) if hasattr(result.probs.top1, "item") else int(result.probs.top1)
+                            conf_obj = result.probs.top1conf if hasattr(result.probs, "top1conf") else None
+                            conf = float(conf_obj.item()) if conf_obj is not None and hasattr(conf_obj, "item") else (float(conf_obj) if conf_obj is not None else 0.0)
+                            parsed_results.append({
+                                "class_id": cls_idx,
+                                "class_name": names.get(cls_idx, f"Unknown_{cls_idx}"),
+                                "confidence": conf,
+                                "bbox": [0, 0, 0, 0]
+                            })
+                    except Exception as e:
+                        logger.warning(f"Failed to parse classification probabilities: {str(e)}")
+
+            if len(parsed_results) == 0:
+                logger.warning("No detection or classification results found")
+
             logger.info(f"Prediction completed. Found {len(parsed_results)} objects")
             return parsed_results
         except Exception as e:
@@ -175,23 +204,28 @@ class YoloService:
                 font = ImageFont.load_default()
             
             # 绘制识别框和标签
+            text_y = 10
             for pred in predictions:
-                bbox = pred["bbox"]
-                class_name = pred["class_name"]
-                confidence = pred["confidence"]
-                
-                # 绘制边界框
-                x1, y1, x2, y2 = bbox
-                draw.rectangle([x1, y1, x2, y2], outline="red", width=3)
-                
-                # 绘制标签背景
-                label = f"{class_name} {confidence:.1%}"
-                bbox_text = draw.textbbox((x1, y1 - 25), label, font=font)
-                draw.rectangle([bbox_text[0], bbox_text[1], bbox_text[2], bbox_text[3]], fill="red")
-                
-                # 绘制标签文字
-                draw.text((x1, y1 - 25), label, fill="white", font=font)
-            
+                class_name = pred.get("class_name", "Unknown")
+                confidence = pred.get("confidence", 0.0)
+                bbox = pred.get("bbox", [0, 0, 0, 0])
+
+                # 区分检测模型与分类模型
+                if bbox and len(bbox) == 4 and not (bbox[0] == bbox[1] == bbox[2] == bbox[3] == 0):
+                    x1, y1, x2, y2 = bbox
+                    draw.rectangle([x1, y1, x2, y2], outline="red", width=3)
+                    label = f"{class_name} {confidence:.1%}"
+                    bbox_text = draw.textbbox((x1, y1 - 25), label, font=font)
+                    draw.rectangle([bbox_text[0], bbox_text[1], bbox_text[2], bbox_text[3]], fill="red")
+                    draw.text((x1, y1 - 25), label, fill="white", font=font)
+                else:
+                    # 分类模型，文本注释放在图片顶部
+                    label = f"{class_name} {confidence:.1%}"
+                    bbox_text = draw.textbbox((10, text_y), label, font=font)
+                    draw.rectangle([bbox_text[0] - 2, bbox_text[1] - 2, bbox_text[2] + 2, bbox_text[3] + 2], fill="red")
+                    draw.text((10, text_y), label, fill="white", font=font)
+                    text_y += bbox_text[3] - bbox_text[1] + 6
+
             # 保存带标注的图片
             image.save(output_path)
             logger.info(f"Annotated image saved to {output_path}")
