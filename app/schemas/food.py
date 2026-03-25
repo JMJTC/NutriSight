@@ -61,6 +61,9 @@ class RecognitionResult(BaseModel):
             raise ValueError('bbox 必须包含 4 个坐标值')
         if not all(isinstance(x, (int, float)) for x in v):
             raise ValueError('bbox 坐标必须是数字')
+        # 允许 [0,0,0,0] 作为分类回退结果（无确定检测框）
+        if v == [0, 0, 0, 0]:
+            return v
         if v[0] >= v[2] or v[1] >= v[3]:
             raise ValueError('bbox 坐标无效')
         return v

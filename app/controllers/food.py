@@ -73,6 +73,9 @@ class FoodController:
             if not yolo_service.is_ready():
                 raise CustomException(message="YOLO 模型未就绪，请检查模型文件", code=500)
             predictions, annotated_image_path = yolo_service.predict_with_annotation(file_path)
+            # 如果模型未生成标注图，仍保留原图用作展示(避免前端src空导致显示问题)
+            if not annotated_image_path and predictions:
+                annotated_image_path = relative_path
             logger.info(f"YOLO prediction returned {len(predictions)} results")
         except CustomException:
             raise
@@ -109,6 +112,11 @@ class FoodController:
             try:
                 # 根据 YOLO class_id 查找食物类别
                 food_cat = await FoodCategory.get_or_none(code=pred["class_id"])
+                if not food_cat:
+                    # 如果数据库没有该类别，则使用 Unknown 备用分类保证外键不为空
+                    food_cat = await FoodCategory.get_or_none(code=-1)
+                    if not food_cat:
+                        food_cat = await FoodCategory.create(name="Unknown", code=-1, description="未知类别")
                 
                 nutrition_data = None
                 if food_cat:
