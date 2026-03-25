@@ -128,9 +128,11 @@ const getImageUrl = (row) => {
   // 优先显示标注图片，如果没有则显示原图
   const imagePath = row.annotated_image_path || row.image_path
   if (!imagePath) return ''
-  // Assuming the backend serves static files at the root
-  // Use the proxy target for images
-  return `http://127.0.0.1:9999${imagePath}`
+  if (/^https?:\/\//.test(imagePath)) {
+    return imagePath
+  }
+  const backendHost = import.meta.env.VITE_APP_API_BASE_URL || 'http://127.0.0.1:9999'
+  return `${backendHost}${imagePath}`
 }
 
 const fetchHistory = async () => {
@@ -176,18 +178,27 @@ onMounted(() => {
 <style scoped>
 .food-history {
   padding: 24px;
+  height: 100%;
+  min-height: 0;
+  overflow: auto;
 }
 .record-detail {
   padding: 12px;
+  max-height: calc(100vh - 180px);
+  overflow: auto;
 }
 .image-area {
   text-align: center;
   margin-bottom: 24px;
-  max-height: 600px;
+  max-height: 640px;
   overflow: auto;
 }
-.image-area img {
+.image-area img,
+.image-area .n-image {
   max-width: 100%;
+  max-height: 620px;
+  width: auto;
   height: auto;
+  object-fit: contain;
 }
 </style>

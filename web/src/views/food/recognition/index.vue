@@ -159,10 +159,17 @@ const handleUpload = async ({ file, onFinish, onError }) => {
 }
 
 const getImageUrl = (path) => {
-  if (!path) return ''
-  // Assuming the backend serves static files at the root
-  // Use the proxy target for images
-  return `http://127.0.0.1:9999${path}`
+  // 如果没有路径，使用本地预览图（上传过程）
+  if (!path) {
+    return imageUrl.value || ''
+  }
+  // 如果已经是完整 URL，直接返回
+  if (/^https?:\/\//.test(path)) {
+    return path
+  }
+  // 支持配置环境变量 override
+  const backendHost = import.meta.env.VITE_APP_API_BASE_URL || 'http://127.0.0.1:9999'
+  return `${backendHost}${path}`
 }
 
 const onImageLoad = () => {
@@ -178,10 +185,14 @@ const onImageError = (event) => {
 <style scoped>
 .food-recognition {
   padding: 24px;
+  height: 100%;
+  min-height: 0;
+  overflow: auto;
 }
 .upload-card {
   max-width: 1200px;
   margin: 0 auto;
+  min-height: 0;
 }
 .loading-area {
   padding: 40px;
@@ -207,13 +218,14 @@ const onImageError = (event) => {
   display: flex;
   gap: 24px;
   flex-wrap: wrap;
+  align-items: flex-start;
 }
 .image-wrapper {
   position: relative;
   flex: 1;
-  min-width: 300px;
+  min-width: 320px;
   max-width: 100%;
-  max-height: 80vh; /* 限制最大高度为视窗高度的80% */
+  max-height: calc(100vh - 260px); /* 视窗高度减去头部和其他间距 */
   overflow: auto; /* 添加滚动条 */
   border: 1px solid #e0e0e0;
   border-radius: 4px;
@@ -223,6 +235,8 @@ const onImageError = (event) => {
 }
 .image-wrapper img {
   max-width: 100%;
+  max-height: calc(100vh - 280px);
+  width: auto;
   height: auto;
   display: block;
   border-radius: 4px;
@@ -231,7 +245,13 @@ const onImageError = (event) => {
 }
 .nutrition-info {
   flex: 1;
-  min-width: 300px;
+  min-width: 320px;
+  max-height: calc(100vh - 220px);
+  overflow: hidden;
+}
+.nutrition-info .n-card {
+  height: 100%;
+  overflow: auto;
 }
 .nutrition-item {
   display: flex;
