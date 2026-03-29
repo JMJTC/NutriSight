@@ -539,8 +539,8 @@ class FoodController:
                 logger.info(f"Nutrition info for food {nutrition_in.food_id} created")
             
             return {
-                "food_id": nutrition.food.id,
-                "food_name": nutrition.food.name,
+                "food_id": food.id,
+                "food_name": food.name,
                 "energy": nutrition.energy,
                 "protein": nutrition.protein,
                 "fat": nutrition.fat,
@@ -620,8 +620,8 @@ class FoodController:
             if nutrition:
                 result["nutrition"] = {
                     "id": nutrition.id,
-                    "food_id": nutrition.food.id,
-                    "food_name": nutrition.food.name,
+                    "food_id": nutrition.food_id,
+                    "food_name": category.name,
                     "energy": nutrition.energy,
                     "protein": nutrition.protein,
                     "fat": nutrition.fat,
@@ -706,9 +706,28 @@ class FoodController:
             raise CustomException(message=f"图片保存失败: {str(e)}", code=500)
 
     @staticmethod
+    async def get_next_food_code() -> int:
+        """
+        获取下一个可用的YOLO类别ID（自增）
+        
+        Returns:
+            int: 下一个可用的code值
+        """
+        try:
+            # 获取所有food的code，找到最大值
+            all_foods = await FoodCategory.all()
+            if all_foods:
+                max_code = max([food.code for food in all_foods if isinstance(food.code, int)])
+                return max_code + 1
+            return 0
+        except Exception as e:
+            logger.error(f"Error getting next food code: {str(e)}")
+            return 0
+
+    @staticmethod
     async def create_food_category_with_file(
         name: str,
-        code: int,
+        code: Optional[int] = None,
         food_type: Optional[str] = None,
         description: Optional[str] = None,
         image_file: Optional[UploadFile] = None,
@@ -719,7 +738,7 @@ class FoodController:
         
         Args:
             name: 食物名称
-            code: YOLO类别ID
+            code: YOLO类别ID（可选，自动生成）
             food_type: 食物类型
             description: 描述
             image_file: 图片文件（可选）
@@ -729,14 +748,20 @@ class FoodController:
             Dict: 创建的食物类别信息
         """
         try:
-            # 检查code和name是否已存在
-            existing_code = await FoodCategory.get_or_none(code=code)
-            if existing_code:
-                raise CustomException(message=f"YOLO 类别 ID {code} 已存在", code=400)
-            
+            # 检查name是否已存在
             existing_name = await FoodCategory.get_or_none(name=name)
             if existing_name:
                 raise CustomException(message=f"食物名称 {name} 已存在", code=400)
+            
+            # 如果没有提供code，自动生成
+            if code is None or code == "":
+                code = await FoodController.get_next_food_code()
+                logger.info(f"Auto-generated code for food {name}: {code}")
+            else:
+                # 如果提供了code，检查是否已存在
+                existing_code = await FoodCategory.get_or_none(code=code)
+                if existing_code:
+                    raise CustomException(message=f"YOLO 类别 ID {code} 已存在", code=400)
             
             # 处理图片上传
             image_url = None

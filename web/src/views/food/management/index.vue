@@ -49,7 +49,6 @@ const {
   modalTitle,
   modalAction,
   modalLoading,
-  handleSave: originalHandleSave,
   modalForm,
   modalFormRef,
   handleEdit,
@@ -59,7 +58,6 @@ const {
   name: '食物类别',
   initForm: {
     name: '',
-    code: undefined,
     food_type: '',
     description: '',
     image_url: '',
@@ -72,83 +70,92 @@ const {
       sodium: 0,
     },
   },
-  doCreate: async (form) => {
-    const formData = new FormData()
-    formData.append('name', form.name)
-    formData.append('code', form.code)
-    if (form.food_type) formData.append('food_type', form.food_type)
-    if (form.description) formData.append('description', form.description)
-
-    // 处理图片
-    if (uploadFileList.value.length > 0) {
-      const file = uploadFileList.value[0].file
-      formData.append('image', file)
-    } else if (form.image_url && form.image_url.startsWith('http')) {
-      formData.append('image_url', form.image_url)
-    }
-
-    // 处理营养信息
-    if (form.nutrition && Object.values(form.nutrition).some(v => v !== undefined && v !== null && v !== '')) {
-      formData.append('nutrition', JSON.stringify(form.nutrition))
-    }
-
-    return api.createFoodCategoryWithUpload(formData)
-  },
-  doUpdate: async (form) => {
-    const formData = new FormData()
-    if (form.name) formData.append('name', form.name)
-    if (form.food_type) formData.append('food_type', form.food_type)
-    if (form.description) formData.append('description', form.description)
-
-    // 处理图片
-    if (uploadFileList.value.length > 0) {
-      const file = uploadFileList.value[0].file
-      formData.append('image', file)
-    } else if (form.image_url && form.image_url.startsWith('http')) {
-      formData.append('image_url', form.image_url)
-    }
-
-    // 处理营养信息
-    if (form.nutrition && Object.values(form.nutrition).some(v => v !== undefined && v !== null && v !== '')) {
-      formData.append('nutrition', JSON.stringify(form.nutrition))
-    }
-
-    return api.updateFoodCategoryWithUpload(form.id, formData)
-  },
+  doCreate: async () => ({ code: 0 }),
+  doUpdate: async () => ({ code: 0 }),
   doDelete: (form) => api.deleteFoodCategory(form.id),
   refresh: () => $table.value?.handleSearch(),
 })
 
-// 自定义 handleSave 来处理图片上传
+// 自定义 handleSave 来处理图片上传和营养信息
 const handleSave = async () => {
   try {
-    await modalFormRef.value?.validate()
-    
     // 验证必填字段
-    if (!modalForm.value.name) {
+    if (!modalForm.value.name || modalForm.value.name.trim() === '') {
       window.$message?.error('请输入食物名称')
-      return
-    }
-    if (modalForm.value.code === undefined || modalForm.value.code === null || modalForm.value.code === '') {
-      window.$message?.error('请输入 YOLO 类别 ID')
       return
     }
 
     modalLoading.value = true
     
+    const formData = new FormData()
+    formData.append('name', modalForm.value.name)
+    if (modalForm.value.food_type) formData.append('food_type', modalForm.value.food_type)
+    if (modalForm.value.description) formData.append('description', modalForm.value.description)
+
+    // 处理图片
+    if (uploadFileList.value.length > 0) {
+      const file = uploadFileList.value[0].file
+      formData.append('image', file)
+    } else if (modalForm.value.image_url && modalForm.value.image_url.startsWith('http')) {
+      formData.append('image_url', modalForm.value.image_url)
+    }
+
+    // 处理营养信息
+    const nutritionValues = Object.values(modalForm.value.nutrition || {})
+    if (nutritionValues.some(v => v !== undefined && v !== null && v !== '')) {
+      formData.append('nutrition', JSON.stringify(modalForm.value.nutrition))
+    }
+
+    console.log('准备提交FormData，操作类型：', modalAction.value)
+    console.log('食物名称：', modalForm.value.name)
+
+    let result
     try {
       if (modalAction.value === 'add') {
-        await originalHandleSave()
+        console.log('调用创建API...')
+        result = await api.createFoodCategoryWithUpload(formData)
       } else {
-        await originalHandleSave()
+        console.log('调用更新API，ID：', modalForm.value.id)
+        result = await api.updateFoodCategoryWithUpload(modalForm.value.id, formData)
       }
-      uploadFileList.value = []
-      imageUrl.value = ''
-    } finally {
-      modalLoading.value = false
+      
+      console.log('API响应：', result)
+      
+      if (result && result.code < 400) {
+        window.$message?.success(result.msg || (modalAction.value === 'add' ? '食物创建成功！' : '食物更新成功！'))
+        uploadFileList.value = []
+        imageUrl.value = ''
+        modalVisible.value = false
+        // 延迟后刷新列表，确保数据已保存
+        setTimeout(() => {
+          if ($table.value?.handleSearch) {
+            $table.value.handleSearch()
+          }
+        }, 500)
+      } else {
+        const errorMsg = result?.msg || (modalAction.value === 'add' ? '创建失败，请重试' : '更新失败，请重试')
+        window.$message?.error(errorMsg)
+        console.error('操作失败，响应：', result)
+      }
+    } catch (apiError) {
+      console.error('API调用异常：', apiError)
+      
+      let errorMsg = '操作失败，请检查网络连接'
+      if (apiError?.response?.data?.msg) {
+        errorMsg = apiError.response.data.msg
+      } else if (apiError?.response?.status === 422) {
+        errorMsg = '表单数据格式错误，请检查输入'
+      } else if (apiError?.message) {
+        errorMsg = apiError.message
+      }
+      
+      window.$message?.error(errorMsg)
     }
   } catch (error) {
-    console.error('Save error:', error)
+    console.error('未捕获的错误：', error)
+    window.$message?.error('发生未知错误，请联系管理员')
+  } finally {
+    modalLoading.value = false
   }
 }
 
@@ -290,7 +297,6 @@ const handleOpenModal = (action) => {
   if (action === 'add') {
     modalForm.value = {
       name: '',
-      code: undefined,
       food_type: '',
       description: '',
       image_url: '',
@@ -332,7 +338,7 @@ const handleOpenModal = (action) => {
       v-model:visible="modalVisible"
       :title="modalTitle"
       :loading="modalLoading"
-      :on-positive-click="handleSave"
+      @save="handleSave"
     >
       <NForm
         ref="modalFormRef"
@@ -349,12 +355,16 @@ const handleOpenModal = (action) => {
             />
           </NFormItem>
 
-          <NFormItem label="YOLO 类别 ID">
-            <NInputNumber
-              v-model:value="modalForm.code"
-              placeholder="请输入 YOLO 类别 ID（创建后无法修改）"
-              :disabled="modalAction === 'edit'"
+          <NFormItem v-if="modalAction === 'edit'" label="YOLO 类别 ID">
+            <NInput
+              :value="`${modalForm.code}`"
+              :disabled="true"
+              placeholder="自动生成"
             />
+            <template #label>
+              YOLO 类别 ID
+              <span style="color: #999; font-size: 12px; margin-left: 4px">（自动生成，不可修改）</span>
+            </template>
           </NFormItem>
 
           <NFormItem label="食物类型">

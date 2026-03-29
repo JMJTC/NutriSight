@@ -49,7 +49,7 @@ export default {
   createFoodCategory: (data) => request.post('/food/categories', data),
   updateFoodCategory: (id, data) => request.put(`/food/categories/${id}`, data),
   deleteFoodCategory: (id) => request.delete(`/food/categories/${id}`),
-  createFoodCategoryWithUpload: (formData) => request.post('/food/categories/upload', formData, { headers: { 'Content-Type': 'multipart/form-data' } }),
-  updateFoodCategoryWithUpload: (id, formData) => request.put(`/food/categories/${id}/upload`, formData, { headers: { 'Content-Type': 'multipart/form-data' } }),
-  updateNutritionInfo: (foodId, formData) => request.put(`/food/nutrition/${foodId}`, formData, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }),
+  createFoodCategoryWithUpload: (formData) => request.post('/food/categories/upload', formData),
+  updateFoodCategoryWithUpload: (id, formData) => request.put(`/food/categories/${id}/upload`, formData),
+  updateNutritionInfo: (foodId, data) => request.put(`/food/nutrition/${foodId}`, data),
 }

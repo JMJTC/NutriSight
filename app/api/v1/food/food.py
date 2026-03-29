@@ -210,7 +210,7 @@ async def delete_food_category(
 @food_router.post("/categories/upload", summary="创建食物类别（支持图片上传）")
 async def create_food_category_with_upload(
     name: str = Form(..., description="食物名称"),
-    code: int = Form(..., description="YOLO 类别 ID"),
+    code: Optional[str] = Form(None, description="YOLO 类别 ID（可选，自动生成）"),
     food_type: Optional[str] = Form(None, description="食物类型"),
     description: Optional[str] = Form(None, description="食物描述"),
     image: Optional[UploadFile] = File(None, description="食物图片"),
@@ -219,7 +219,8 @@ async def create_food_category_with_upload(
     """
     创建新的食物类别，支持在创建时直接上传图片和营养信息
     
-    nutrition 参数应为 JSON 字符串，格式如下：
+    - code 为可选项，如不提供会自动生成
+    - nutrition 参数应为 JSON 字符串，格式如下：
     {
         "energy": 52.0,
         "protein": 0.26,
@@ -230,6 +231,14 @@ async def create_food_category_with_upload(
     }
     """
     try:
+        # 将code字符串转换为整数（如果提供的话）
+        int_code = None
+        if code and code != "":
+            try:
+                int_code = int(code)
+            except ValueError:
+                return Fail(code=400, msg="YOLO 类别 ID 必须是整数")
+        
         nutrition_data = None
         if nutrition:
             try:
@@ -239,7 +248,7 @@ async def create_food_category_with_upload(
         
         result = await FoodController.create_food_category_with_file(
             name=name,
-            code=code,
+            code=int_code,
             food_type=food_type,
             description=description,
             image_file=image,
