@@ -95,3 +95,31 @@ class AnalysisResponse(BaseModel):
     total_carbohydrate: float = Field(..., ge=0, description="总碳水化合物")
     summary: str = Field(..., description="分析摘要")
     suggestion: Optional[str] = Field(None, description="营养建议")
+
+
+class NutritionResponse(BaseModel):
+    """营养信息响应"""
+    id: int = Field(..., description="营养信息 ID")
+    food_id: int = Field(..., description="食物类别 ID")
+    food_name: str = Field(..., description="食物名称")
+    energy: float = Field(..., ge=0, description="热量 (kcal/100g)")
+    protein: float = Field(..., ge=0, description="蛋白质 (g/100g)")
+    fat: float = Field(..., ge=0, description="脂肪 (g/100g)")
+    carbohydrate: float = Field(..., ge=0, description="碳水化合物 (g/100g)")
+    fiber: float = Field(default=0.0, ge=0, description="膳食纤维 (g/100g)")
+    sodium: float = Field(default=0.0, ge=0, description="钠 (mg/100g)")
+    created_at: datetime = Field(..., description="创建时间")
+    updated_at: datetime = Field(..., description="更新时间")
+
+
+class FoodCategoryResponse(BaseModel):
+    """食物类别响应"""
+    id: int = Field(..., description="食物类别 ID")
+    name: str = Field(..., description="食物名称")
+    code: int = Field(..., description="YOLO 类别 ID")
+    food_type: Optional[str] = Field(None, description="食物类型")
+    description: Optional[str] = Field(None, description="食物描述")
+    image_url: Optional[str] = Field(None, description="示例图片 URL")
+    nutrition: Optional[NutritionResponse] = Field(None, description="关联的营养信息")
+    created_at: datetime = Field(..., description="创建时间")
+    updated_at: datetime = Field(..., description="更新时间")

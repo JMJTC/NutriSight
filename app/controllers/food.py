@@ -588,3 +588,274 @@ class FoodController:
                 "status": "error"
             }
 
+    @staticmethod
+    async def get_food_category_detail(category_id: int) -> Dict:
+        """
+        获取单个食物类别的详细信息，包括营养信息
+        
+        Args:
+            category_id: 食物类别ID
+            
+        Returns:
+            Dict: 食物类别详细信息
+        """
+        try:
+            category = await FoodCategory.get_or_none(id=category_id)
+            if not category:
+                raise CustomException(message=f"食物类别 {category_id} 不存在", code=404)
+            
+            result = {
+                "id": category.id,
+                "name": category.name,
+                "code": category.code,
+                "food_type": category.food_type,
+                "description": category.description,
+                "image_url": category.image_url,
+                "created_at": category.created_at.isoformat(),
+                "updated_at": category.updated_at.isoformat(),
+            }
+            
+            # 获取营养信息
+            nutrition = await Nutrition.get_or_none(food=category)
+            if nutrition:
+                result["nutrition"] = {
+                    "id": nutrition.id,
+                    "food_id": nutrition.food.id,
+                    "food_name": nutrition.food.name,
+                    "energy": nutrition.energy,
+                    "protein": nutrition.protein,
+                    "fat": nutrition.fat,
+                    "carbohydrate": nutrition.carbohydrate,
+                    "fiber": nutrition.fiber,
+                    "sodium": nutrition.sodium,
+                    "created_at": nutrition.created_at.isoformat(),
+                    "updated_at": nutrition.updated_at.isoformat(),
+                }
+            else:
+                result["nutrition"] = None
+            
+            return result
+        except CustomException:
+            raise
+        except Exception as e:
+            logger.error(f"Failed to get category detail: {str(e)}")
+            raise CustomException(message=f"获取食物类别详情失败: {str(e)}", code=500)
+
+    @staticmethod
+    async def delete_food_category(category_id: int) -> bool:
+        """
+        删除食物类别并级联删除关联的营养信息
+        
+        Args:
+            category_id: 食物类别ID
+            
+        Returns:
+            bool: 是否删除成功
+        """
+        try:
+            category = await FoodCategory.get_or_none(id=category_id)
+            if not category:
+                raise CustomException(message=f"食物类别 {category_id} 不存在", code=404)
+            
+            # 删除关联的营养信息
+            nutrition = await Nutrition.get_or_none(food=category)
+            if nutrition:
+                await nutrition.delete()
+                logger.info(f"Deleted nutrition info for food category {category_id}")
+            
+            # 删除食物类别
+            await category.delete()
+            logger.info(f"Food category {category_id} deleted")
+            
+            return True
+        except CustomException:
+            raise
+        except Exception as e:
+            logger.error(f"Failed to delete category: {str(e)}")
+            raise CustomException(message=f"删除食物类别失败: {str(e)}", code=500)
+
+    @staticmethod
+    async def save_food_image(file: UploadFile) -> str:
+        """
+        保存食物示例图片
+        
+        Args:
+            file: 上传的图片文件
+            
+        Returns:
+            str: 相对路径 URL
+        """
+        try:
+            upload_dir = os.path.join(settings.BASE_DIR, "deploy", "static", "uploads", "food_images")
+            if not os.path.exists(upload_dir):
+                os.makedirs(upload_dir)
+            
+            file_ext = file.filename.split(".")[-1] if file.filename else "png"
+            file_name = f"{uuid.uuid4()}.{file_ext}"
+            file_path = os.path.join(upload_dir, file_name)
+            
+            with open(file_path, "wb") as buffer:
+                shutil.copyfileobj(file.file, buffer)
+            
+            relative_path = f"/static/uploads/food_images/{file_name}"
+            logger.info(f"Food image saved: {relative_path}")
+            
+            return relative_path
+        except Exception as e:
+            logger.error(f"Failed to save food image: {str(e)}")
+            raise CustomException(message=f"图片保存失败: {str(e)}", code=500)
+
+    @staticmethod
+    async def create_food_category_with_file(
+        name: str,
+        code: int,
+        food_type: Optional[str] = None,
+        description: Optional[str] = None,
+        image_file: Optional[UploadFile] = None,
+        nutrition_data: Optional[Dict] = None
+    ) -> Dict:
+        """
+        创建食物类别，支持图片上传和营养信息
+        
+        Args:
+            name: 食物名称
+            code: YOLO类别ID
+            food_type: 食物类型
+            description: 描述
+            image_file: 图片文件（可选）
+            nutrition_data: 营养信息字典（可选）
+            
+        Returns:
+            Dict: 创建的食物类别信息
+        """
+        try:
+            # 检查code和name是否已存在
+            existing_code = await FoodCategory.get_or_none(code=code)
+            if existing_code:
+                raise CustomException(message=f"YOLO 类别 ID {code} 已存在", code=400)
+            
+            existing_name = await FoodCategory.get_or_none(name=name)
+            if existing_name:
+                raise CustomException(message=f"食物名称 {name} 已存在", code=400)
+            
+            # 处理图片上传
+            image_url = None
+            if image_file:
+                image_url = await FoodController.save_food_image(image_file)
+            
+            # 创建食物类别
+            category = await FoodCategory.create(
+                name=name,
+                code=code,
+                food_type=food_type,
+                description=description,
+                image_url=image_url
+            )
+            
+            # 创建营养信息（如果提供）
+            if nutrition_data:
+                nutrition = await Nutrition.create(
+                    food=category,
+                    energy=float(nutrition_data.get("energy", 0)),
+                    protein=float(nutrition_data.get("protein", 0)),
+                    fat=float(nutrition_data.get("fat", 0)),
+                    carbohydrate=float(nutrition_data.get("carbohydrate", 0)),
+                    fiber=float(nutrition_data.get("fiber", 0)),
+                    sodium=float(nutrition_data.get("sodium", 0))
+                )
+                logger.info(f"Nutrition info created for food category {category.id}")
+            
+            logger.info(f"Food category {category.id} created with image: {name}")
+            
+            return await FoodController.get_food_category_detail(category.id)
+        except CustomException:
+            raise
+        except Exception as e:
+            logger.error(f"Failed to create category with file: {str(e)}")
+            raise CustomException(message=f"创建食物类别失败: {str(e)}", code=500)
+
+    @staticmethod
+    async def update_food_category_with_file(
+        category_id: int,
+        name: Optional[str] = None,
+        food_type: Optional[str] = None,
+        description: Optional[str] = None,
+        image_file: Optional[UploadFile] = None,
+        image_url: Optional[str] = None,
+        nutrition_data: Optional[Dict] = None
+    ) -> Dict:
+        """
+        更新食物类别，支持图片上传和营养信息更新
+        
+        Args:
+            category_id: 食物类别ID
+            name: 食物名称
+            food_type: 食物类型
+            description: 描述
+            image_file: 新的图片文件（可选）
+            image_url: 图片URL（如果image_file为空则使用此值）
+            nutrition_data: 营养信息字典（可选）
+            
+        Returns:
+            Dict: 更新后的食物类别信息
+        """
+        try:
+            category = await FoodCategory.get_or_none(id=category_id)
+            if not category:
+                raise CustomException(message=f"食物类别 {category_id} 不存在", code=404)
+            
+            # 检查名称唯一性
+            if name and name != category.name:
+                existing = await FoodCategory.get_or_none(name=name)
+                if existing:
+                    raise CustomException(message=f"食物名称 {name} 已存在", code=400)
+                category.name = name
+            
+            # 更新其他字段
+            if food_type is not None:
+                category.food_type = food_type
+            if description is not None:
+                category.description = description
+            
+            # 处理图片上传
+            if image_file:
+                image_url = await FoodController.save_food_image(image_file)
+            if image_url is not None:
+                category.image_url = image_url
+            
+            await category.save()
+            
+            # 更新营养信息（如果提供）
+            if nutrition_data:
+                nutrition = await Nutrition.get_or_none(food=category)
+                if nutrition:
+                    nutrition.energy = float(nutrition_data.get("energy", nutrition.energy))
+                    nutrition.protein = float(nutrition_data.get("protein", nutrition.protein))
+                    nutrition.fat = float(nutrition_data.get("fat", nutrition.fat))
+                    nutrition.carbohydrate = float(nutrition_data.get("carbohydrate", nutrition.carbohydrate))
+                    nutrition.fiber = float(nutrition_data.get("fiber", nutrition.fiber))
+                    nutrition.sodium = float(nutrition_data.get("sodium", nutrition.sodium))
+                    await nutrition.save()
+                    logger.info(f"Nutrition info for food {category_id} updated")
+                else:
+                    # 如果不存在营养信息则创建
+                    nutrition = await Nutrition.create(
+                        food=category,
+                        energy=float(nutrition_data.get("energy", 0)),
+                        protein=float(nutrition_data.get("protein", 0)),
+                        fat=float(nutrition_data.get("fat", 0)),
+                        carbohydrate=float(nutrition_data.get("carbohydrate", 0)),
+                        fiber=float(nutrition_data.get("fiber", 0)),
+                        sodium=float(nutrition_data.get("sodium", 0))
+                    )
+                    logger.info(f"Nutrition info created for food {category_id}")
+            
+            logger.info(f"Food category {category_id} updated")
+            
+            return await FoodController.get_food_category_detail(category.id)
+        except CustomException:
+            raise
+        except Exception as e:
+            logger.error(f"Failed to update category with file: {str(e)}")
+            raise CustomException(message=f"更新食物类别失败: {str(e)}", code=500)
+

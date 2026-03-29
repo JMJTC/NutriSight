@@ -57,6 +57,15 @@ export const basicRoutes = [
     },
     children: [
       {
+        path: 'management',
+        component: () => import('@/views/food/management/index.vue'),
+        name: 'FoodManagement',
+        meta: {
+          title: '食物管理',
+          icon: 'mdi:format-list-bulleted',
+        },
+      },
+      {
         path: 'recognition',
         component: () => import('@/views/food/recognition/index.vue'),
         name: 'FoodRecognition',

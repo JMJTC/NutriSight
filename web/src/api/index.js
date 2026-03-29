@@ -43,4 +43,13 @@ export default {
   recognizeFood: (data) => request.post('/food/recognize', data),
   getFoodHistory: (params = {}) => request.get('/food/history', { params }),
   getFoodRecordDetail: (id) => request.get(`/food/record/${id}`),
+  // food management
+  getFoodCategories: (params = {}) => request.get('/food/categories', { params }),
+  getFoodCategoryDetail: (id) => request.get(`/food/categories/${id}`),
+  createFoodCategory: (data) => request.post('/food/categories', data),
+  updateFoodCategory: (id, data) => request.put(`/food/categories/${id}`, data),
+  deleteFoodCategory: (id) => request.delete(`/food/categories/${id}`),
+  createFoodCategoryWithUpload: (formData) => request.post('/food/categories/upload', formData, { headers: { 'Content-Type': 'multipart/form-data' } }),
+  updateFoodCategoryWithUpload: (id, formData) => request.put(`/food/categories/${id}/upload`, formData, { headers: { 'Content-Type': 'multipart/form-data' } }),
+  updateNutritionInfo: (foodId, formData) => request.put(`/food/nutrition/${foodId}`, formData, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }),
 }

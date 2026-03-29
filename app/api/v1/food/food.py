@@ -1,7 +1,8 @@
 import logging
 from typing import Optional
+import json
 
-from fastapi import APIRouter, Query, UploadFile, File, Depends
+from fastapi import APIRouter, Query, UploadFile, File, Depends, Form
 
 from app.controllers.food import FoodController
 from app.core.dependency import DependAuth
@@ -168,3 +169,157 @@ async def get_service_status():
     except Exception as e:
         logger.error(f"Failed to get service status: {str(e)}")
         return Fail(code=500, msg=f"获取服务状态失败: {str(e)}")
+
+
+# =========== 食物类别管理 CRUD 端点 ===========
+
+@food_router.get("/categories/{category_id}", summary="获取单个食物类别详情")
+async def get_food_category_detail(
+    category_id: int,
+):
+    """
+    获取单个食物类别的详细信息，包括营养信息
+    """
+    try:
+        result = await FoodController.get_food_category_detail(category_id)
+        return Success(data=result)
+    except CustomException as e:
+        return Fail(code=e.status_code, msg=e.detail)
+    except Exception as e:
+        logger.error(f"Failed to get category detail: {str(e)}")
+        return Fail(code=500, msg=f"获取食物类别详情失败: {str(e)}")
+
+
+@food_router.delete("/categories/{category_id}", summary="删除食物类别")
+async def delete_food_category(
+    category_id: int,
+):
+    """
+    删除食物类别及其关联的营养信息
+    """
+    try:
+        await FoodController.delete_food_category(category_id)
+        return Success(msg="食物类别删除成功")
+    except CustomException as e:
+        return Fail(code=e.status_code, msg=e.detail)
+    except Exception as e:
+        logger.error(f"Failed to delete category: {str(e)}")
+        return Fail(code=500, msg=f"删除食物类别失败: {str(e)}")
+
+
+@food_router.post("/categories/upload", summary="创建食物类别（支持图片上传）")
+async def create_food_category_with_upload(
+    name: str = Form(..., description="食物名称"),
+    code: int = Form(..., description="YOLO 类别 ID"),
+    food_type: Optional[str] = Form(None, description="食物类型"),
+    description: Optional[str] = Form(None, description="食物描述"),
+    image: Optional[UploadFile] = File(None, description="食物图片"),
+    nutrition: Optional[str] = Form(None, description="营养信息 JSON"),
+):
+    """
+    创建新的食物类别，支持在创建时直接上传图片和营养信息
+    
+    nutrition 参数应为 JSON 字符串，格式如下：
+    {
+        "energy": 52.0,
+        "protein": 0.26,
+        "fat": 0.17,
+        "carbohydrate": 13.81,
+        "fiber": 2.4,
+        "sodium": 2.0
+    }
+    """
+    try:
+        nutrition_data = None
+        if nutrition:
+            try:
+                nutrition_data = json.loads(nutrition)
+            except json.JSONDecodeError:
+                return Fail(code=400, msg="营养信息 JSON 格式错误")
+        
+        result = await FoodController.create_food_category_with_file(
+            name=name,
+            code=code,
+            food_type=food_type,
+            description=description,
+            image_file=image,
+            nutrition_data=nutrition_data
+        )
+        return Success(msg="食物类别创建成功", data=result)
+    except CustomException as e:
+        return Fail(code=e.status_code, msg=e.detail)
+    except Exception as e:
+        logger.error(f"Failed to create category with upload: {str(e)}")
+        return Fail(code=500, msg=f"创建食物类别失败: {str(e)}")
+
+
+@food_router.put("/categories/{category_id}/upload", summary="更新食物类别（支持图片上传）")
+async def update_food_category_with_upload(
+    category_id: int,
+    name: Optional[str] = Form(None, description="食物名称"),
+    food_type: Optional[str] = Form(None, description="食物类型"),
+    description: Optional[str] = Form(None, description="食物描述"),
+    image: Optional[UploadFile] = File(None, description="新的食物图片"),
+    image_url: Optional[str] = Form(None, description="图片 URL（当不上传图片时使用）"),
+    nutrition: Optional[str] = Form(None, description="营养信息 JSON"),
+):
+    """
+    更新食物类别信息，支持上传新的图片和更新营养信息
+    """
+    try:
+        nutrition_data = None
+        if nutrition:
+            try:
+                nutrition_data = json.loads(nutrition)
+            except json.JSONDecodeError:
+                return Fail(code=400, msg="营养信息 JSON 格式错误")
+        
+        result = await FoodController.update_food_category_with_file(
+            category_id=category_id,
+            name=name,
+            food_type=food_type,
+            description=description,
+            image_file=image,
+            image_url=image_url,
+            nutrition_data=nutrition_data
+        )
+        return Success(msg="食物类别更新成功", data=result)
+    except CustomException as e:
+        return Fail(code=e.status_code, msg=e.detail)
+    except Exception as e:
+        logger.error(f"Failed to update category with upload: {str(e)}")
+        return Fail(code=500, msg=f"更新食物类别失败: {str(e)}")
+
+
+@food_router.put("/nutrition/{food_id}", summary="更新食物的营养信息")
+async def update_nutrition_info(
+    food_id: int,
+    energy: float = Form(..., ge=0, description="热量 (kcal/100g)"),
+    protein: float = Form(..., ge=0, description="蛋白质 (g/100g)"),
+    fat: float = Form(..., ge=0, description="脂肪 (g/100g)"),
+    carbohydrate: float = Form(..., ge=0, description="碳水化合物 (g/100g)"),
+    fiber: float = Form(0.0, ge=0, description="膳食纤维 (g/100g)"),
+    sodium: float = Form(0.0, ge=0, description="钠 (mg/100g)"),
+):
+    """
+    更新食物的营养信息
+    """
+    try:
+        nutrition_data = {
+            "energy": energy,
+            "protein": protein,
+            "fat": fat,
+            "carbohydrate": carbohydrate,
+            "fiber": fiber,
+            "sodium": sodium
+        }
+        result = await FoodController.update_food_category_with_file(
+            category_id=food_id,
+            nutrition_data=nutrition_data
+        )
+        return Success(msg="营养信息更新成功", data=result)
+    except CustomException as e:
+        return Fail(code=e.status_code, msg=e.detail)
+    except Exception as e:
+        logger.error(f"Failed to update nutrition: {str(e)}")
+        return Fail(code=500, msg=f"更新营养信息失败: {str(e)}")
