@@ -2,11 +2,11 @@
   <div class="food-history">
     <n-card title="识别历史记录">
       <n-data-table
+        remote
         :columns="columns"
         :data="historyList"
         :pagination="pagination"
         :loading="loading"
-        @update:page="handlePageChange"
       />
     </n-card>
 
@@ -58,7 +58,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, h } from 'vue'
+import { ref, onMounted, h, reactive } from 'vue'
 import { NButton, NTag, useMessage } from 'naive-ui'
 import api from '@/api'
 
@@ -67,10 +67,25 @@ const loading = ref(false)
 const historyList = ref([])
 const showDetail = ref(false)
 const currentRecord = ref(null)
-const pagination = ref({
+
+const pagination = reactive({
   page: 1,
   pageSize: 10,
-  itemCount: 0
+  itemCount: 0,
+  showSizePicker: true,
+  pageSizes: [10, 20, 50, 100],
+  prefix({ itemCount }) {
+    return `共 ${itemCount} 条`
+  },
+  onChange: (page) => {
+    pagination.page = page
+    fetchHistory()
+  },
+  onUpdatePageSize: (pageSize) => {
+    pagination.pageSize = pageSize
+    pagination.page = 1
+    fetchHistory()
+  }
 })
 
 const columns = [
@@ -101,6 +116,13 @@ const columns = [
         },
         { default: () => (row.status === 'success' ? '成功' : '失败') }
       )
+    }
+  },
+  {
+    title: '总热量 (kcal)',
+    key: 'total_energy',
+    render(row) {
+      return row.total_energy?.toFixed(2) || '0.00'
     }
   },
   {
@@ -139,12 +161,12 @@ const fetchHistory = async () => {
   loading.value = true
   try {
     const res = await api.getFoodHistory({
-      page: pagination.value.page,
-      page_size: pagination.value.pageSize
+      page: pagination.page,
+      page_size: pagination.pageSize
     })
     if (res.code === 200) {
       historyList.value = res.data
-      pagination.value.itemCount = res.total
+      pagination.itemCount = res.total
     }
   } catch (error) {
     message.error('获取历史记录失败')
@@ -163,11 +185,6 @@ const viewDetail = async (row) => {
   } catch (error) {
     message.error('获取详情失败')
   }
-}
-
-const handlePageChange = (page) => {
-  pagination.value.page = page
-  fetchHistory()
 }
 
 onMounted(() => {
