@@ -1,0 +1,1719 @@
+[
+  {
+    "category": {
+      "name": "apple_pie",
+      "code": 0,
+      "food_type": "dessert",
+      "description": "Sweet pie made with apples and pastry crust.",
+      "image_url": "https://food101.example.com/apple_pie.jpg"
+    },
+    "nutrition": {
+      "energy": 250.0,
+      "protein": 3.5,
+      "fat": 12.0,
+      "carbohydrate": 35.0,
+      "fiber": 3.0,
+      "sodium": 120.0
+    }
+  },
+  {
+    "category": {
+      "name": "bacon",
+      "code": 1,
+      "food_type": "meat",
+      "description": "Cured and smoked pork belly, commonly used in breakfast dishes.",
+      "image_url": "https://food101.example.com/bacon.jpg"
+    },
+    "nutrition": {
+      "energy": 370.0,
+      "protein": 15.0,
+      "fat": 30.0,
+      "carbohydrate": 0.0,
+      "fiber": 0.0,
+      "sodium": 1200.0
+    }
+  },
+  {
+    "category": {
+      "name": "beef_carpaccio",
+      "code": 2,
+      "food_type": "meat",
+      "description": "Thinly sliced raw beef, often served with lemon and parmesan.",
+      "image_url": "https://food101.example.com/beef_carpaccio.jpg"
+    },
+    "nutrition": {
+      "energy": 250.0,
+      "protein": 25.0,
+      "fat": 15.0,
+      "carbohydrate": 2.0,
+      "fiber": 0.0,
+      "sodium": 500.0
+    }
+  },
+  {
+    "category": {
+      "name": "beef_tartare",
+      "code": 3,
+      "food_type": "meat",
+      "description": "Fresh raw minced beef, seasoned with herbs and spices.",
+      "image_url": "https://food101.example.com/beef_tartare.jpg"
+    },
+    "nutrition": {
+      "energy": 270.0,
+      "protein": 22.0,
+      "fat": 18.0,
+      "carbohydrate": 2.0,
+      "fiber": 0.0,
+      "sodium": 450.0
+    }
+  },
+  {
+    "category": {
+      "name": "beef_wellington",
+      "code": 4,
+      "food_type": "meat",
+      "description": "Beef fillet wrapped in puff pastry and duxelles.",
+      "image_url": "https://food101.example.com/beef_wellington.jpg"
+    },
+    "nutrition": {
+      "energy": 320.0,
+      "protein": 20.0,
+      "fat": 22.0,
+      "carbohydrate": 10.0,
+      "fiber": 1.0,
+      "sodium": 600.0
+    }
+  },
+  {
+    "category": {
+      "name": "beet_salad",
+      "code": 5,
+      "food_type": "vegetable",
+      "description": "Fresh beetroot salad with greens and vinaigrette dressing.",
+      "image_url": "https://food101.example.com/beet_salad.jpg"
+    },
+    "nutrition": {
+      "energy": 120.0,
+      "protein": 3.0,
+      "fat": 5.0,
+      "carbohydrate": 18.0,
+      "fiber": 4.0,
+      "sodium": 80.0
+    }
+  },
+  {
+    "category": {
+      "name": "beetroot",
+      "code": 6,
+      "food_type": "vegetable",
+      "description": "Root vegetable with deep red color, often roasted or boiled.",
+      "image_url": "https://food101.example.com/beetroot.jpg"
+    },
+    "nutrition": {
+      "energy": 70.0,
+      "protein": 2.0,
+      "fat": 0.2,
+      "carbohydrate": 17.0,
+      "fiber": 4.0,
+      "sodium": 100.0
+    }
+  },
+  {
+    "category": {
+      "name": "bibimbap",
+      "code": 7,
+      "food_type": "rice",
+      "description": "Korean mixed rice bowl with vegetables, meat, and gochujang sauce.",
+      "image_url": "https://food101.example.com/bibimbap.jpg"
+    },
+    "nutrition": {
+      "energy": 350.0,
+      "protein": 12.0,
+      "fat": 8.0,
+      "carbohydrate": 55.0,
+      "fiber": 5.0,
+      "sodium": 500.0
+    }
+  },
+  {
+    "category": {
+      "name": "bitterballen",
+      "code": 8,
+      "food_type": "snack",
+      "description": "Dutch deep-fried meatballs with a creamy filling.",
+      "image_url": "https://food101.example.com/bitterballen.jpg"
+    },
+    "nutrition": {
+      "energy": 280.0,
+      "protein": 8.0,
+      "fat": 20.0,
+      "carbohydrate": 15.0,
+      "fiber": 1.0,
+      "sodium": 600.0
+    }
+  },
+  {
+    "category": {
+      "name": "bobotie",
+      "code": 9,
+      "food_type": "meat",
+      "description": "South African baked minced meat with custard topping.",
+      "image_url": "https://food101.example.com/bobotie.jpg"
+    },
+    "nutrition": {
+      "energy": 290.0,
+      "protein": 15.0,
+      "fat": 18.0,
+      "carbohydrate": 12.0,
+      "fiber": 2.0,
+      "sodium": 450.0
+    }
+  },
+  {
+    "category": {
+      "name": "borscht",
+      "code": 10,
+      "food_type": "soup",
+      "description": "Savory beetroot soup, often served with sour cream.",
+      "image_url": "https://food101.example.com/borscht.jpg"
+    },
+    "nutrition": {
+      "energy": 110.0,
+      "protein": 4.0,
+      "fat": 2.0,
+      "carbohydrate": 20.0,
+      "fiber": 3.0,
+      "sodium": 600.0
+    }
+  },
+  {
+    "category": {
+      "name": "bouillabaisse",
+      "code": 11,
+      "food_type": "fish",
+      "description": "Provençal fish stew with saffron and tomatoes.",
+      "image_url": "https://food101.example.com/bouillabaisse.jpg"
+    },
+    "nutrition": {
+      "energy": 180.0,
+      "protein": 18.0,
+      "fat": 8.0,
+      "carbohydrate": 10.0,
+      "fiber": 2.0,
+      "sodium": 300.0
+    }
+  },
+  {
+    "category": {
+      "name": "bratwurst",
+      "code": 12,
+      "food_type": "meat",
+      "description": "German sausage made from pork, seasoned with marjoram.",
+      "image_url": "https://food101.example.com/bratwurst.jpg"
+    },
+    "nutrition": {
+      "energy": 320.0,
+      "protein": 15.0,
+      "fat": 28.0,
+      "carbohydrate": 1.0,
+      "fiber": 0.0,
+      "sodium": 800.0
+    }
+  },
+  {
+    "category": {
+      "name": "bread_pudding",
+      "code": 13,
+      "food_type": "dessert",
+      "description": "Sweet dessert made from bread soaked in milk and eggs.",
+      "image_url": "https://food101.example.com/bread_pudding.jpg"
+    },
+    "nutrition": {
+      "energy": 220.0,
+      "protein": 4.0,
+      "fat": 8.0,
+      "carbohydrate": 35.0,
+      "fiber": 1.0,
+      "sodium": 100.0
+    }
+  },
+  {
+    "category": {
+      "name": "breakfast_burrito",
+      "code": 14,
+      "food_type": "breakfast",
+      "description": "Mexican-style burrito filled with eggs, beans, and cheese.",
+      "image_url": "https://food101.example.com/breakfast_burrito.jpg"
+    },
+    "nutrition": {
+      "energy": 380.0,
+      "protein": 16.0,
+      "fat": 15.0,
+      "carbohydrate": 40.0,
+      "fiber": 5.0,
+      "sodium": 700.0
+    }
+  },
+  {
+    "category": {
+      "name": "bruschetta",
+      "code": 15,
+      "food_type": "appetizer",
+      "description": "Toasted bread topped with tomatoes, garlic, and basil.",
+      "image_url": "https://food101.example.com/bruschetta.jpg"
+    },
+    "nutrition": {
+      "energy": 150.0,
+      "protein": 3.0,
+      "fat": 5.0,
+      "carbohydrate": 25.0,
+      "fiber": 2.0,
+      "sodium": 200.0
+    }
+  },
+  {
+    "category": {
+      "name": "caesar_salad",
+      "code": 16,
+      "food_type": "salad",
+      "description": "Classic salad with romaine lettuce, croutons, and caesar dressing.",
+      "image_url": "https://food101.example.com/caesar_salad.jpg"
+    },
+    "nutrition": {
+      "energy": 220.0,
+      "protein": 8.0,
+      "fat": 15.0,
+      "carbohydrate": 15.0,
+      "fiber": 2.0,
+      "sodium": 400.0
+    }
+  },
+  {
+    "category": {
+      "name": "cannelloni",
+      "code": 17,
+      "food_type": "pasta",
+      "description": "Italian pasta tubes filled with ricotta and spinach.",
+      "image_url": "https://food101.example.com/cannelloni.jpg"
+    },
+    "nutrition": {
+      "energy": 300.0,
+      "protein": 12.0,
+      "fat": 10.0,
+      "carbohydrate": 40.0,
+      "fiber": 3.0,
+      "sodium": 500.0
+    }
+  },
+  {
+    "category": {
+      "name": "caprese_salad",
+      "code": 18,
+      "food_type": "salad",
+      "description": "Fresh tomato, mozzarella, and basil salad with olive oil.",
+      "image_url": "https://food101.example.com/caprese_salad.jpg"
+    },
+    "nutrition": {
+      "energy": 180.0,
+      "protein": 6.0,
+      "fat": 12.0,
+      "carbohydrate": 8.0,
+      "fiber": 1.0,
+      "sodium": 250.0
+    }
+  },
+  {
+    "category": {
+      "name": "carrot_cake",
+      "code": 19,
+      "food_type": "dessert",
+      "description": "Moist cake made with grated carrots and spices.",
+      "image_url": "https://food101.example.com/carrot_cake.jpg"
+    },
+    "nutrition": {
+      "energy": 320.0,
+      "protein": 4.0,
+      "fat": 15.0,
+      "carbohydrate": 45.0,
+      "fiber": 2.0,
+      "sodium": 200.0
+    }
+  },
+  {
+    "category": {
+      "name": "casserole",
+      "code": 20,
+      "food_type": "main",
+      "description": "Baked dish with meat, vegetables, and sauce.",
+      "image_url": "https://food101.example.com/casserole.jpg"
+    },
+    "nutrition": {
+      "energy": 280.0,
+      "protein": 10.0,
+      "fat": 12.0,
+      "carbohydrate": 30.0,
+      "fiber": 3.0,
+      "sodium": 450.0
+    }
+  },
+  {
+    "category": {
+      "name": "ceviche",
+      "code": 21,
+      "food_type": "fish",
+      "description": "Fresh raw fish marinated in citrus juices.",
+      "image_url": "https://food101.example.com/ceviche.jpg"
+    },
+    "nutrition": {
+      "energy": 150.0,
+      "protein": 20.0,
+      "fat": 5.0,
+      "carbohydrate": 10.0,
+      "fiber": 1.0,
+      "sodium": 300.0
+    }
+  },
+  {
+    "category": {
+      "name": "cheesecake",
+      "code": 22,
+      "food_type": "dessert",
+      "description": "Rich dessert with a crust and creamy filling.",
+      "image_url": "https://food101.example.com/cheesecake.jpg"
+    },
+    "nutrition": {
+      "energy": 350.0,
+      "protein": 5.0,
+      "fat": 25.0,
+      "carbohydrate": 30.0,
+      "fiber": 0.5,
+      "sodium": 150.0
+    }
+  },
+  {
+    "category": {
+      "name": "cheesefondue",
+      "code": 23,
+      "food_type": "appetizer",
+      "description": "Swiss dish of melted cheese with bread for dipping.",
+      "image_url": "https://food101.example.com/cheesefondue.jpg"
+    },
+    "nutrition": {
+      "energy": 380.0,
+      "protein": 15.0,
+      "fat": 30.0,
+      "carbohydrate": 10.0,
+      "fiber": 0.5,
+      "sodium": 600.0
+    }
+  },
+  {
+    "category": {
+      "name": "cherry_pie",
+      "code": 24,
+      "food_type": "dessert",
+      "description": "Pie filled with sweet cherries and pastry crust.",
+      "image_url": "https://food101.example.com/cherry_pie.jpg"
+    },
+    "nutrition": {
+      "energy": 280.0,
+      "protein": 3.0,
+      "fat": 12.0,
+      "carbohydrate": 40.0,
+      "fiber": 2.0,
+      "sodium": 100.0
+    }
+  },
+  {
+    "category": {
+      "name": "chicken_curry",
+      "code": 25,
+      "food_type": "main",
+      "description": "Chicken cooked in coconut milk and curry spices.",
+      "image_url": "https://food101.example.com/chicken_curry.jpg"
+    },
+    "nutrition": {
+      "energy": 290.0,
+      "protein": 20.0,
+      "fat": 15.0,
+      "carbohydrate": 25.0,
+      "fiber": 2.0,
+      "sodium": 400.0
+    }
+  },
+  {
+    "category": {
+      "name": "chicken_gnocchi",
+      "code": 26,
+      "food_type": "pasta",
+      "description": "Chicken and potato dumplings in a creamy sauce.",
+      "image_url": "https://food101.example.com/chicken_gnocchi.jpg"
+    },
+    "nutrition": {
+      "energy": 320.0,
+      "protein": 15.0,
+      "fat": 12.0,
+      "carbohydrate": 35.0,
+      "fiber": 2.0,
+      "sodium": 450.0
+    }
+  },
+  {
+    "category": {
+      "name": "chicken_salad",
+      "code": 27,
+      "food_type": "salad",
+      "description": "Chopped chicken with lettuce, celery, and dressing.",
+      "image_url": "https://food101.example.com/chicken_salad.jpg"
+    },
+    "nutrition": {
+      "energy": 220.0,
+      "protein": 25.0,
+      "fat": 10.0,
+      "carbohydrate": 5.0,
+      "fiber": 1.0,
+      "sodium": 300.0
+    }
+  },
+  {
+    "category": {
+      "name": "chicken_wings",
+      "code": 28,
+      "food_type": "snack",
+      "description": "Fried chicken wings, often served with sauce.",
+      "image_url": "https://food101.example.com/chicken_wings.jpg"
+    },
+    "nutrition": {
+      "energy": 350.0,
+      "protein": 20.0,
+      "fat": 25.0,
+      "carbohydrate": 5.0,
+      "fiber": 0.0,
+      "sodium": 500.0
+    }
+  },
+  {
+    "category": {
+      "name": "chocolate_mousse",
+      "code": 29,
+      "food_type": "dessert",
+      "description": "Rich, smooth dessert made with melted chocolate.",
+      "image_url": "https://food101.example.com/chocolate_mousse.jpg"
+    },
+    "nutrition": {
+      "energy": 300.0,
+      "protein": 4.0,
+      "fat": 20.0,
+      "carbohydrate": 30.0,
+      "fiber": 1.0,
+      "sodium": 50.0
+    }
+  },
+  {
+    "category": {
+      "name": "chocolate_sauce",
+      "code": 30,
+      "food_type": "dessert",
+      "description": "Thick sauce made from melted chocolate.",
+      "image_url": "https://food101.example.com/chocolate_sauce.jpg"
+    },
+    "nutrition": {
+      "energy": 250.0,
+      "protein": 2.0,
+      "fat": 15.0,
+      "carbohydrate": 25.0,
+      "fiber": 1.0,
+      "sodium": 20.0
+    }
+  },
+  {
+    "category": {
+      "name": "chowder",
+      "code": 31,
+      "food_type": "soup",
+      "description": "Thick soup made with potatoes, seafood, or vegetables.",
+      "image_url": "https://food101.example.com/chowder.jpg"
+    },
+    "nutrition": {
+      "energy": 150.0,
+      "protein": 5.0,
+      "fat": 5.0,
+      "carbohydrate": 20.0,
+      "fiber": 2.0,
+      "sodium": 400.0
+    }
+  },
+  {
+    "category": {
+      "name": "churros",
+      "code": 32,
+      "food_type": "dessert",
+      "description": "Spanish fried dough pastry, often coated in sugar.",
+      "image_url": "https://food101.example.com/churros.jpg"
+    },
+    "nutrition": {
+      "energy": 320.0,
+      "protein": 3.0,
+      "fat": 18.0,
+      "carbohydrate": 40.0,
+      "fiber": 1.0,
+      "sodium": 50.0
+    }
+  },
+  {
+    "category": {
+      "name": "clam_chowder",
+      "code": 33,
+      "food_type": "soup",
+      "description": "Creamy soup with clams, potatoes, and onions.",
+      "image_url": "https://food101.example.com/clam_chowder.jpg"
+    },
+    "nutrition": {
+      "energy": 180.0,
+      "protein": 8.0,
+      "fat": 6.0,
+      "carbohydrate": 20.0,
+      "fiber": 1.0,
+      "sodium": 500.0
+    }
+  },
+  {
+    "category": {
+      "name": "crab_cakes",
+      "code": 34,
+      "food_type": "seafood",
+      "description": "Pan-fried patties made from crab meat.",
+      "image_url": "https://food101.example.com/crab_cakes.jpg"
+    },
+    "nutrition": {
+      "energy": 250.0,
+      "protein": 15.0,
+      "fat": 15.0,
+      "carbohydrate": 10.0,
+      "fiber": 1.0,
+      "sodium": 400.0
+    }
+  },
+  {
+    "category": {
+      "name": "creamed_spinach",
+      "code": 35,
+      "food_type": "vegetable",
+      "description": "Spinach cooked in a creamy sauce.",
+      "image_url": "https://food101.example.com/creamed_spinach.jpg"
+    },
+    "nutrition": {
+      "energy": 100.0,
+      "protein": 4.0,
+      "fat": 5.0,
+      "carbohydrate": 12.0,
+      "fiber": 3.0,
+      "sodium": 300.0
+    }
+  },
+  {
+    "category": {
+      "name": "creme_brulee",
+      "code": 36,
+      "food_type": "dessert",
+      "description": "Baked custard with a caramelized sugar topping.",
+      "image_url": "https://food101.example.com/creme_brulee.jpg"
+    },
+    "nutrition": {
+      "energy": 320.0,
+      "protein": 5.0,
+      "fat": 15.0,
+      "carbohydrate": 40.0,
+      "fiber": 0.5,
+      "sodium": 100.0
+    }
+  },
+  {
+    "category": {
+      "name": "croque_monsieur",
+      "code": 37,
+      "food_type": "sandwich",
+      "description": "French grilled ham and cheese sandwich.",
+      "image_url": "https://food101.example.com/croque_monsieur.jpg"
+    },
+    "nutrition": {
+      "energy": 350.0,
+      "protein": 12.0,
+      "fat": 18.0,
+      "carbohydrate": 30.0,
+      "fiber": 1.0,
+      "sodium": 600.0
+    }
+  },
+  {
+    "category": {
+      "name": "crumble",
+      "code": 38,
+      "food_type": "dessert",
+      "description": "Fruit baked with a crumb topping.",
+      "image_url": "https://food101.example.com/crumble.jpg"
+    },
+    "nutrition": {
+      "energy": 280.0,
+      "protein": 2.0,
+      "fat": 10.0,
+      "carbohydrate": 45.0,
+      "fiber": 3.0,
+      "sodium": 80.0
+    }
+  },
+  {
+    "category": {
+      "name": "curry_sauce",
+      "code": 39,
+      "food_type": "sauce",
+      "description": "Spicy sauce made with curry powder and coconut milk.",
+      "image_url": "https://food101.example.com/curry_sauce.jpg"
+    },
+    "nutrition": {
+      "energy": 120.0,
+      "protein": 2.0,
+      "fat": 8.0,
+      "carbohydrate": 10.0,
+      "fiber": 1.0,
+      "sodium": 300.0
+    }
+  },
+  {
+    "category": {
+      "name": "dumplings",
+      "code": 40,
+      "food_type": "appetizer",
+      "description": "Small parcels of dough filled with meat or vegetables.",
+      "image_url": "https://food101.example.com/dumplings.jpg"
+    },
+    "nutrition": {
+      "energy": 200.0,
+      "protein": 5.0,
+      "fat": 8.0,
+      "carbohydrate": 25.0,
+      "fiber": 2.0,
+      "sodium": 300.0
+    }
+  },
+  {
+    "category": {
+      "name": "edamame",
+      "code": 41,
+      "food_type": "vegetable",
+      "description": "Young soybeans, often steamed and salted.",
+      "image_url": "https://food101.example.com/edamame.jpg"
+    },
+    "nutrition": {
+      "energy": 120.0,
+      "protein": 10.0,
+      "fat": 5.0,
+      "carbohydrate": 10.0,
+      "fiber": 5.0,
+      "sodium": 100.0
+    }
+  },
+  {
+    "category": {
+      "name": "eggs_benedict",
+      "code": 42,
+      "food_type": "breakfast",
+      "description": "Poached eggs on English muffins with hollandaise sauce.",
+      "image_url": "https://food101.example.com/eggs_benedict.jpg"
+    },
+    "nutrition": {
+      "energy": 350.0,
+      "protein": 15.0,
+      "fat": 20.0,
+      "carbohydrate": 20.0,
+      "fiber": 1.0,
+      "sodium": 400.0
+    }
+  },
+  {
+    "category": {
+      "name": "elbow_macaroni",
+      "code": 43,
+      "food_type": "pasta",
+      "description": "Short, curved pasta used in baked dishes.",
+      "image_url": "https://food101.example.com/elbow_macaroni.jpg"
+    },
+    "nutrition": {
+      "energy": 350.0,
+      "protein": 12.0,
+      "fat": 1.0,
+      "carbohydrate": 70.0,
+      "fiber": 2.0,
+      "sodium": 10.0
+    }
+  },
+  {
+    "category": {
+      "name": "escargots",
+      "code": 44,
+      "food_type": "seafood",
+      "description": "Snails cooked in garlic butter.",
+      "image_url": "https://food101.example.com/escargots.jpg"
+    },
+    "nutrition": {
+      "energy": 250.0,
+      "protein": 12.0,
+      "fat": 15.0,
+      "carbohydrate": 10.0,
+      "fiber": 1.0,
+      "sodium": 200.0
+    }
+  },
+  {
+    "category": {
+      "name": "falafel",
+      "code": 45,
+      "food_type": "vegetarian",
+      "description": "Middle Eastern deep-fried chickpea patties.",
+      "image_url": "https://food101.example.com/falafel.jpg"
+    },
+    "nutrition": {
+      "energy": 300.0,
+      "protein": 9.0,
+      "fat": 15.0,
+      "carbohydrate": 35.0,
+      "fiber": 5.0,
+      "sodium": 300.0
+    }
+  },
+  {
+    "category": {
+      "name": "filet_mignon",
+      "code": 46,
+      "food_type": "meat",
+      "description": "Tender cut of beef from the tenderloin.",
+      "image_url": "https://food101.example.com/filet_mignon.jpg"
+    },
+    "nutrition": {
+      "energy": 280.0,
+      "protein": 25.0,
+      "fat": 18.0,
+      "carbohydrate": 0.0,
+      "fiber": 0.0,
+      "sodium": 50.0
+    }
+  },
+  {
+    "category": {
+      "name": "fish_and_chips",
+      "code": 47,
+      "food_type": "seafood",
+      "description": "British dish of fried fish and chips.",
+      "image_url": "https://food101.example.com/fish_and_chips.jpg"
+    },
+    "nutrition": {
+      "energy": 450.0,
+      "protein": 15.0,
+      "fat": 25.0,
+      "carbohydrate": 40.0,
+      "fiber": 2.0,
+      "sodium": 600.0
+    }
+  },
+  {
+    "category": {
+      "name": "foie_gras",
+      "code": 48,
+      "food_type": "meat",
+      "description": "French delicacy made from duck or goose liver.",
+      "image_url": "https://food101.example.com/foie_gras.jpg"
+    },
+    "nutrition": {
+      "energy": 400.0,
+      "protein": 15.0,
+      "fat": 35.0,
+      "carbohydrate": 1.0,
+      "fiber": 0.0,
+      "sodium": 150.0
+    }
+  },
+  {
+    "category": {
+      "name": "fondue",
+      "code": 49,
+      "food_type": "appetizer",
+      "description": "Swiss dish of melted cheese for dipping.",
+      "image_url": "https://food101.example.com/fondue.jpg"
+    },
+    "nutrition": {
+      "energy": 380.0,
+      "protein": 15.0,
+      "fat": 30.0,
+      "carbohydrate": 10.0,
+      "fiber": 0.5,
+      "sodium": 600.0
+    }
+  },
+  {
+    "category": {
+      "name": "fool",
+      "code": 50,
+      "food_type": "dessert",
+      "description": "British dessert made with puréed fruit and cream.",
+      "image_url": "https://food101.example.com/fool.jpg"
+    },
+    "nutrition": {
+      "energy": 180.0,
+      "protein": 3.0,
+      "fat": 8.0,
+      "carbohydrate": 25.0,
+      "fiber": 2.0,
+      "sodium": 50.0
+    }
+  },
+  {
+    "category": {
+      "name": "french_fries",
+      "code": 51,
+      "food_type": "side",
+      "description": "Deep-fried potato strips.",
+      "image_url": "https://food101.example.com/french_fries.jpg"
+    },
+    "nutrition": {
+      "energy": 360.0,
+      "protein": 4.0,
+      "fat": 20.0,
+      "carbohydrate": 40.0,
+      "fiber": 2.0,
+      "sodium": 200.0
+    }
+  },
+  {
+    "category": {
+      "name": "french_onion_soup",
+      "code": 52,
+      "food_type": "soup",
+      "description": "Soup made with caramelized onions and beef broth.",
+      "image_url": "https://food101.example.com/french_onion_soup.jpg"
+    },
+    "nutrition": {
+      "energy": 150.0,
+      "protein": 5.0,
+      "fat": 5.0,
+      "carbohydrate": 25.0,
+      "fiber": 2.0,
+      "sodium": 500.0
+    }
+  },
+  {
+    "category": {
+      "name": "french_toast",
+      "code": 53,
+      "food_type": "breakfast",
+      "description": "Bread dipped in egg and fried.",
+      "image_url": "https://food101.example.com/french_toast.jpg"
+    },
+    "nutrition": {
+      "energy": 250.0,
+      "protein": 5.0,
+      "fat": 10.0,
+      "carbohydrate": 35.0,
+      "fiber": 1.0,
+      "sodium": 150.0
+    }
+  },
+  {
+    "category": {
+      "name": "fritters",
+      "code": 54,
+      "food_type": "snack",
+      "description": "Small fried batter balls with fruit or vegetables.",
+      "image_url": "https://food101.example.com/fritters.jpg"
+    },
+    "nutrition": {
+      "energy": 200.0,
+      "protein": 3.0,
+      "fat": 10.0,
+      "carbohydrate": 25.0,
+      "fiber": 2.0,
+      "sodium": 100.0
+    }
+  },
+  {
+    "category": {
+      "name": "frozen_yogurt",
+      "code": 55,
+      "food_type": "dessert",
+      "description": "Frozen dairy dessert made from yogurt.",
+      "image_url": "https://food101.example.com/frozen_yogurt.jpg"
+    },
+    "nutrition": {
+        "energy": 150.0,
+        "protein": 5.0,
+        "fat": 2.0,
+        "carbohydrate": 30.0,
+        "fiber": 1.0,
+        "sodium": 50.0
+    }
+  },
+    {
+    "category": {
+      "name": "garlic_bread",
+      "code": 56,
+      "food_type": "side",
+      "description": "Bread brushed with garlic butter and baked until golden.",
+      "image_url": "https://food101.example.com/garlic_bread.jpg"
+    },
+    "nutrition": {
+      "energy": 250.0,
+      "protein": 5.0,
+      "fat": 10.0,
+      "carbohydrate": 35.0,
+      "fiber": 2.0,
+      "sodium": 300.0
+    }
+  },
+  {
+    "category": {
+      "name": "goulash",
+      "code": 57,
+      "food_type": "soup",
+      "description": "Hungarian stew made with beef, paprika, and vegetables.",
+      "image_url": "https://food101.example.com/goulash.jpg"
+    },
+    "nutrition": {
+      "energy": 280.0,
+      "protein": 15.0,
+      "fat": 10.0,
+      "carbohydrate": 30.0,
+      "fiber": 3.0,
+      "sodium": 400.0
+    }
+  },
+  {
+    "category": {
+      "name": "guacamole",
+      "code": 58,
+      "food_type": "sauce",
+      "description": "Mashed avocado with lime, cilantro, and onion.",
+      "image_url": "https://food101.example.com/guacamole.jpg"
+    },
+    "nutrition": {
+      "energy": 150.0,
+      "protein": 2.0,
+      "fat": 12.0,
+      "carbohydrate": 8.0,
+      "fiber": 5.0,
+      "sodium": 150.0
+    }
+  },
+  {
+    "category": {
+      "name": "haggis",
+      "code": 59,
+      "food_type": "meat",
+      "description": "Scottish dish made from sheep's offal, oats, and spices.",
+      "image_url": "https://food101.example.com/haggis.jpg"
+    },
+    "nutrition": {
+      "energy": 300.0,
+      "protein": 12.0,
+      "fat": 20.0,
+      "carbohydrate": 15.0,
+      "fiber": 2.0,
+      "sodium": 500.0
+    }
+  },
+  {
+    "category": {
+      "name": "halva",
+      "code": 60,
+      "food_type": "dessert",
+      "description": "Sweet confection made from sesame paste and sugar.",
+      "image_url": "https://food101.example.com/halva.jpg"
+    },
+    "nutrition": {
+      "energy": 350.0,
+      "protein": 5.0,
+      "fat": 15.0,
+      "carbohydrate": 50.0,
+      "fiber": 2.0,
+      "sodium": 50.0
+    }
+  },
+  {
+    "category": {
+      "name": "hash_brown",
+      "code": 61,
+      "food_type": "side",
+      "description": "Crispy fried potato patties.",
+      "image_url": "https://food101.example.com/hash_brown.jpg"
+    },
+    "nutrition": {
+      "energy": 300.0,
+      "protein": 3.0,
+      "fat": 15.0,
+      "carbohydrate": 35.0,
+      "fiber": 2.0,
+      "sodium": 200.0
+    }
+  },
+  {
+    "category": {
+      "name": "hot_and_sour_soup",
+      "code": 62,
+      "food_type": "soup",
+      "description": "Chinese soup with vinegar, chili, and tofu.",
+      "image_url": "https://food101.example.com/hot_and_sour_soup.jpg"
+    },
+    "nutrition": {
+      "energy": 100.0,
+      "protein": 4.0,
+      "fat": 3.0,
+      "carbohydrate": 15.0,
+      "fiber": 1.0,
+      "sodium": 600.0
+    }
+  },
+  {
+    "category": {
+      "name": "hot_dog",
+      "code": 63,
+      "food_type": "snack",
+      "description": "Sausage in a bun, often served with condiments.",
+      "image_url": "https://food101.example.com/hot_dog.jpg"
+    },
+    "nutrition": {
+      "energy": 350.0,
+      "protein": 12.0,
+      "fat": 25.0,
+      "carbohydrate": 20.0,
+      "fiber": 1.0,
+      "sodium": 700.0
+    }
+  },
+  {
+    "category": {
+      "name": "huevos_rancheros",
+      "code": 64,
+      "food_type": "breakfast",
+      "description": "Mexican dish of fried eggs on tortillas with salsa.",
+      "image_url": "https://food101.example.com/huevos_rancheros.jpg"
+    },
+    "nutrition": {
+      "energy": 320.0,
+      "protein": 15.0,
+      "fat": 12.0,
+      "carbohydrate": 35.0,
+      "fiber": 3.0,
+      "sodium": 450.0
+    }
+  },
+  {
+    "category": {
+      "name": "hummus",
+      "code": 65,
+      "food_type": "appetizer",
+      "description": "Middle Eastern dip made from chickpeas and tahini.",
+      "image_url": "https://food101.example.com/hummus.jpg"
+    },
+    "nutrition": {
+      "energy": 170.0,
+      "protein": 5.0,
+      "fat": 10.0,
+      "carbohydrate": 15.0,
+      "fiber": 4.0,
+      "sodium": 200.0
+    }
+  },
+  {
+    "category": {
+      "name": "ice_cream",
+      "code": 66,
+      "food_type": "dessert",
+      "description": "Frozen dairy dessert with sweeteners and flavorings.",
+      "image_url": "https://food101.example.com/ice_cream.jpg"
+    },
+    "nutrition": {
+      "energy": 250.0,
+      "protein": 3.0,
+      "fat": 14.0,
+      "carbohydrate": 25.0,
+      "fiber": 0.5,
+      "sodium": 50.0
+    }
+  },
+  {
+    "category": {
+      "name": "lasagna",
+      "code": 67,
+      "food_type": "pasta",
+      "description": "Layered pasta dish with meat, cheese, and tomato sauce.",
+      "image_url": "https://food101.example.com/lasagna.jpg"
+    },
+    "nutrition": {
+      "energy": 320.0,
+      "protein": 14.0,
+      "fat": 12.0,
+      "carbohydrate": 40.0,
+      "fiber": 3.0,
+      "sodium": 500.0
+    }
+  },
+  {
+    "category": {
+      "name": "lentil_soup",
+      "code": 68,
+      "food_type": "soup",
+      "description": "Hearty soup made from lentils and vegetables.",
+      "image_url": "https://food101.example.com/lentil_soup.jpg"
+    },
+    "nutrition": {
+      "energy": 120.0,
+      "protein": 8.0,
+      "fat": 2.0,
+      "carbohydrate": 20.0,
+      "fiber": 6.0,
+      "sodium": 300.0
+    }
+  },
+  {
+    "category": {
+      "name": "lobster_bisque",
+      "code": 69,
+      "food_type": "soup",
+      "description": "Creamy soup made with lobster and stock.",
+      "image_url": "https://food101.example.com/lobster_bisque.jpg"
+    },
+    "nutrition": {
+      "energy": 180.0,
+      "protein": 10.0,
+      "fat": 8.0,
+      "carbohydrate": 10.0,
+      "fiber": 1.0,
+      "sodium": 400.0
+    }
+  },
+  {
+    "category": {
+      "name": "lobster_roll_sandwich",
+      "code": 70,
+      "food_type": "seafood",
+      "description": "Sandwich filled with lobster meat and mayonnaise.",
+      "image_url": "https://food101.example.com/lobster_roll_sandwich.jpg"
+    },
+    "nutrition": {
+      "energy": 350.0,
+      "protein": 20.0,
+      "fat": 15.0,
+      "carbohydrate": 25.0,
+      "fiber": 1.0,
+      "sodium": 500.0
+    }
+  },
+  {
+    "category": {
+      "name": "macaroni_and_cheese",
+      "code": 71,
+      "food_type": "pasta",
+      "description": "Baked pasta with cheese sauce.",
+      "image_url": "https://food101.example.com/macaroni_and_cheese.jpg"
+    },
+    "nutrition": {
+      "energy": 300.0,
+      "protein": 10.0,
+      "fat": 12.0,
+      "carbohydrate": 40.0,
+      "fiber": 2.0,
+      "sodium": 450.0
+    }
+  },
+  {
+    "category": {
+      "name": "macarons",
+      "code": 72,
+      "food_type": "dessert",
+      "description": "Delicate French cookies made with almond flour.",
+      "image_url": "https://food101.example.com/macarons.jpg"
+    },
+    "nutrition": {
+      "energy": 200.0,
+      "protein": 2.0,
+      "fat": 10.0,
+      "carbohydrate": 25.0,
+      "fiber": 0.5,
+      "sodium": 20.0
+    }
+  },
+  {
+    "category": {
+      "name": "maki",
+      "code": 73,
+      "food_type": "seafood",
+      "description": "Japanese rolled sushi with rice and fillings.",
+      "image_url": "https://food101.example.com/maki.jpg"
+    },
+    "nutrition": {
+      "energy": 150.0,
+      "protein": 3.0,
+      "fat": 5.0,
+      "carbohydrate": 20.0,
+      "fiber": 1.0,
+      "sodium": 300.0
+    }
+  },
+  {
+    "category": {
+      "name": "mango_pudding",
+      "code": 74,
+      "food_type": "dessert",
+      "description": "Creamy dessert made with mango and gelatin.",
+      "image_url": "https://food101.example.com/mango_pudding.jpg"
+    },
+    "nutrition": {
+      "energy": 220.0,
+      "protein": 3.0,
+      "fat": 8.0,
+      "carbohydrate": 35.0,
+      "fiber": 1.0,
+      "sodium": 50.0
+    }
+  },
+  {
+    "category": {
+      "name": "meatballs",
+      "code": 75,
+      "food_type": "main",
+      "description": "Small balls of ground meat, often served with sauce.",
+      "image_url": "https://food101.example.com/meatballs.jpg"
+    },
+    "nutrition": {
+      "energy": 250.0,
+      "protein": 15.0,
+      "fat": 15.0,
+      "carbohydrate": 10.0,
+      "fiber": 1.0,
+      "sodium": 350.0
+    }
+  },
+  {
+    "category": {
+      "name": "meringue",
+      "code": 76,
+      "food_type": "dessert",
+      "description": "Light, airy dessert made from whipped egg whites and sugar.",
+      "image_url": "https://food101.example.com/meringue.jpg"
+    },
+    "nutrition": {
+      "energy": 320.0,
+      "protein": 4.0,
+      "fat": 10.0,
+      "carbohydrate": 55.0,
+      "fiber": 0.5,
+      "sodium": 20.0
+    }
+  },
+  {
+    "category": {
+      "name": "miso_soup",
+      "code": 77,
+      "food_type": "soup",
+      "description": "Japanese soup made with fermented soybean paste.",
+      "image_url": "https://food101.example.com/miso_soup.jpg"
+    },
+    "nutrition": {
+      "energy": 60.0,
+      "protein": 3.0,
+      "fat": 2.0,
+      "carbohydrate": 5.0,
+      "fiber": 1.0,
+      "sodium": 800.0
+    }
+  },
+  {
+    "category": {
+      "name": "mixed_salad",
+      "code": 78,
+      "food_type": "salad",
+      "description": "Assorted fresh vegetables with dressing.",
+      "image_url": "https://food101.example.com/mixed_salad.jpg"
+    },
+    "nutrition": {
+      "energy": 100.0,
+      "protein": 2.0,
+      "fat": 5.0,
+      "carbohydrate": 15.0,
+      "fiber": 3.0,
+      "sodium": 150.0
+    }
+  },
+  {
+    "category": {
+      "name": "mochi",
+      "code": 79,
+      "food_type": "dessert",
+      "description": "Japanese rice cake made from glutinous rice.",
+      "image_url": "https://food101.example.com/mochi.jpg"
+    },
+    "nutrition": {
+      "energy": 180.0,
+      "protein": 2.0,
+      "fat": 1.0,
+      "carbohydrate": 35.0,
+      "fiber": 0.5,
+      "sodium": 20.0
+    }
+  },
+  {
+    "category": {
+      "name": "moussaka",
+      "code": 80,
+      "food_type": "main",
+      "description": "Greek baked dish with eggplant and meat sauce.",
+      "image_url": "https://food101.example.com/moussaka.jpg"
+    },
+    "nutrition": {
+      "energy": 350.0,
+      "protein": 12.0,
+      "fat": 18.0,
+      "carbohydrate": 35.0,
+      "fiber": 3.0,
+      "sodium": 400.0
+    }
+  },
+  {
+    "category": {
+      "name": "natto",
+      "code": 81,
+      "food_type": "vegetable",
+      "description": "Fermented soybeans with a sticky texture.",
+      "image_url": "https://food101.example.com/natto.jpg"
+    },
+    "nutrition": {
+      "energy": 150.0,
+      "protein": 10.0,
+      "fat": 5.0,
+      "carbohydrate": 10.0,
+      "fiber": 3.0,
+      "sodium": 100.0
+    }
+  },
+  {
+    "category": {
+      "name": "onion_rings",
+      "code": 82,
+      "food_type": "side",
+      "description": "Fried rings of onion coated in batter.",
+      "image_url": "https://food101.example.com/onion_rings.jpg"
+    },
+    "nutrition": {
+      "energy": 280.0,
+      "protein": 2.0,
+      "fat": 15.0,
+      "carbohydrate": 35.0,
+      "fiber": 2.0,
+      "sodium": 300.0
+    }
+  },
+  {
+    "category": {
+      "name": "omelette",
+      "code": 83,
+      "food_type": "breakfast",
+      "description": "Scrambled eggs cooked in a pan.",
+      "image_url": "https://food101.example.com/omelette.jpg"
+    },
+    "nutrition": {
+      "energy": 200.0,
+      "protein": 10.0,
+      "fat": 12.0,
+      "carbohydrate": 5.0,
+      "fiber": 0.5,
+      "sodium": 150.0
+    }
+  },
+  {
+    "category": {
+      "name": "onigiri",
+      "code": 84,
+      "food_type": "snack",
+      "description": "Japanese rice balls wrapped in seaweed.",
+      "image_url": "https://food101.example.com/onigiri.jpg"
+    },
+    "nutrition": {
+      "energy": 200.0,
+      "protein": 3.0,
+      "fat": 2.0,
+      "carbohydrate": 35.0,
+      "fiber": 1.0,
+      "sodium": 100.0
+    }
+  },
+  {
+    "category": {
+      "name": "pad_thai",
+      "code": 85,
+      "food_type": "rice",
+      "description": "Thai stir-fried rice noodles with tamarind sauce.",
+      "image_url": "https://food101.example.com/pad_thai.jpg"
+    },
+    "nutrition": {
+      "energy": 350.0,
+      "protein": 12.0,
+      "fat": 10.0,
+      "carbohydrate": 50.0,
+      "fiber": 3.0,
+      "sodium": 400.0
+    }
+  },
+  {
+    "category": {
+      "name": "paella",
+      "code": 86,
+      "food_type": "rice",
+      "description": "Spanish rice dish with seafood or chicken.",
+      "image_url": "https://food101.example.com/paella.jpg"
+    },
+    "nutrition": {
+      "energy": 380.0,
+      "protein": 15.0,
+      "fat": 12.0,
+      "carbohydrate": 50.0,
+      "fiber": 2.0,
+      "sodium": 500.0
+    }
+  },
+  {
+    "category": {
+      "name": "pancakes",
+      "code": 87,
+      "food_type": "breakfast",
+      "description": "Flat cakes made from batter, cooked on a griddle.",
+      "image_url": "https://food101.example.com/pancakes.jpg"
+    },
+    "nutrition": {
+      "energy": 250.0,
+      "protein": 5.0,
+      "fat": 8.0,
+      "carbohydrate": 35.0,
+      "fiber": 1.0,
+      "sodium": 150.0
+    }
+  },
+  {
+    "category": {
+      "name": "papaya_salad",
+      "code": 88,
+      "food_type": "salad",
+      "description": "Thai salad made with unripe papaya and chili.",
+      "image_url": "https://food101.example.com/papaya_salad.jpg"
+    },
+    "nutrition": {
+      "energy": 120.0,
+      "protein": 2.0,
+      "fat": 5.0,
+      "carbohydrate": 20.0,
+      "fiber": 4.0,
+      "sodium": 200.0
+    }
+  },
+  {
+    "category": {
+      "name": "pasta_salad",
+      "code": 89,
+      "food_type": "salad",
+      "description": "Cold pasta dish with vegetables and dressing.",
+      "image_url": "https://food101.example.com/pasta_salad.jpg"
+    },
+    "nutrition": {
+      "energy": 250.0,
+      "protein": 8.0,
+      "fat": 8.0,
+      "carbohydrate": 35.0,
+      "fiber": 3.0,
+      "sodium": 300.0
+    }
+  },
+  {
+    "category": {
+      "name": "pastrami",
+      "code": 90,
+      "food_type": "meat",
+      "description": "Spiced, cured beef, often served on sandwiches.",
+      "image_url": "https://food101.example.com/pastrami.jpg"
+    },
+    "nutrition": {
+      "energy": 300.0,
+      "protein": 15.0,
+      "fat": 20.0,
+      "carbohydrate": 5.0,
+      "fiber": 0.5,
+      "sodium": 800.0
+    }
+  },
+  {
+    "category": {
+      "name": "pizza",
+      "code": 91,
+      "food_type": "main",
+      "description": "Baked dish with dough, tomato sauce, and toppings.",
+      "image_url": "https://food101.example.com/pizza.jpg"
+    },
+    "nutrition": {
+      "energy": 300.0,
+      "protein": 12.0,
+      "fat": 10.0,
+      "carbohydrate": 35.0,
+      "fiber": 2.0,
+      "sodium": 450.0
+    }
+  },
+  {
+    "category": {
+      "name": "pita_bread",
+      "code": 92,
+      "food_type": "bread",
+      "description": "Flatbread with a pocket, often used for sandwiches.",
+      "image_url": "https://food101.example.com/pita_bread.jpg"
+    },
+    "nutrition": {
+      "energy": 250.0,
+      "protein": 7.0,
+      "fat": 3.0,
+      "carbohydrate": 45.0,
+      "fiber": 2.0,
+      "sodium": 150.0
+    }
+  },
+  {
+    "category": {
+      "name": "poke",
+      "code": 93,
+      "food_type": "seafood",
+      "description": "Hawaiian dish of raw fish marinated in soy sauce.",
+      "image_url": "https://food101.example.com/poke.jpg"
+    },
+    "nutrition": {
+      "energy": 150.0,
+      "protein": 15.0,
+      "fat": 5.0,
+      "carbohydrate": 10.0,
+      "fiber": 1.0,
+      "sodium": 300.0
+    }
+  },
+  {
+    "category": {
+      "name": "pulled_pork_sandwich",
+      "code": 94,
+      "food_type": "sandwich",
+      "description": "Sandwich with slow-cooked pork shoulder.",
+      "image_url": "https://food101.example.com/pulled_pork_sandwich.jpg"
+    },
+    "nutrition": {
+      "energy": 350.0,
+      "protein": 18.0,
+      "fat": 15.0,
+      "carbohydrate": 30.0,
+      "fiber": 1.0,
+      "sodium": 500.0
+    }
+  },
+  {
+    "category": {
+      "name": "pumpkin_soup",
+      "code": 95,
+      "food_type": "soup",
+      "description": "Creamy soup made from roasted pumpkin.",
+      "image_url": "https://food101.example.com/pumpkin_soup.jpg"
+    },
+    "nutrition": {
+      "energy": 120.0,
+      "protein": 4.0,
+      "fat": 5.0,
+      "carbohydrate": 20.0,
+      "fiber": 3.0,
+      "sodium": 300.0
+    }
+  },
+  {
+    "category": {
+      "name": "quiche",
+      "code": 96,
+      "food_type": "main",
+      "description": "French tart with a savory filling.",
+      "image_url": "https://food101.example.com/quiche.jpg"
+    },
+    "nutrition": {
+      "energy": 300.0,
+      "protein": 10.0,
+      "fat": 15.0,
+      "carbohydrate": 25.0,
+      "fiber": 2.0,
+      "sodium": 400.0
+    }
+  },
+  {
+    "category": {
+      "name": "ravioli",
+      "code": 97,
+      "food_type": "pasta",
+      "description": "Italian pasta pockets filled with cheese or meat.",
+      "image_url": "https://food101.example.com/ravioli.jpg"
+    },
+    "nutrition": {
+      "energy": 280.0,
+      "protein": 10.0,
+      "fat": 8.0,
+      "carbohydrate": 40.0,
+      "fiber": 2.0,
+      "sodium": 450.0
+    }
+  },
+  {
+    "category": {
+      "name": "red_velvet_cake",
+      "code": 98,
+      "food_type": "dessert",
+      "description": "Moist cake with a distinctive red color.",
+      "image_url": "https://food101.example.com/red_velvet_cake.jpg"
+    },
+    "nutrition": {
+      "energy": 350.0,
+      "protein": 4.0,
+      "fat": 18.0,
+      "carbohydrate": 45.0,
+      "fiber": 1.0,
+      "sodium": 100.0
+    }
+  },
+  {
+    "category": {
+      "name": "risotto",
+      "code": 99,
+      "food_type": "rice",
+      "description": "Italian dish made with Arborio rice and broth.",
+      "image_url": "https://food101.example.com/risotto.jpg"
+    },
+    "nutrition": {
+      "energy": 300.0,
+      "protein": 8.0,
+      "fat": 8.0,
+      "carbohydrate": 45.0,
+      "fiber": 2.0,
+      "sodium": 350.0
+    }
+  },
+  {
+    "category": {
+      "name": "sashimi",
+      "code": 100,
+      "food_type": "seafood",
+      "description": "Japanese dish of fresh raw fish slices.",
+      "image_url": "https://food101.example.com/sashimi.jpg"
+    },
+    "nutrition": {
+      "energy": 100.0,
+      "protein": 20.0,
+      "fat": 3.0,
+      "carbohydrate": 0.0,
+      "fiber": 0.0,
+      "sodium": 200.0
+    }
+  }
+]
