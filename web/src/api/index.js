@@ -43,6 +43,8 @@ export default {
   recognizeFood: (data) => request.post('/food/recognize', data),
   getFoodHistory: (params = {}) => request.get('/food/history', { params }),
   getFoodRecordDetail: (id) => request.get(`/food/record/${id}`),
+  deleteFoodRecord: (id) => request.delete(`/food/record/${id}`),
+  batchDeleteFoodRecords: (ids) => request.delete('/food/records/batch', { data: { record_ids: ids } }),
   // food management
   getFoodCategories: (params = {}) => request.get('/food/categories', { params }),
   getFoodCategoryDetail: (id) => request.get(`/food/categories/${id}`),

@@ -222,6 +222,70 @@ class FoodController:
         return response_dict
 
     @staticmethod
+    async def delete_record(record_id: int, user_id: int) -> bool:
+        """
+        删除识别记录及其关联文件
+        
+        Args:
+            record_id: 识别记录ID
+            user_id: 用户ID
+            
+        Returns:
+            bool: 是否删除成功
+        """
+        try:
+            record = await RecognitionRecord.get_or_none(id=record_id, user_id=user_id)
+            if not record:
+                raise CustomException(message="记录不存在", code=404)
+            
+            # 删除物理文件
+            for path_attr in ["image_path", "annotated_image_path"]:
+                relative_path = getattr(record, path_attr)
+                if relative_path:
+                    # 去掉开头的 /
+                    if relative_path.startswith("/"):
+                        relative_path = relative_path[1:]
+                    
+                    full_path = os.path.join(settings.BASE_DIR, "deploy", relative_path)
+                    if os.path.exists(full_path):
+                        try:
+                            os.remove(full_path)
+                            logger.info(f"Deleted file: {full_path}")
+                        except Exception as e:
+                            logger.error(f"Failed to delete file {full_path}: {str(e)}")
+            
+            # 删除记录 (级联删除 details 和 analysis)
+            await record.delete()
+            logger.info(f"Recognition record {record_id} deleted by user {user_id}")
+            return True
+        except CustomException:
+            raise
+        except Exception as e:
+            logger.error(f"Failed to delete record: {str(e)}")
+            raise CustomException(message=f"删除记录失败: {str(e)}", code=500)
+
+    @staticmethod
+    async def delete_records(record_ids: List[int], user_id: int) -> int:
+        """
+        批量删除识别记录
+        
+        Args:
+            record_ids: 记录ID列表
+            user_id: 用户ID
+            
+        Returns:
+            int: 成功删除的数量
+        """
+        count = 0
+        for rid in record_ids:
+            try:
+                if await FoodController.delete_record(rid, user_id):
+                    count += 1
+            except Exception as e:
+                logger.warning(f"Failed to delete record {rid} in batch: {str(e)}")
+        return count
+
+    @staticmethod
     async def get_history(user_id: int, page: int = 1, page_size: int = 10) -> Dict:
         """
         获取用户的识别历史

@@ -1,8 +1,8 @@
 import logging
-from typing import Optional
+from typing import Optional, List
 import json
 
-from fastapi import APIRouter, Query, UploadFile, File, Depends, Form
+from fastapi import APIRouter, Query, UploadFile, File, Depends, Form, Body
 
 from app.controllers.food import FoodController
 from app.core.dependency import DependAuth
@@ -82,6 +82,40 @@ async def get_record_detail(
     except Exception as e:
         logger.error(f"Failed to fetch record detail: {str(e)}")
         return Fail(code=500, msg=f"获取记录详情失败: {str(e)}")
+
+
+@food_router.delete("/record/{record_id}", summary="删除识别记录", dependencies=[DependAuth])
+async def delete_record(
+    record_id: int,
+):
+    """
+    删除指定的识别记录及其关联文件
+    """
+    try:
+        user_id = CTX_USER_ID.get()
+        await FoodController.delete_record(record_id, user_id)
+        return Success(msg="记录删除成功")
+    except CustomException as e:
+        return Fail(code=e.status_code, msg=e.detail)
+    except Exception as e:
+        logger.error(f"Failed to delete record: {str(e)}")
+        return Fail(code=500, msg=f"删除记录失败: {str(e)}")
+
+
+@food_router.delete("/records/batch", summary="批量删除识别记录", dependencies=[DependAuth])
+async def delete_records_batch(
+    record_ids: List[int] = Body(..., embed=True, description="要删除的记录ID列表"),
+):
+    """
+    批量删除识别记录及其关联文件
+    """
+    try:
+        user_id = CTX_USER_ID.get()
+        count = await FoodController.delete_records(record_ids, user_id)
+        return Success(msg=f"成功删除 {count} 条记录")
+    except Exception as e:
+        logger.error(f"Failed to delete records in batch: {str(e)}")
+        return Fail(code=500, msg=f"批量删除失败: {str(e)}")
 
 
 @food_router.get("/categories", summary="获取所有食物类别")

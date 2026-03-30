@@ -1,12 +1,28 @@
 <template>
   <div class="food-history">
     <n-card title="识别历史记录">
+      <template #header-extra>
+        <n-button
+          type="error"
+          ghost
+          :disabled="!checkedRowKeys.length"
+          @click="handleBatchDelete"
+        >
+          <template #icon>
+            <TheIcon icon="mdi:delete" :size="18" />
+          </template>
+          批量删除
+        </n-button>
+      </template>
+
       <n-data-table
         remote
         :columns="columns"
         :data="historyList"
         :pagination="pagination"
         :loading="loading"
+        :row-key="(row) => row.id"
+        @update:checked-row-keys="handleCheck"
       />
     </n-card>
 
@@ -59,14 +75,16 @@
 
 <script setup>
 import { ref, onMounted, h, reactive } from 'vue'
-import { NButton, NTag, useMessage } from 'naive-ui'
+import { NButton, NTag, useMessage, NPopconfirm, NSpace } from 'naive-ui'
 import api from '@/api'
+import TheIcon from '@/components/icon/TheIcon.vue'
 
 const message = useMessage()
 const loading = ref(false)
 const historyList = ref([])
 const showDetail = ref(false)
 const currentRecord = ref(null)
+const checkedRowKeys = ref([])
 
 const pagination = reactive({
   page: 1,
@@ -89,6 +107,9 @@ const pagination = reactive({
 })
 
 const columns = [
+  {
+    type: 'selection'
+  },
   {
     title: 'ID',
     key: 'id',
@@ -132,18 +153,83 @@ const columns = [
   {
     title: '操作',
     key: 'actions',
+    width: 200,
     render(row) {
-      return h(
-        NButton,
-        {
-          size: 'small',
-          onClick: () => viewDetail(row)
-        },
-        { default: () => '查看详情' }
-      )
+      return h(NSpace, null, {
+        default: () => [
+          h(
+            NButton,
+            {
+              size: 'small',
+              type: 'primary',
+              ghost: true,
+              onClick: () => viewDetail(row)
+            },
+            { default: () => '详情' }
+          ),
+          h(
+            NPopconfirm,
+            {
+              onPositiveClick: () => handleDelete(row.id)
+            },
+            {
+              trigger: () =>
+                h(
+                  NButton,
+                  {
+                    size: 'small',
+                    type: 'error',
+                    ghost: true
+                  },
+                  { default: () => '删除' }
+                ),
+              default: () => '确定要删除这条识别记录吗？'
+            }
+          )
+        ]
+      })
     }
   }
 ]
+
+const handleCheck = (rowKeys) => {
+  checkedRowKeys.value = rowKeys
+}
+
+const handleDelete = async (id) => {
+  try {
+    const res = await api.deleteFoodRecord(id)
+    if (res.code === 200) {
+      message.success('删除成功')
+      fetchHistory()
+    }
+  } catch (error) {
+    message.error('删除失败')
+  }
+}
+
+const handleBatchDelete = async () => {
+  if (!checkedRowKeys.value.length) return
+  
+  window.$dialog?.warning({
+    title: '批量删除',
+    content: `确定要删除选中的 ${checkedRowKeys.value.length} 条记录吗？`,
+    positiveText: '确定',
+    negativeText: '取消',
+    onPositiveClick: async () => {
+      try {
+        const res = await api.batchDeleteFoodRecords(checkedRowKeys.value)
+        if (res.code === 200) {
+          message.success(res.msg || '批量删除成功')
+          checkedRowKeys.value = []
+          fetchHistory()
+        }
+      } catch (error) {
+        message.error('批量删除失败')
+      }
+    }
+  })
+}
 
 const getImageUrl = (row) => {
   if (!row) return ''
