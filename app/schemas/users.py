@@ -13,6 +13,7 @@ class BaseUser(BaseModel):
     created_at: Optional[datetime]
     updated_at: Optional[datetime]
     last_login: Optional[datetime]
+    avatar: Optional[str] = None
     roles: Optional[list] = []
 
 
@@ -22,6 +23,7 @@ class UserCreate(BaseModel):
     password: str = Field(example="123456")
     is_active: Optional[bool] = True
     is_superuser: Optional[bool] = False
+    avatar: Optional[str] = None
     role_ids: Optional[List[int]] = []
     dept_id: Optional[int] = Field(0, description="部门ID")
 
@@ -35,6 +37,7 @@ class UserUpdate(BaseModel):
     username: str
     is_active: Optional[bool] = True
     is_superuser: Optional[bool] = False
+    avatar: Optional[str] = None
     role_ids: Optional[List[int]] = []
     dept_id: Optional[int] = 0
 

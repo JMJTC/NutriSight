@@ -8,6 +8,7 @@ export default {
   getUserApi: () => request.get('/base/userapi'),
   // profile
   updatePassword: (data = {}) => request.post('/base/update_password', data),
+  updateAvatar: (formData) => request.post('/base/update_avatar', formData),
   // users
   getUserList: (params = {}) => request.get('/user/list', { params }),
   getUserById: (params = {}) => request.get('/user/get', { params }),

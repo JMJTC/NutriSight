@@ -4,7 +4,7 @@
       <n-card rounded-10>
         <div flex items-center justify-between>
           <div flex items-center>
-            <img rounded-full width="60" :src="userStore.avatar" />
+            <img rounded-full width="60" height="60" :src="avatarUrl" object-cover />
             <div ml-10>
               <p text-20 font-semibold>
                 {{ $t('views.workbench.text_hello', { username: userStore.name }) }}
@@ -46,11 +46,21 @@
 </template>
 
 <script setup>
+import { computed } from 'vue'
 import { useUserStore } from '@/store'
 import { useI18n } from 'vue-i18n'
 
 const dummyText = '一个基于 Vue3.0、FastAPI、Naive UI 的轻量级后台管理模板'
 const { t } = useI18n({ useScope: 'global' })
+
+const userStore = useUserStore()
+
+const avatarUrl = computed(() => {
+  if (!userStore.userInfo.avatar) return 'https://avatars.githubusercontent.com/u/54677442?v=4'
+  if (userStore.userInfo.avatar.startsWith('http')) return userStore.userInfo.avatar
+  const backendHost = import.meta.env.VITE_APP_API_BASE_URL || 'http://127.0.0.1:9999'
+  return `${backendHost}${userStore.userInfo.avatar}`
+})
 
 const statisticData = computed(() => [
   {
@@ -69,6 +79,4 @@ const statisticData = computed(() => [
     value: '12',
   },
 ])
-
-const userStore = useUserStore()
 </script>

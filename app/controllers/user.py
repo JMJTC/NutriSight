@@ -49,6 +49,11 @@ class UserController(CRUDBase[User, UserCreate, UserUpdate]):
             role_obj = await role_controller.get(id=role_id)
             await user.roles.add(role_obj)
 
+    async def update_avatar(self, user_id: int, avatar_path: str) -> None:
+        user = await self.get(id=user_id)
+        user.avatar = avatar_path
+        await user.save()
+
     async def reset_password(self, user_id: int):
         user_obj = await self.get(id=user_id)
         if user_obj.is_superuser:

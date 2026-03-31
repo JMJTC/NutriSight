@@ -1,20 +1,60 @@
 <script setup>
-import { ref } from 'vue'
-import { NButton, NForm, NFormItem, NInput, NTabPane, NTabs, NImage } from 'naive-ui'
+import { ref, computed } from 'vue'
+import { NButton, NForm, NFormItem, NInput, NTabPane, NTabs, NImage, NUpload, NSpace } from 'naive-ui'
 import { useI18n } from 'vue-i18n'
 import CommonPage from '@/components/page/CommonPage.vue'
 import { useUserStore } from '@/store'
 import api from '@/api'
-import { is } from '~/src/utils'
 
 const { t } = useI18n()
 const userStore = useUserStore()
 const isLoading = ref(false)
 
+const avatarUrl = computed(() => {
+  if (!userStore.userInfo.avatar) return 'https://avatars.githubusercontent.com/u/54677442?v=4'
+  if (userStore.userInfo.avatar.startsWith('http')) return userStore.userInfo.avatar
+  const backendHost = import.meta.env.VITE_APP_API_BASE_URL || 'http://127.0.0.1:9999'
+  return `${backendHost}${userStore.userInfo.avatar}`
+})
+
+async function handleAvatarUpload({ file }) {
+  const formData = new FormData()
+  formData.append('file', file.file)
+  
+  try {
+    isLoading.value = true
+    const res = await api.updateAvatar(formData)
+    if (res.code === 200) {
+      $message.success('头像上传成功')
+      userStore.setUserInfo({ avatar: res.data.avatar })
+      infoForm.value.avatar = res.data.avatar
+    }
+  } catch (error) {
+    console.error(error)
+  } finally {
+    isLoading.value = false
+  }
+}
+
+async function restoreDefaultAvatar() {
+  try {
+    isLoading.value = true
+    // 这里简单地清空头像路径，后端可以处理为恢复默认
+    await api.updateUser({ ...infoForm.value, avatar: null, id: userStore.userId })
+    userStore.setUserInfo({ avatar: null })
+    infoForm.value.avatar = null
+    $message.success('已恢复默认头像')
+  } catch (error) {
+    console.error(error)
+  } finally {
+    isLoading.value = false
+  }
+}
+
 // 用户信息的表单
 const infoFormRef = ref(null)
 const infoForm = ref({
-  avatar: userStore.avatar,
+  avatar: userStore.userInfo.avatar,
   username: userStore.name,
   email: userStore.email,
 })
@@ -134,7 +174,25 @@ function validatePasswordSame(rule, value) {
             class="w-400"
           >
             <NFormItem :label="$t('views.profile.label_avatar')" path="avatar">
-              <NImage width="100" :src="infoForm.avatar"></NImage>
+              <NSpace align="center">
+                <NImage width="100" height="100" class="rounded-full overflow-hidden" :src="avatarUrl"></NImage>
+                <NUpload
+                  :show-file-list="false"
+                  accept="image/*"
+                  @before-upload="(data) => {
+                    const file = data.file.file;
+                    if (file.size > 2 * 1024 * 1024) {
+                      $message.error('图片不能超过 2MB');
+                      return false;
+                    }
+                    return true;
+                  }"
+                  :custom-request="handleAvatarUpload"
+                >
+                  <NButton type="primary" size="small">上传新头像</NButton>
+                </NUpload>
+                <NButton type="default" size="small" @click="restoreDefaultAvatar">恢复默认</NButton>
+              </NSpace>
             </NFormItem>
             <NFormItem :label="$t('views.profile.label_username')" path="username">
               <NInput

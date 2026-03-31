@@ -1,6 +1,9 @@
 from datetime import datetime, timedelta, timezone
+import os
+import uuid
+import shutil
 
-from fastapi import APIRouter
+from fastapi import APIRouter, UploadFile, File
 
 from app.controllers.user import user_controller
 from app.core.ctx import CTX_USER_ID
@@ -72,7 +75,8 @@ async def get_userinfo():
     user_id = CTX_USER_ID.get()
     user_obj = await user_controller.get(id=user_id)
     data = await user_obj.to_dict(exclude_fields=["password"])
-    data["avatar"] = "https://avatars.githubusercontent.com/u/54677442?v=4"
+    if not data.get("avatar"):
+        data["avatar"] = "https://avatars.githubusercontent.com/u/54677442?v=4"
     return Success(data=data)
 
 
@@ -131,3 +135,39 @@ async def update_user_password(req_in: UpdatePassword):
     user.password = get_password_hash(req_in.new_password)
     await user.save()
     return Success(msg="修改成功")
+
+
+@router.post("/update_avatar", summary="修改头像", dependencies=[DependAuth])
+async def update_user_avatar(file: UploadFile = File(...)):
+    # 1. 验证文件类型
+    if not file.content_type.startswith("image/"):
+        return Fail(msg="只支持图片文件上传")
+    
+    # 2. 验证文件大小 (2MB)
+    MAX_SIZE = 2 * 1024 * 1024
+    content = await file.read()
+    if len(content) > MAX_SIZE:
+        return Fail(msg="图片大小不能超过 2MB")
+    await file.seek(0)
+    
+    # 3. 保存文件
+    upload_dir = os.path.join(settings.BASE_DIR, "deploy", "static", "uploads", "avatars")
+    if not os.path.exists(upload_dir):
+        os.makedirs(upload_dir)
+        
+    file_ext = file.filename.split(".")[-1] if file.filename else "png"
+    file_name = f"{uuid.uuid4()}.{file_ext}"
+    file_path = os.path.join(upload_dir, file_name)
+    
+    try:
+        with open(file_path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+    except Exception as e:
+        return Fail(msg=f"头像保存失败: {str(e)}")
+        
+    # 4. 更新数据库
+    user_id = CTX_USER_ID.get()
+    relative_path = f"/static/uploads/avatars/{file_name}"
+    await user_controller.update_avatar(user_id, relative_path)
+    
+    return Success(data={"avatar": relative_path}, msg="头像更新成功")
