@@ -6,10 +6,8 @@
 """
 
 import asyncio
-import logging
 from app.models.food import FoodCategory, Nutrition
-
-logger = logging.getLogger(__name__)
+from app.log import logger
 
 # 默认食物类别和营养信息数据
 DEFAULT_FOOD_DATA = [

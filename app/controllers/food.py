@@ -2,7 +2,6 @@ import json
 import os
 import shutil
 import uuid
-import logging
 from datetime import datetime
 from typing import List, Optional, Dict
 
@@ -10,6 +9,7 @@ from fastapi import UploadFile
 from tortoise.expressions import Q
 
 from app.core.exceptions import CustomException
+from app.log import logger
 from app.models.food import (
     FoodCategory,
     Nutrition,
@@ -30,8 +30,6 @@ from app.schemas.food import (
 from app.services.yolo_service import yolo_service
 from app.settings.config import settings
 from app.models.admin import User
-
-logger = logging.getLogger(__name__)
 
 
 class FoodController:

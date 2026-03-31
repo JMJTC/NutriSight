@@ -1,13 +1,11 @@
 import os
-import logging
 from typing import List, Dict, Optional, Tuple
 from pathlib import Path
 from ultralytics import YOLO
 from PIL import Image, ImageDraw, ImageFont
 
 from app.settings.config import settings
-
-logger = logging.getLogger(__name__)
+from app.log import logger
 
 
 class YoloService:

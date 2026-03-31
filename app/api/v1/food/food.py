@@ -1,4 +1,3 @@
-import logging
 from typing import Optional, List
 import json
 
@@ -14,8 +13,7 @@ from app.schemas.food import (
     NutritionCreate,
 )
 from app.core.exceptions import CustomException
-
-logger = logging.getLogger(__name__)
+from app.log import logger
 
 food_router = APIRouter()
 
