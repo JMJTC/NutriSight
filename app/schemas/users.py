@@ -39,6 +39,12 @@ class UserUpdate(BaseModel):
     dept_id: Optional[int] = 0
 
 
+class UserRegister(BaseModel):
+    username: str = Field(..., min_length=3, max_length=50, example="newuser")
+    email: EmailStr = Field(..., example="user@example.com")
+    password: str = Field(..., min_length=6, example="123456")
+
+
 class UpdatePassword(BaseModel):
     old_password: str = Field(description="旧密码")
     new_password: str = Field(description="新密码")

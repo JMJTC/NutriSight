@@ -8,7 +8,7 @@ from app.core.dependency import DependAuth
 from app.models.admin import Api, Menu, Role, User
 from app.schemas.base import Fail, Success
 from app.schemas.login import *
-from app.schemas.users import UpdatePassword
+from app.schemas.users import UpdatePassword, UserRegister, UserCreate
 from app.settings import settings
 from app.utils.jwt_utils import create_access_token
 from app.utils.password import get_password_hash, verify_password
@@ -35,6 +35,36 @@ async def login_access_token(credentials: CredentialsSchema):
         username=user.username,
     )
     return Success(data=data.model_dump())
+
+
+@router.post("/register", summary="用户注册")
+async def user_register(obj_in: UserRegister):
+    # 1. 检查用户名是否已存在
+    user = await user_controller.get_by_username(obj_in.username)
+    if user:
+        return Fail(code=400, msg="用户名已被注册")
+    
+    # 2. 检查邮箱是否已存在
+    user = await user_controller.get_by_email(obj_in.email)
+    if user:
+        return Fail(code=400, msg="邮箱已被注册")
+    
+    # 3. 创建用户
+    user_create = UserCreate(
+        username=obj_in.username,
+        email=obj_in.email,
+        password=obj_in.password,
+        is_active=True,
+        is_superuser=False
+    )
+    new_user = await user_controller.create_user(obj_in=user_create)
+    
+    # 4. 分配"普通用户"角色 (Role ID 默认为 2)
+    user_role = await Role.filter(name="普通用户").first()
+    if user_role:
+        await new_user.roles.add(user_role)
+    
+    return Success(msg="注册成功")
 
 
 @router.get("/userinfo", summary="查看用户信息", dependencies=[DependAuth])
