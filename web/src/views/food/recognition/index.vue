@@ -1,132 +1,249 @@
 <template>
-  <div class="food-recognition">
-    <n-card title="食物识别" class="upload-card">
-      <div class="upload-area">
-        <n-upload
-          multiple
-          directory-dnd
-          action="#"
-          :custom-request="handleUpload"
-          :max="1"
-          accept="image/*"
-        >
-          <n-upload-dragger>
-            <div style="margin-bottom: 12px">
-              <n-icon size="48" :depth="3">
-                <CloudUploadOutline />
-              </n-icon>
-            </div>
-            <n-text style="font-size: 16px">
-              点击或者拖拽文件到该区域来上传
-            </n-text>
-            <n-p depth="3" style="margin: 8px 0 0 0">
-              支持 JPG、PNG 格式图片，请上传清晰的食物图片
-            </n-p>
-          </n-upload-dragger>
-        </n-upload>
-      </div>
-      
-      <div v-if="loading" class="loading-area">
-        <n-spin size="large">
-          <template #description>
-            正在识别中，请稍候...
+  <div class="food-recognition-container min-h-screen">
+    <div class="mx-auto w-full max-w-[1280px] px-4 py-6 md:px-6 lg:px-8">
+      <div class="page-header mb-6">
+        <div>
+          <h1 class="title flex items-center gap-3">
+            <n-icon size="34" color="#10b981"><RestaurantOutline /></n-icon>
+            食物识别分析
+          </h1>
+          <p class="subtitle mt-2">上传图片，一键完成识别、营养分析与饮食建议。</p>
+        </div>
+        <n-button type="primary" tertiary round @click="showEncyclopedia = true" class="encyclopedia-btn">
+          <template #icon>
+            <n-icon><BookOutline /></n-icon>
           </template>
-        </n-spin>
+          食物百科
+        </n-button>
       </div>
 
-      <div v-if="result" class="result-area">
-        <n-divider>识别结果</n-divider>
-        <div class="debug-info">
-          <p>原始图片路径: {{ result.image_path }}</p>
-          <p>标注图片路径: {{ result.annotated_image_path }}</p>
-          <p>最终图片URL: {{ getImageUrl(result.annotated_image_path || result.image_path) }}</p>
-        </div>
-        <div class="result-container">
-          <div class="image-wrapper" ref="imageWrapper">
-            <img 
-              :src="getImageUrl(result.annotated_image_path || result.image_path)" 
-              alt="识别结果" 
-              @load="onImageLoad" 
-              @error="onImageError"
-              ref="imageRef" 
-            />
+      <n-card class="wizard-card" :bordered="false">
+        <n-steps :current="currentStep" :status="stepStatus" class="steps-bar" size="small">
+          <n-step title="上传" description="选择图片" />
+          <n-step title="识别" description="查看结果" />
+          <n-step title="分析" description="营养图表" />
+          <n-step title="建议" description="健康指导" />
+        </n-steps>
+
+        <transition name="fade-slide" mode="out-in">
+          <div :key="currentStep" class="step-content mt-6">
+            <div v-if="currentStep === 1" class="upload-step">
+              <n-upload
+                multiple
+                directory-dnd
+                action="#"
+                :custom-request="handleUpload"
+                :max="1"
+                accept="image/*"
+                @remove="onRemove"
+              >
+                <n-upload-dragger class="upload-dragger-custom">
+                  <div class="upload-dragger-inner">
+                    <n-icon size="56" color="#10b981">
+                      <CloudUploadOutline />
+                    </n-icon>
+                    <h3 class="upload-title mt-4">点击或拖拽上传食物图片</h3>
+                    <p class="upload-desc mt-2">支持 JPG / PNG / WEBP，识别后自动进入下一步</p>
+                    <div class="mt-4 flex flex-wrap justify-center gap-2">
+                      <n-tag type="success" round>高精度识别</n-tag>
+                      <n-tag type="info" round>营养分析</n-tag>
+                      <n-tag type="warning" round>饮食建议</n-tag>
+                    </div>
+                  </div>
+                </n-upload-dragger>
+              </n-upload>
+
+              <div v-if="loading" class="loading-wrap">
+                <n-spin size="medium" />
+                <span class="loading-text">AI 正在分析图片，请稍候...</span>
+              </div>
+            </div>
+
+            <div v-else-if="currentStep === 2" class="recognition-step">
+              <div class="preview-panel">
+                <img
+                  :src="getImageUrl(result.annotated_image_path || result.image_path)"
+                  class="preview-image"
+                  alt="识别标注图"
+                />
+              </div>
+              <div class="result-panel">
+                <div class="panel-title">
+                  <h3>识别结果</h3>
+                  <div class="panel-title-actions">
+                    <n-tag type="success" round>{{ result.details.length }} 项</n-tag>
+                    <n-button type="primary" size="small" @click="goToStep(3)">
+                      进入分析
+                    </n-button>
+                  </div>
+                </div>
+
+                <n-scrollbar class="result-list-scroll">
+                  <div class="result-list">
+                    <div
+                      v-for="(item, index) in safeDetails"
+                      :key="index"
+                      class="result-item"
+                    >
+                      <div class="flex items-center justify-between gap-2">
+                        <span class="food-name">{{ item.food_name }}</span>
+                        <n-tag size="small" type="success" :bordered="false">
+                          {{ (item.confidence * 100).toFixed(1) }}%
+                        </n-tag>
+                      </div>
+                      <div class="food-meta">
+                        <n-icon size="16"><FlameOutline /></n-icon>
+                        <span>{{ item.nutrition.calories }} kcal / 份</span>
+                      </div>
+                    </div>
+                  </div>
+                </n-scrollbar>
+
+                <n-button type="primary" block class="go-analysis-btn" @click="goToStep(3)">
+                  查看营养分析
+                  <template #icon><n-icon><ArrowForwardOutline /></n-icon></template>
+                </n-button>
+              </div>
+            </div>
+
+            <div v-else-if="currentStep === 3" class="analysis-step">
+              <div class="section-head">
+                <h3>营养可视化分析</h3>
+              </div>
+              <n-grid :cols="2" :x-gap="16" :y-gap="16">
+                <n-grid-item>
+                  <n-card title="识别置信度" class="chart-card" :bordered="false">
+                    <ConfidenceHeatmap :data="safeDetails" />
+                  </n-card>
+                </n-grid-item>
+                <n-grid-item>
+                  <n-card title="营养素结构" class="chart-card" :bordered="false">
+                    <NutritionRadarChart :data="safeDetails" />
+                  </n-card>
+                </n-grid-item>
+              </n-grid>
+
+              <div class="action-row mt-4">
+                <n-button quaternary @click="goToStep(2)">
+                  <template #icon><n-icon><ArrowBackOutline /></n-icon></template>
+                  返回识别结果
+                </n-button>
+                <n-button type="primary" @click="goToStep(4)">
+                  生成饮食建议
+                  <template #icon><n-icon><ArrowForwardOutline /></n-icon></template>
+                </n-button>
+              </div>
+              <div class="step-fallback-action">
+                <n-button type="default" @click="goToStep(4)">图表异常时直接查看建议</n-button>
+              </div>
+            </div>
+
+            <div v-else-if="currentStep === 4" class="recommend-step">
+              <NutritionDashboard :current="currentNutrition" />
+              <div class="recommend-grid">
+                <n-card class="recommend-card" :bordered="false">
+                  <template #header>
+                    <div class="section-head"><h3>AI 饮食建议</h3></div>
+                  </template>
+                  <n-list :bordered="false">
+                    <n-list-item v-for="(advice, index) in recommendations" :key="index">
+                      <template #prefix>
+                        <n-icon color="#10b981" size="20"><CheckmarkCircleOutline /></n-icon>
+                      </template>
+                      <span class="advice-text">{{ advice }}</span>
+                    </n-list-item>
+                  </n-list>
+                </n-card>
+
+                <div class="restart-panel">
+                  <h4>继续下一次识别</h4>
+                  <p>重新上传图片，获取新的识别与分析结果。</p>
+                  <n-button type="primary" ghost @click="resetWizard">
+                    <template #icon><n-icon><RefreshOutline /></n-icon></template>
+                    重新开始
+                  </n-button>
+                </div>
+              </div>
+            </div>
           </div>
-          
-          <div class="nutrition-info">
-            <n-card title="营养成分分析" size="small">
-              <n-descriptions bordered label-placement="left" :column="1">
-                <n-descriptions-item label="总热量">
-                  {{ result.nutrition.total_calories.toFixed(2) }} kcal
-                </n-descriptions-item>
-                <n-descriptions-item label="总碳水化合物">
-                  {{ result.nutrition.total_carbs.toFixed(2) }} g
-                </n-descriptions-item>
-                <n-descriptions-item label="总蛋白质">
-                  {{ result.nutrition.total_protein.toFixed(2) }} g
-                </n-descriptions-item>
-                <n-descriptions-item label="总脂肪">
-                  {{ result.nutrition.total_fat.toFixed(2) }} g
-                </n-descriptions-item>
-              </n-descriptions>
-              
-              <n-divider dashed>识别详情</n-divider>
-              <n-list hoverable>
-                <n-list-item v-for="(item, index) in result.details" :key="index">
-                  <n-thing :title="item.food_name">
-                    <template #description>
-                      <n-space size="small">
-                        <n-tag type="success" size="small">置信度: {{ (item.confidence * 100).toFixed(1) }}%</n-tag>
-                        <n-tag type="warning" size="small">数量: {{ item.count }}</n-tag>
-                      </n-space>
-                    </template>
-                    <n-grid :cols="4" :x-gap="12">
-                      <n-grid-item>
-                        <div class="nutrition-item">
-                          <span class="label">热量</span>
-                          <span class="value">{{ item.nutrition.calories }}</span>
-                        </div>
-                      </n-grid-item>
-                      <n-grid-item>
-                        <div class="nutrition-item">
-                          <span class="label">碳水</span>
-                          <span class="value">{{ item.nutrition.carbs }}</span>
-                        </div>
-                      </n-grid-item>
-                      <n-grid-item>
-                        <div class="nutrition-item">
-                          <span class="label">蛋白质</span>
-                          <span class="value">{{ item.nutrition.protein }}</span>
-                        </div>
-                      </n-grid-item>
-                      <n-grid-item>
-                        <div class="nutrition-item">
-                          <span class="label">脂肪</span>
-                          <span class="value">{{ item.nutrition.fat }}</span>
-                        </div>
-                      </n-grid-item>
-                    </n-grid>
-                  </n-thing>
-                </n-list-item>
-              </n-list>
-            </n-card>
-          </div>
-        </div>
+        </transition>
+      </n-card>
+
+      <div v-if="result && currentStep !== 4" class="mt-6 animate-fade-in">
+        <NutritionDashboard :current="currentNutrition" />
       </div>
-    </n-card>
+    </div>
+
+    <FoodEncyclopedia v-model:visible="showEncyclopedia" />
   </div>
 </template>
 
 <script setup>
-import { ref, nextTick } from 'vue'
-import { CloudUploadOutline } from '@vicons/ionicons5'
+import { ref, computed } from 'vue'
+import { 
+  CloudUploadOutline, 
+  RestaurantOutline, 
+  BookOutline, 
+  ArrowForwardOutline,
+  ArrowBackOutline,
+  CheckmarkCircleOutline,
+  RefreshOutline,
+  FlameOutline
+} from '@vicons/ionicons5'
 import { useMessage } from 'naive-ui'
 import api from '@/api'
+import ConfidenceHeatmap from '@/components/food/ConfidenceHeatmap.vue'
+import NutritionRadarChart from '@/components/food/NutritionRadarChart.vue'
+import FoodEncyclopedia from '@/components/food/FoodEncyclopedia.vue'
+import NutritionDashboard from '@/components/food/NutritionDashboard.vue'
 
 const message = useMessage()
 const loading = ref(false)
 const result = ref(null)
-const imageUrl = ref('')
-const imageRef = ref(null)
+const currentStep = ref(1)
+const stepStatus = ref('process')
+const showEncyclopedia = ref(false)
+
+const currentNutrition = computed(() => {
+  if (!result.value) return { calories: 0, protein: 0, carbs: 0, fat: 0 }
+  const nutrition = result.value.nutrition || {}
+  return {
+    calories: Number(nutrition.total_calories) || 0,
+    protein: Number(nutrition.total_protein) || 0,
+    carbs: Number(nutrition.total_carbs) || 0,
+    fat: Number(nutrition.total_fat) || 0
+  }
+})
+
+const safeDetails = computed(() => {
+  const details = Array.isArray(result.value?.details) ? result.value.details : []
+  return details.map((item, index) => {
+    const nutrition = item?.nutrition || {}
+    return {
+      food_name: item?.food_name || `食物${index + 1}`,
+      confidence: Number(item?.confidence) || 0,
+      nutrition: {
+        calories: Number(nutrition.calories) || 0,
+        protein: Number(nutrition.protein) || 0,
+        carbs: Number(nutrition.carbs) || 0,
+        fat: Number(nutrition.fat) || 0
+      }
+    }
+  })
+})
+
+const recommendations = computed(() => {
+  if (!result.value) return []
+  const tips = [
+    '目前的餐食搭配非常均衡，建议维持当前的饮食习惯。',
+    '您可以适当增加优质蛋白质的摄入，如鱼肉或禽肉。',
+    '建议餐后配合适量运动，有助于维持身体的代谢水平。'
+  ]
+  if (currentNutrition.value.calories > 800) {
+    tips.push('当前餐食热量偏高，建议下一餐选择低脂清淡食物，并适当增加水分摄入。')
+  }
+  return tips
+})
 
 const handleUpload = async ({ file, onFinish, onError }) => {
   loading.value = true
@@ -135,22 +252,18 @@ const handleUpload = async ({ file, onFinish, onError }) => {
   const formData = new FormData()
   formData.append('file', file.file)
   
-  // Create object URL for preview
-  imageUrl.value = URL.createObjectURL(file.file)
-
   try {
     const res = await api.recognizeFood(formData)
     if (res.code === 200) {
       result.value = res.data
-      console.log('Recognition result:', result.value)
-      message.success('识别成功')
+      message.success('识别成功 (Recognized Successfully)')
+      currentStep.value = 2
       onFinish()
     } else {
       message.error(res.msg || '识别失败')
       onError()
     }
   } catch (error) {
-    console.error('Upload error:', error)
     message.error('请求出错')
     onError()
   } finally {
@@ -158,111 +271,327 @@ const handleUpload = async ({ file, onFinish, onError }) => {
   }
 }
 
+const onRemove = () => {
+  result.value = null
+  currentStep.value = 1
+}
+
+const resetWizard = () => {
+  result.value = null
+  currentStep.value = 1
+}
+
+const goToStep = (step) => {
+  if (!result.value && step > 1) {
+    currentStep.value = 1
+    return
+  }
+  if (step === 3 && safeDetails.value.length === 0) {
+    message.warning('暂无可分析的识别结果')
+    return
+  }
+  currentStep.value = step
+}
+
 const getImageUrl = (path) => {
-  // 如果没有路径，使用本地预览图（上传过程）
-  if (!path) {
-    return imageUrl.value || ''
-  }
-  // 如果已经是完整 URL，直接返回
-  if (/^https?:\/\//.test(path)) {
-    return path
-  }
-  // 支持配置环境变量 override
+  if (!path) return ''
+  if (/^https?:\/\//.test(path)) return path
   const backendHost = import.meta.env.VITE_APP_API_BASE_URL || 'http://127.0.0.1:9999'
   return `${backendHost}${path}`
-}
-
-const onImageLoad = () => {
-  console.log('Image loaded successfully')
-}
-
-const onImageError = (event) => {
-  console.error('Image load failed:', event)
-  message.error('图片加载失败')
 }
 </script>
 
 <style scoped>
-.food-recognition {
-  padding: 24px;
-  height: 100%;
-  min-height: 0;
-  overflow: auto;
+.food-recognition-container {
+  overflow-y: auto;
+  background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
 }
-.upload-card {
-  max-width: 1200px;
-  margin: 0 auto;
-  min-height: 0;
-}
-.loading-area {
-  padding: 40px;
+
+.page-header {
   display: flex;
-  justify-content: center;
-}
-.result-area {
-  margin-top: 24px;
-}
-.debug-info {
-  background-color: #f5f5f5;
-  padding: 12px;
-  border-radius: 4px;
-  margin-bottom: 16px;
-  font-size: 12px;
-  color: #666;
-}
-.debug-info p {
-  margin: 4px 0;
-  word-break: break-all;
-}
-.result-container {
-  display: flex;
-  gap: 24px;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
   flex-wrap: wrap;
-  align-items: flex-start;
 }
-.image-wrapper {
-  position: relative;
-  flex: 1;
-  min-width: 320px;
-  max-width: 100%;
-  max-height: calc(100vh - 260px); /* 视窗高度减去头部和其他间距 */
-  overflow: auto; /* 添加滚动条 */
-  border: 1px solid #e0e0e0;
-  border-radius: 4px;
+
+.title {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.subtitle {
+  margin: 0;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.encyclopedia-btn {
+  height: 38px;
+}
+
+.wizard-card {
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+}
+
+.steps-bar {
+  padding: 4px 2px 0;
+}
+
+.step-content {
+  min-height: 460px;
+}
+
+.upload-step {
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
 }
-.image-wrapper img {
-  max-width: 100%;
-  max-height: calc(100vh - 280px);
-  width: auto;
-  height: auto;
-  display: block;
-  border-radius: 4px;
-  object-fit: contain; /* 保持图片比例 */
-  flex-shrink: 0; /* 防止图片被压缩 */
+
+.upload-dragger-custom {
+  border: 2px dashed #86efac !important;
+  border-radius: 14px !important;
+  background: #f8fffc !important;
+  transition: all 0.2s ease;
 }
-.nutrition-info {
-  flex: 1;
-  min-width: 320px;
-  max-height: calc(100vh - 220px);
-  overflow: hidden;
+
+.upload-dragger-custom:hover {
+  border-color: #10b981 !important;
+  box-shadow: 0 6px 18px rgba(16, 185, 129, 0.15);
 }
-.nutrition-info .n-card {
-  height: 100%;
-  overflow: auto;
-}
-.nutrition-item {
+
+.upload-dragger-inner {
+  min-height: 270px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  padding: 24px;
+  text-align: center;
 }
-.nutrition-item .label {
-  font-size: 12px;
-  color: #666;
+
+.upload-title {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  color: #0f172a;
 }
-.nutrition-item .value {
-  font-weight: bold;
+
+.upload-desc {
+  margin: 0;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.loading-wrap {
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.loading-text {
+  color: #047857;
+  font-size: 14px;
+}
+
+.recognition-step {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 16px;
+}
+
+.preview-panel,
+.result-panel {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.preview-panel {
+  min-height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.preview-image {
+  width: 100%;
+  max-height: 520px;
+  border-radius: 10px;
+  object-fit: contain;
+  background: #fff;
+}
+
+.panel-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.panel-title-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.panel-title h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #0f172a;
+}
+
+.result-panel {
+  min-height: 500px;
+  display: flex;
+  flex-direction: column;
+}
+
+.result-list-scroll {
+  flex: 1;
+  min-height: 260px;
+}
+
+.result-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.result-item {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.food-name {
+  font-size: 15px;
+  color: #0f172a;
+  font-weight: 600;
+}
+
+.food-meta {
+  margin-top: 6px;
+  color: #64748b;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.go-analysis-btn {
+  margin-top: 12px;
+}
+
+.analysis-step,
+.recommend-step {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.section-head h3 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.chart-card {
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.06);
+}
+
+.action-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.step-fallback-action {
+  margin-top: 4px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.recommend-grid {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 16px;
+}
+
+.recommend-card {
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.06);
+}
+
+.advice-text {
+  color: #334155;
+  line-height: 1.7;
+}
+
+.restart-panel {
+  border-radius: 12px;
+  padding: 20px;
+  color: #ffffff;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+}
+
+.restart-panel h4 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.restart-panel p {
+  margin: 0;
+  opacity: 0.9;
+  font-size: 14px;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.35s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-slide-enter-active,
+.fade-slide-leave-active {
+  transition: all 0.25s ease;
+}
+
+.fade-slide-enter-from,
+.fade-slide-leave-to {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+@media (max-width: 1024px) {
+  .recognition-step,
+  .recommend-grid {
+    grid-template-columns: 1fr;
+  }
 }
 </style>

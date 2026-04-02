@@ -34,7 +34,7 @@
             :key="i"
             class="mb-10 mt-10 w-300 cursor-pointer"
             hover:card-shadow
-            title="Vue FastAPI Admin"
+            title="食智眸"
             size="small"
           >
             <p op-60>{{ dummyText }}</p>

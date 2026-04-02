@@ -8,25 +8,25 @@
   },
   "naiveThemeOverrides": {
     "common": {
-      "primaryColor": "#F4511E",
-      "primaryColorHover": "#F4511E",
-      "primaryColorPressed": "#2B4C59FF",
-      "primaryColorSuppl": "#F4511E",
+      "primaryColor": "#00A896",
+      "primaryColorHover": "#008C7E",
+      "primaryColorPressed": "#006F64",
+      "primaryColorSuppl": "#008C7E",
 
       "infoColor": "#2080F0FF",
       "infoColorHover": "#4098FCFF",
       "infoColorPressed": "#1060C9FF",
       "infoColorSuppl": "#4098FCFF",
 
-      "successColor": "#18A058FF",
-      "successColorHover": "#F4511E",
-      "successColorPressed": "#0C7A43FF",
-      "successColorSuppl": "#F4511E",
+      "successColor": "#02C39A",
+      "successColorHover": "#02A381",
+      "successColorPressed": "#018469",
+      "successColorSuppl": "#02A381",
 
-      "warningColor": "#F0A020FF",
-      "warningColorHover": "#FCB040FF",
-      "warningColorPressed": "#C97C10FF",
-      "warningColorSuppl": "#FCB040FF",
+      "warningColor": "#FFE66D",
+      "warningColorHover": "#FFDC4D",
+      "warningColorPressed": "#FFD22D",
+      "warningColorSuppl": "#FFDC4D",
 
       "errorColor": "#D03050FF",
       "errorColorHover": "#DE576DFF",
