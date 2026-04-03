@@ -1,219 +1,233 @@
 <p align="center">
-  <a href="https://github.com/mizhexiaoxiao/vue-fastapi-admin">
-    <img alt="Vue FastAPI Admin Logo" width="200" src="https://github.com/mizhexiaoxiao/vue-fastapi-admin/blob/main/deploy/sample-picture/logo.svg">
-  </a>
+  <img src="./deploy/sample-picture/logo.svg" width="120" height="120" alt="logo">
 </p>
 
-<h1 align="center">vue-fastapi-admin</h1>
+<h1 align="center">Smart Food Eye (食智眸)</h1>
+
+<p align="center">
+  <b>A full-stack admin system based on FastAPI + Vue3 + Naive UI, featuring YOLO deep learning food recognition.</b>
+</p>
+
+<p align="center">
+  <a href="https://github.com/mizhexiaoxiao/vue-fastapi-admin">
+    <img src="https://img.shields.io/github/stars/mizhexiaoxiao/vue-fastapi-admin?style=flat-square&logo=github" alt="stars">
+  </a>
+  <a href="https://github.com/mizhexiaoxiao/vue-fastapi-admin/blob/main/LICENSE">
+    <img src="https://img.shields.io/github/license/mizhexiaoxiao/vue-fastapi-admin?style=flat-square" alt="license">
+  </a>
+  <img src="https://img.shields.io/badge/Python-3.11+-blue?style=flat-square&logo=python" alt="python">
+  <img src="https://img.shields.io/badge/Vue-3.3+-green?style=flat-square&logo=vue.js" alt="vue">
+  <img src="https://img.shields.io/badge/FastAPI-0.111+-009688?style=flat-square&logo=fastapi" alt="fastapi">
+</p>
 
 English | [简体中文](./README.md)
 
-vue-fastapi-admin is a modern front-end and back-end separation development platform that combines FastAPI, Vue3, and Naive UI. It incorporates RBAC (Role-Based Access Control) management, dynamic routing, and JWT (JSON Web Token) authentication, making it ideal for rapid development of small to medium-sized applications and also serves as a valuable learning resource.
+---
 
-### Features
-- **Popular Tech Stack**: The backend is developed with the high-performance asynchronous framework FastAPI using Python 3.11, while the front-end is powered by cutting-edge technologies such as Vue3 and Vite, complemented by the efficient package manager, pnpm.
-- **Code Standards**: The project is equipped with various plugins for code standardization and quality control, ensuring consistency and enhancing team collaboration efficiency.
-- **Dynamic Routing**: Backend dynamic routing combined with the RBAC model allows for fine-grained control of menus and routing.
-- **JWT Authentication**: User identity verification and authorization are handled through JWT, enhancing the application's security.
-- **Granular Permission Control**: Implements detailed permission management including button and interface level controls, ensuring different roles and users have appropriate permissions.
+## 🌟 Introduction
 
-### Live Demo
-- URL: http://139.9.100.77:9999
-- Username: admin
-- Password: 123456
+**Smart Food Eye** is a full-stack Web application designed for health management and dietary monitoring. It provides a comprehensive RBAC (Role-Based Access Control) admin framework and deeply integrates **YOLO (You Only Look Once)** food recognition technology. Users can upload food images to identify types in real-time and receive detailed nutritional analysis (calories, protein, fat, etc.), helping them manage their diet scientifically.
 
-### Screenshots
+This project is suitable as a template for undergraduate graduation projects or small-to-medium enterprise management backends, balancing cutting-edge technology (FastAPI async architecture, YOLOv8 model) with engineering practicality.
 
-#### Login Page
-![Login Page](https://github.com/mizhexiaoxiao/vue-fastapi-admin/blob/main/deploy/sample-picture/login.jpg)
+## ✨ Key Features
 
-#### Workbench
-![Workbench](https://github.com/mizhexiaoxiao/vue-fastapi-admin/blob/main/deploy/sample-picture/workbench.jpg)
+- **🍱 Food Recognition**: Integrated YOLOv8 model for multi-object detection, automatic nutritional calculation, history management, and visualization.
+- **🔐 Robust Permissions**: Fine-grained RBAC for users, roles, menus, departments, and APIs.
+- **🚀 Modern Tech Stack**:
+  - **Backend**: FastAPI (Python 3.11) + Tortoise ORM + JWT + SQLite (supports MySQL/PostgreSQL).
+  - **Frontend**: Vue 3 (Composition API) + Vite + Naive UI + Pinia + UnoCSS.
+- **📊 Data Visualization**: ECharts-powered dashboards for nutrition ratios, calorie distribution, and historical trends.
+- **📝 Audit Logs**: Complete user operation logging for security and traceability.
+- **🛠️ Rapid Development**: Encapsulated CRUD, common components, and coding standards.
+- **🐳 Containerization**: Docker support for one-click build and deployment.
 
-#### User Management
-![User Management](https://github.com/mizhexiaoxiao/vue-fastapi-admin/blob/main/deploy/sample-picture/user.jpg)
+## 🏗️ Architecture
 
-#### Role Management
-![Role Management](https://github.com/mizhexiaoxiao/vue-fastapi-admin/blob/main/deploy/sample-picture/role.jpg)
-
-#### Menu Management
-![Menu Management](https://github.com/mizhexiaoxiao/vue-fastapi-admin/blob/main/deploy/sample-picture/menu.jpg)
-
-#### API Management
-![API Management](https://github.com/mizhexiaoxiao/vue-fastapi-admin/blob/main/deploy/sample-picture/api.jpg)
-
-### Quick Start
-Please follow the instructions below for installation and configuration:
-
-#### Method 1：dockerhub pull image
-
-```sh
-docker pull mizhexiaoxiao/vue-fastapi-admin:latest 
-docker run -d --restart=always --name=vue-fastapi-admin -p 9999:80 mizhexiaoxiao/vue-fastapi-admin
+```mermaid
+graph TD
+    A[User/Browser] --> B[Vue3 Frontend]
+    B --> C{Vite Proxy/Nginx}
+    C --> D[FastAPI Backend]
+    D --> E[JWT Auth Middleware]
+    E --> F[API Routes]
+    F --> G[Controllers]
+    G --> H[Tortoise ORM]
+    H --> I[(SQLite/MySQL)]
+    G --> J[YOLO Service]
+    J --> K[Ultralytics Inference]
+    J --> L[Pillow Image Processing]
+    G --> M[Static File Service]
+    M --> N[Uploaded/Annotated Images]
 ```
 
-#### Method 2: Build Image Using Dockerfile
-##### Install Docker
+## 🚀 Quick Start
 
-```sh
-yum install -y docker-ce
-systemctl start docker
-```
+### 1. Prerequisites
 
-##### Build the Image
+- **Python**: 3.11+ (Recommend [uv](https://github.com/astral-sh/uv) for dependency management)
+- **Node.js**: 18.0+
+- **PNPM**: 8.0+
 
-```sh
+### 2. Clone the Repository
+
+```bash
 git clone https://github.com/mizhexiaoxiao/vue-fastapi-admin.git
 cd vue-fastapi-admin
-docker build --no-cache . -t vue-fastapi-admin
 ```
 
-##### Start the Container
+### 3. Backend Setup (FastAPI)
 
-```sh
-docker run -d --restart=always --name=vue-fastapi-admin -p 9999:80 vue-fastapi-admin
-```
+```bash
+# Sync dependencies with uv
+uv sync
 
-##### Access the Service
+# Database migration (First time only)
+# Note: SQLite is used by default with an initial db.sqlite3
+# To regenerate:
+# aerich init -t app.settings.TORTOISE_ORM
+# aerich init-db
 
-http://localhost:9999
-
-username：admin
-
-password：123456
-
-### Local Setup
-#### Backend
-The backend service requires the following environment:
-- Python 3.11
-
-#### Method 1 (Recommended): Install Dependencies with uv
-1. Install uv
-```sh
-pip install uv
-```
-
-2. Create and activate virtual environment
-```sh
-uv venv
-source .venv/bin/activate  # Linux/Mac
-# or
-.\.venv\Scripts\activate  # Windows
-```
-
-3. Install dependencies
-```sh
-uv add pyproject.toml
-```
-
-4. Start the backend service
-```sh
+# Start the server (Default port 9999)
 python run.py
 ```
 
-#### Method 2: Install Dependencies with Pip
-1. Create a Python virtual environment:
-```sh
-python3 -m venv venv
-source venv/bin/activate  # Linux/Mac
-# or
-.\venv\Scripts\activate  # Windows
-```
+### 4. Frontend Setup (Vue3)
 
-2. Install project dependencies:
-```sh
-pip install -r requirements.txt
-```
-
-3. Start the backend service:
-```sh
-python run.py
-```
-The backend service is now running, and you can visit http://localhost:9999/docs to view the API documentation.
-
-#### Frontend
-The frontend project requires a Node.js environment (recommended version 18.8.0 or higher).
-- node v18.8.0+
-
-1. Navigate to the frontend project directory:
-```sh
+```bash
 cd web
-```
 
-2. Install project dependencies (pnpm is recommended: https://pnpm.io/zh/installation)
-```sh
-npm i -g pnpm # If pnpm is already installed, skip this step
-pnpm i # Or use npm i
-```
+# Install dependencies
+pnpm install
 
-3. Start the frontend development server:
-```sh
+# Run locally (Default port 3100)
 pnpm dev
 ```
 
-### Directory Structure Explanation
+Access: `http://localhost:3100`  
+Default Credentials: `admin` / `123456`
 
-```
-├── app                   // Application directory
-│   ├── api               // API interface directory
-│   │   └── v1            // Version 1 of the API interfaces
-│   │       ├── apis      // API-related interfaces
-│   │       ├── base      // Base information interfaces
-│   │       ├── menus     // Menu related interfaces
-│   │       ├── roles     // Role related interfaces
-│   │       └── users     // User related interfaces
-│   ├── controllers       // Controllers directory
-│   ├── core              // Core functionality module
-│   ├── log               // Log directory
-│   ├── models            // Data models directory
-│   ├── schemas           // Data schema/structure definitions
-│   ├── settings          // Configuration settings directory
-│   └── utils             // Utilities directory
-├── deploy                // Deployment related directory
-│   └── sample-picture    // Sample picture directory
-└── web                   // Front-end web directory
-    ├── build             // Build scripts and configuration directory
-    │   ├── config        // Build configurations
-    │   ├── plugin        // Build plugins
-    │   └── script        // Build scripts
-    ├── public            // Public resources directory
-    │   └── resource      // Public resource files
-    ├── settings          // Front-end project settings
-    └── src               // Source code directory
-        ├── api           // API interface definitions
-        ├── assets        // Static resources directory
-        │   ├── images    // Image resources
-        │   ├── js        // JavaScript files
-        │   └── svg       // SVG vector files
-        ├── components    // Components directory
-        │   ├── common    // Common components
-        │   ├── icon      // Icon components
-        │   ├── page      // Page components
-        │   ├── query-bar // Query bar components
-        │   └── table     // Table components
-        ├── composables   // Composable functionalities
-        ├── directives    // Directives directory
-        ├── layout        // Layout directory
-        │   └── components // Layout components
-        ├── router        // Routing directory
-        │   ├── guard     // Route guards
-        │   └── routes    // Route definitions
-        ├── store         // State management (pinia)
-        │   └── modules   // State modules
-        ├── styles        // Style files directory
-        ├── utils         // Utilities directory
-        │   ├── auth      // Authentication related utilities
-        │   ├── common    // Common utilities
-        │   ├── http      // Encapsulated axios
-        │   └── storage   // Encapsulated localStorage and sessionStorage
-        └── views         // Views/Pages directory
-            ├── error-page // Error pages
-            ├── login      // Login page
-            ├── profile    // Profile page
-            ├── system     // System management page
-            └── workbench  // Workbench page
+---
+
+## ⚙️ Configuration
+
+### Environment Variables
+
+**Frontend (`web/.env`)**:
+- `VITE_TITLE`: Page title
+- `VITE_PORT`: Run port
+- `VITE_BASE_API`: Backend API base URL (Default `/api/v1`)
+
+**Backend (`app/settings/config.py`)**:
+- `SECRET_KEY`: JWT secret key
+- `TORTOISE_ORM`: Database connection (Default SQLite)
+- `CORS_ORIGINS`: List of allowed CORS origins
+
+### Directory Structure
+
+```text
+vue-fastapi-admin/
+├── app/                # Backend core code
+│   ├── api/            # API routes (v1)
+│   ├── controllers/    # Business logic controllers
+│   ├── core/           # Middlewares, dependencies, exceptions
+│   ├── models/         # DB models (Tortoise ORM)
+│   ├── schemas/        # Pydantic schemas
+│   ├── services/       # External services (YOLO)
+│   ├── settings/       # App settings
+│   └── utils/          # Utilities (JWT, Password)
+├── web/                # Frontend core code
+│   ├── src/
+│   │   ├── api/        # API calls
+│   │   ├── components/ # Common/Business components
+│   │   ├── layout/     # Page layout
+│   │   ├── store/      # Pinia stores
+│   │   └── views/      # Pages (incl. Food Recognition)
+├── deploy/             # Deployment (Static, Nginx)
+├── weights/            # YOLO weights (.pt)
+├── pyproject.toml      # Backend dependencies (uv)
+└── package.json        # Frontend dependencies (pnpm)
 ```
 
-### Visitors Count
+---
 
-<img align="left" src = "https://profile-counter.glitch.me/vue-fastapi-admin/count.svg" alt="Loading">
+## 🧪 Testing
+
+Scripts for functionality verification:
+- **Food Recognition**: `python test_recognition.py`
+- **API Test**: `python test_food_api.py`
+- **Flow Validation**: `python test_flow.py`
+
+## 📦 Build & Deploy
+
+### Production Build
+
+```bash
+# Frontend build
+cd web
+pnpm build
+
+# Backend (Run run.py or use uvicorn)
+```
+
+### Docker Deployment
+
+```bash
+# Build image
+docker build -t smart-food-eye .
+
+# Run container
+docker run -d -p 9999:9999 -p 3100:3100 smart-food-eye
+```
+
+---
+
+## ❓ FAQ
+
+**Q1: `ModuleNotFoundError` when starting backend?**
+A: Ensure you have run `uv sync` or installed all dependencies in `pyproject.toml`. Pay special attention to `ultralytics` and `opencv-python-headless`.
+
+**Q2: Food recognition shows "Request error" or image won't load?**
+A: 
+1. Check backend console for error logs.
+2. Ensure `deploy/static/uploads` directory exists and has write permissions.
+3. Check `VITE_BASE_API` in frontend `.env`.
+
+**Q3: How to switch to MySQL?**
+A: Uncomment the MySQL section in `app/settings/config.py` (`TORTOISE_ORM`) and install `tortoise-orm[asyncmy]`.
+
+**Q4: YOLO model detects nothing?**
+A: Ensure a valid `.pt` weight file exists in `weights/`, and the image is clear with the food properly framed.
+
+---
+
+## 📝 Changelog
+
+- **v0.2.0 (2026-03)**:
+  - ✨ Added YOLOv8 food recognition module.
+  - 📊 Added nutrition analysis dashboard.
+  - 🖼️ Optimized image display and annotation.
+  - 🛠️ Switched to `uv` for backend dependency management.
+- **v0.1.0 (2025-12)**:
+  - 🎉 Initial release with RBAC admin framework.
+
+## 🤝 Contributing
+
+1. Fork the project.
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`).
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`).
+4. Push to the Branch (`git push origin feature/AmazingFeature`).
+5. Open a Pull Request.
+
+## 📄 License
+
+Distributed under the [MIT License](./LICENSE).
+
+## 👨‍💻 Credits
+
+- **Author**: [mizhexiaoxiao](https://github.com/mizhexiaoxiao)
+- **Special Thanks**: 
+  - [FastAPI](https://fastapi.tiangolo.com/)
+  - [Vue.js](https://vuejs.org/)
+  - [Naive UI](https://www.naiveui.com/)
+  - [Ultralytics](https://ultralytics.com/) (YOLOv8)
