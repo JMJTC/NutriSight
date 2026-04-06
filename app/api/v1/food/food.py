@@ -102,6 +102,21 @@ async def get_record_detail(
         return Fail(code=500, msg=f"获取记录详情失败: {str(e)}")
 
 
+@food_router.post("/record/{record_id}/recommendation", summary="生成并保存该记录的饮食建议", dependencies=[DependAuth])
+async def generate_record_recommendation(
+    record_id: int,
+):
+    try:
+        user_id = CTX_USER_ID.get()
+        result = await FoodController.generate_record_recommendation(record_id, user_id)
+        return Success(data=result)
+    except CustomException as e:
+        return Fail(code=e.status_code, msg=e.detail)
+    except Exception as e:
+        logger.error(f"Failed to generate record recommendation: {str(e)}")
+        return Fail(code=500, msg=f"生成饮食建议失败: {str(e)}")
+
+
 @food_router.delete("/record/{record_id}", summary="删除识别记录", dependencies=[DependAuth])
 async def delete_record(
     record_id: int,

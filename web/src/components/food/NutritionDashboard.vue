@@ -1,60 +1,72 @@
 <template>
-  <n-card class="dashboard-card shadow-2xl border-0 bg-white rounded-[50px] overflow-visible">
+  <n-card class="dashboard-card overflow-visible border-0 rounded-[50px] bg-white shadow-2xl">
     <template #header>
-      <div class="flex items-center space-x-5 px-4">
-        <span class="w-3 h-12 bg-emerald-500 rounded-full"></span>
-        <h3 class="text-5xl font-black text-slate-900 tracking-tighter">个性化营养目标仪表盘</h3>
+      <div class="flex items-center px-4 space-x-5">
+        <span class="h-12 w-3 rounded-full bg-emerald-500"></span>
+        <h3 class="text-5xl font-black tracking-tighter text-slate-900">个性化营养目标仪表盘</h3>
       </div>
     </template>
     <template #header-extra>
-      <n-button quaternary circle class="hover:bg-emerald-50 transition-colors w-16 h-16">
+      <n-button quaternary circle class="h-16 w-16 transition-colors hover:bg-emerald-50">
         <template #icon>
           <n-icon size="36" color="#64748b"><SettingsOutline /></n-icon>
         </template>
       </n-button>
     </template>
-    
+
     <div class="px-10 py-8">
-      <n-grid :cols="4" :x-gap="48" :y-gap="48">
+      <n-grid :cols="3" :x-gap="48" :y-gap="48">
         <n-grid-item v-for="(goal, key) in goals" :key="key">
-          <n-card class="!bg-slate-50/50 !border-2 !border-slate-100 rounded-[40px] hover:shadow-xl transition-all cursor-default p-6">
-            <n-statistic :label="goal.label" class="!text-3xl font-black">
+          <n-card
+            class="cursor-default rounded-[40px] p-6 transition-all !border-2 !border-slate-100 !bg-slate-50/50 hover:shadow-xl"
+          >
+            <n-statistic :label="goal.label" class="font-black !text-3xl">
               <template #prefix>
-                <div class="p-5 rounded-[30px] bg-white shadow-md mr-6 border-2 border-slate-100">
+                <div class="mr-6 border-2 border-slate-100 rounded-[30px] bg-white p-5 shadow-md">
                   <n-icon :color="goal.color" size="64">
                     <component :is="goal.icon" />
                   </n-icon>
                 </div>
               </template>
-              <div class="flex flex-col mt-8">
-                <div class="flex items-baseline justify-between mb-4">
-                  <span class="text-5xl font-black text-slate-900 tracking-tighter">{{ current[key] }}</span>
-                  <span class="text-2xl font-bold text-slate-400">/ {{ goal.target }} {{ goal.unit }}</span>
+              <div class="mt-8 flex flex-col">
+                <div class="mb-4 flex items-baseline justify-between">
+                  <span class="text-5xl font-black tracking-tighter text-slate-900">{{
+                    formatValue(current[key], goal.precision)
+                  }}</span>
+                  <span class="text-2xl font-bold text-slate-400"
+                    >/ {{ goal.target }} {{ goal.unit }}</span
+                  >
                 </div>
                 <n-progress
                   type="line"
-                  :percentage="Math.min(100, (current[key] / goal.target) * 100)"
+                  :percentage="
+                    Math.min(100, ((Number(current[key]) || 0) / (goal.target || 1)) * 100)
+                  "
                   :color="goal.color"
                   :show-indicator="false"
                   processing
                   height="24"
-                  class="rounded-full overflow-hidden border-2 border-white shadow-inner"
+                  class="overflow-hidden border-2 border-white rounded-full shadow-inner"
                 />
               </div>
             </n-statistic>
           </n-card>
         </n-grid-item>
       </n-grid>
-      
+
       <n-divider class="!my-16" />
-      
-      <div class="summary-tips p-12 rounded-[40px] bg-gradient-to-r from-emerald-500 to-emerald-700 text-white shadow-2xl shadow-emerald-200/50 flex items-center min-h-[180px]">
-        <div class="bg-white/20 p-6 rounded-[30px] mr-12 backdrop-blur-xl border-2 border-white/30 shadow-lg">
+
+      <div
+        class="summary-tips min-h-[180px] flex items-center rounded-[40px] from-emerald-500 to-emerald-700 bg-gradient-to-r p-12 text-white shadow-2xl shadow-emerald-200/50"
+      >
+        <div
+          class="mr-12 border-2 border-white/30 rounded-[30px] bg-white/20 p-6 shadow-lg backdrop-blur-xl"
+        >
           <n-icon size="72" class="text-white"><InformationCircleOutline /></n-icon>
         </div>
         <div class="flex-grow">
-          <h4 class="font-black text-4xl mb-4 tracking-tight">今日膳食 AI 专家点评</h4>
-          <p class="text-3xl font-bold opacity-95 leading-relaxed max-w-[1200px]">
+          <h4 class="mb-4 text-4xl font-black tracking-tight">今日膳食 AI 专家点评</h4>
+          <p class="max-w-[1200px] text-3xl font-bold leading-relaxed opacity-95">
             {{ analysisSummary }}
           </p>
         </div>
@@ -65,14 +77,15 @@
 
 <script setup>
 import { computed } from 'vue'
-import { 
-  FlashOutline, 
-  LeafOutline, 
-  FlameOutline, 
+import {
+  FlashOutline,
+  LeafOutline,
+  FlameOutline,
   WaterOutline,
   SettingsOutline,
-  InformationCircleOutline
+  InformationCircleOutline,
 } from '@vicons/ionicons5'
+import { useUserStore } from '@/store'
 
 const props = defineProps({
   current: {
@@ -81,23 +94,116 @@ const props = defineProps({
       calories: 0,
       protein: 0,
       carbs: 0,
-      fat: 0
-    })
+      fat: 0,
+      fiber: 0,
+      sodium: 0,
+    }),
+  },
+})
+
+const userStore = useUserStore()
+
+const targets = computed(() => {
+  const heightCm = Number(userStore.userInfo?.height_cm)
+  const weightKg = Number(userStore.userInfo?.weight_kg)
+  const gender = Number(userStore.userInfo?.gender)
+  const age = Number(userStore.userInfo?.age)
+
+  const hasProfile =
+    Number.isFinite(heightCm) &&
+    Number.isFinite(weightKg) &&
+    Number.isFinite(gender) &&
+    Number.isFinite(age)
+  if (!hasProfile) {
+    return { calories: 2000, protein: 60, carbs: 250, fat: 65, fiber: 25, sodium: 2000 }
+  }
+
+  let bmr = 0
+  if (gender === 1) bmr = 10 * weightKg + 6.25 * heightCm - 5 * age + 5
+  else if (gender === 2) bmr = 10 * weightKg + 6.25 * heightCm - 5 * age - 161
+  else bmr = 10 * weightKg + 6.25 * heightCm - 5 * age - 78
+
+  const totalCalories = Math.round(bmr * 1.375)
+  const proteinG = Math.round((totalCalories * 0.15) / 4)
+  const fatG = Math.round((totalCalories * 0.25) / 9)
+  const carbsG = Math.round((totalCalories * 0.6) / 4)
+
+  const fiberG = gender === 2 ? 21 : 25
+  const sodiumMg = 2000
+
+  return {
+    calories: totalCalories,
+    protein: proteinG,
+    carbs: carbsG,
+    fat: fatG,
+    fiber: fiberG,
+    sodium: sodiumMg,
   }
 })
 
-const goals = {
-  calories: { label: '能量消耗 (Energy)', target: 2000, unit: 'kcal', color: '#00A896', icon: FlashOutline },
-  protein: { label: '蛋白质 (Protein)', target: 60, unit: 'g', color: '#02C39A', icon: LeafOutline },
-  carbs: { label: '碳水 (Carbs)', target: 250, unit: 'g', color: '#FFE66D', icon: FlameOutline },
-  fat: { label: '脂肪 (Fat)', target: 65, unit: 'g', color: '#2080F0', icon: WaterOutline }
+const goals = computed(() => ({
+  calories: {
+    label: '能量 (Energy)',
+    target: targets.value.calories,
+    unit: 'kcal',
+    precision: 0,
+    color: '#00A896',
+    icon: FlashOutline,
+  },
+  protein: {
+    label: '蛋白质 (Protein)',
+    target: targets.value.protein,
+    unit: 'g',
+    precision: 1,
+    color: '#02C39A',
+    icon: LeafOutline,
+  },
+  carbs: {
+    label: '碳水 (Carbs)',
+    target: targets.value.carbs,
+    unit: 'g',
+    precision: 1,
+    color: '#FFE66D',
+    icon: FlameOutline,
+  },
+  fat: {
+    label: '脂肪 (Fat)',
+    target: targets.value.fat,
+    unit: 'g',
+    precision: 1,
+    color: '#2080F0',
+    icon: WaterOutline,
+  },
+  fiber: {
+    label: '膳食纤维 (Fiber)',
+    target: targets.value.fiber,
+    unit: 'g',
+    precision: 1,
+    color: '#7C3AED',
+    icon: LeafOutline,
+  },
+  sodium: {
+    label: '钠 (Sodium)',
+    target: targets.value.sodium,
+    unit: 'mg',
+    precision: 0,
+    color: '#F97316',
+    icon: WaterOutline,
+  },
+}))
+
+const formatValue = (val, precision = 0) => {
+  const num = Number(val)
+  if (!Number.isFinite(num)) return 0
+  return precision > 0 ? num.toFixed(precision) : Math.round(num)
 }
 
 const analysisSummary = computed(() => {
-  const calPercent = (props.current.calories / goals.calories.target) * 100
-  if (calPercent > 80) return "今天的热量摄入已经接近目标，建议晚餐清淡一些。"
-  if (calPercent > 40) return "目前的营养摄入较为均衡，保持良好的饮食习惯。"
-  return "今日营养摄入还不足，建议多摄入一些优质蛋白和新鲜蔬菜。"
+  const calTarget = goals.value.calories.target || 1
+  const calPercent = (Number(props.current.calories) / calTarget) * 100
+  if (calPercent > 80) return '今天的热量摄入已经接近目标，建议晚餐清淡一些。'
+  if (calPercent > 40) return '目前的营养摄入较为均衡，保持良好的饮食习惯。'
+  return '今日营养摄入还不足，建议多摄入一些优质蛋白和新鲜蔬菜。'
 })
 </script>
 

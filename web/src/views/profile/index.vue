@@ -1,6 +1,18 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import { NButton, NForm, NFormItem, NInput, NTabPane, NTabs, NImage, NUpload, NSpace, NSelect, NInputNumber } from 'naive-ui'
+import {
+  NButton,
+  NForm,
+  NFormItem,
+  NInput,
+  NTabPane,
+  NTabs,
+  NImage,
+  NUpload,
+  NSpace,
+  NSelect,
+  NInputNumber,
+} from 'naive-ui'
 import { useI18n } from 'vue-i18n'
 import CommonPage from '@/components/page/CommonPage.vue'
 import { useUserStore } from '@/store'
@@ -20,7 +32,7 @@ const avatarUrl = computed(() => {
 async function handleAvatarUpload({ file }) {
   const formData = new FormData()
   formData.append('file', file.file)
-  
+
   try {
     isLoading.value = true
     const res = await api.updateAvatar(formData)
@@ -40,7 +52,7 @@ async function restoreDefaultAvatar() {
   try {
     isLoading.value = true
     // 这里简单地清空头像路径，后端可以处理为恢复默认
-    await api.updateUser({ ...infoForm.value, avatar: null, id: userStore.userId })
+    await api.updateProfile({ ...infoForm.value, avatar: null })
     userStore.setUserInfo({ avatar: null })
     infoForm.value.avatar = null
     $message.success('已恢复默认头像')
@@ -63,6 +75,28 @@ const infoForm = ref({
   age: userStore.userInfo.age,
 })
 
+const refreshProfileForm = async () => {
+  const data = await userStore.getUserInfo()
+  if (!data || data instanceof Error) return
+  const weightKg = Number(data.weight_kg)
+  infoForm.value = {
+    ...infoForm.value,
+    avatar: data.avatar,
+    username: data.username,
+    email: data.email,
+    height_cm: data.height_cm,
+    weight_kg: Number.isFinite(weightKg) ? weightKg : null,
+    gender: data.gender,
+    age: data.age,
+  }
+}
+
+onMounted(async () => {
+  if (!userStore.userId) {
+    await refreshProfileForm()
+  }
+})
+
 const genderOptions = [
   { label: '男', value: 1 },
   { label: '女', value: 2 },
@@ -74,10 +108,16 @@ const isFormInvalid = computed(() => {
   return (
     !username ||
     !email ||
-    height_cm === null || height_cm < 130 || height_cm > 250 ||
-    weight_kg === null || weight_kg < 30 || weight_kg > 200 ||
+    height_cm === null ||
+    height_cm < 130 ||
+    height_cm > 250 ||
+    weight_kg === null ||
+    weight_kg < 30 ||
+    weight_kg > 200 ||
     gender === null ||
-    age === null || age < 1 || age > 120
+    age === null ||
+    age < 1 ||
+    age > 120
   )
 })
 
@@ -89,7 +129,7 @@ async function updateProfile() {
       return
     }
     await api
-      .updateUser({ ...infoForm.value, id: userStore.userId })
+      .updateProfile({ ...infoForm.value })
       .then(() => {
         userStore.setUserInfo(infoForm.value)
         isLoading.value = false
@@ -176,7 +216,7 @@ async function updatePassword() {
   isLoading.value = true
   passwordFormRef.value?.validate(async (err) => {
     if (!err) {
-      const data = { ...passwordForm.value, id: userStore.userId }
+      const data = { ...passwordForm.value }
       await api
         .updatePassword(data)
         .then((res) => {
@@ -255,23 +295,32 @@ function validatePasswordSame(rule, value) {
           >
             <NFormItem :label="$t('views.profile.label_avatar')" path="avatar">
               <NSpace align="center">
-                <NImage width="100" height="100" class="rounded-full overflow-hidden" :src="avatarUrl"></NImage>
+                <NImage
+                  width="100"
+                  height="100"
+                  class="overflow-hidden rounded-full"
+                  :src="avatarUrl"
+                ></NImage>
                 <NUpload
                   :show-file-list="false"
                   accept="image/*"
-                  @before-upload="(data) => {
-                    const file = data.file.file;
-                    if (file.size > 2 * 1024 * 1024) {
-                      $message.error('图片不能超过 2MB');
-                      return false;
-                    }
-                    return true;
-                  }"
                   :custom-request="handleAvatarUpload"
+                  @before-upload="
+                    (data) => {
+                      const file = data.file.file
+                      if (file.size > 2 * 1024 * 1024) {
+                        $message.error('图片不能超过 2MB')
+                        return false
+                      }
+                      return true
+                    }
+                  "
                 >
                   <NButton type="primary" size="small">上传新头像</NButton>
                 </NUpload>
-                <NButton type="default" size="small" @click="restoreDefaultAvatar">恢复默认</NButton>
+                <NButton type="default" size="small" @click="restoreDefaultAvatar"
+                  >恢复默认</NButton
+                >
               </NSpace>
             </NFormItem>
             <NFormItem :label="$t('views.profile.label_username')" path="username">
@@ -288,7 +337,7 @@ function validatePasswordSame(rule, value) {
                 :placeholder="$t('views.profile.placeholder_email')"
               />
             </NFormItem>
-            
+
             <NFormItem label="身高(cm)" path="height_cm">
               <NInputNumber
                 v-model:value="infoForm.height_cm"
@@ -330,9 +379,9 @@ function validatePasswordSame(rule, value) {
               />
             </NFormItem>
 
-            <NButton 
-              type="primary" 
-              :loading="isLoading" 
+            <NButton
+              type="primary"
+              :loading="isLoading"
               :disabled="isFormInvalid"
               @click="updateProfile"
             >

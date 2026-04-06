@@ -1,6 +1,6 @@
 <template>
   <div class="food-recognition-container min-h-screen">
-    <div class="mx-auto w-full max-w-[1280px] px-4 py-6 md:px-6 lg:px-8">
+    <div class="mx-auto max-w-[1280px] w-full px-4 py-6 lg:px-8 md:px-6">
       <div class="page-header mb-6">
         <div>
           <h1 class="title flex items-center gap-3">
@@ -9,7 +9,13 @@
           </h1>
           <p class="subtitle mt-2">上传图片，一键完成识别、营养分析与饮食建议。</p>
         </div>
-        <n-button type="primary" tertiary round @click="showEncyclopedia = true" class="encyclopedia-btn">
+        <n-button
+          type="primary"
+          round
+          tertiary
+          class="encyclopedia-btn"
+          @click="showEncyclopedia = true"
+        >
           <template #icon>
             <n-icon><BookOutline /></n-icon>
           </template>
@@ -29,8 +35,8 @@
           <div :key="currentStep" class="step-content mt-6">
             <div v-if="currentStep === 1" class="upload-step">
               <n-upload
-                multiple
                 directory-dnd
+                multiple
                 action="#"
                 :custom-request="handleUpload"
                 :max="1"
@@ -72,28 +78,25 @@
                   <h3>识别结果</h3>
                   <div class="panel-title-actions">
                     <n-tag type="success" round>{{ result.details.length }} 项</n-tag>
-                    <n-button type="primary" size="small" @click="goToStep(3)">
-                      进入分析
-                    </n-button>
+                    <n-button type="primary" size="small" @click="goToStep(3)"> 进入分析 </n-button>
                   </div>
                 </div>
 
                 <n-scrollbar class="result-list-scroll">
                   <div class="result-list">
-                    <div
-                      v-for="(item, index) in safeDetails"
-                      :key="index"
-                      class="result-item"
-                    >
+                    <div v-for="(item, index) in safeDetails" :key="index" class="result-item">
                       <div class="flex items-center justify-between gap-2">
-                        <span class="food-name">{{ item.food_name }}</span>
+                        <div class="food-name-wrap">
+                          <div class="food-name-zh">{{ item.food_name_zh }}</div>
+                          <div class="food-name-en">{{ item.food_name_en }}</div>
+                        </div>
                         <n-tag size="small" type="success" :bordered="false">
                           {{ (item.confidence * 100).toFixed(1) }}%
                         </n-tag>
                       </div>
                       <div class="food-meta">
                         <n-icon size="16"><FlameOutline /></n-icon>
-                        <span>{{ item.nutrition.calories }} kcal / 份</span>
+                        <span>{{ item.nutrition.calories }} kcal / 100g</span>
                       </div>
                     </div>
                   </div>
@@ -101,7 +104,9 @@
 
                 <n-button type="primary" block class="go-analysis-btn" @click="goToStep(3)">
                   查看营养分析
-                  <template #icon><n-icon><ArrowForwardOutline /></n-icon></template>
+                  <template #icon
+                    ><n-icon><ArrowForwardOutline /></n-icon
+                  ></template>
                 </n-button>
               </div>
             </div>
@@ -125,12 +130,16 @@
 
               <div class="action-row mt-4">
                 <n-button quaternary @click="goToStep(2)">
-                  <template #icon><n-icon><ArrowBackOutline /></n-icon></template>
+                  <template #icon
+                    ><n-icon><ArrowBackOutline /></n-icon
+                  ></template>
                   返回识别结果
                 </n-button>
                 <n-button type="primary" @click="goToStep(4)">
                   生成饮食建议
-                  <template #icon><n-icon><ArrowForwardOutline /></n-icon></template>
+                  <template #icon
+                    ><n-icon><ArrowForwardOutline /></n-icon
+                  ></template>
                 </n-button>
               </div>
               <div class="step-fallback-action">
@@ -145,8 +154,12 @@
                   <template #header>
                     <div class="section-head"><h3>AI 饮食建议</h3></div>
                   </template>
-                  <n-list :bordered="false">
-                    <n-list-item v-for="(advice, index) in recommendations" :key="index">
+                  <div v-if="recommendationLoading" class="loading-wrap">
+                    <n-spin size="medium" />
+                    <span class="loading-text">AI 正在生成建议，请稍候...</span>
+                  </div>
+                  <n-list v-else :bordered="false">
+                    <n-list-item v-for="(advice, index) in recommendationTips" :key="index">
                       <template #prefix>
                         <n-icon color="#10b981" size="20"><CheckmarkCircleOutline /></n-icon>
                       </template>
@@ -159,7 +172,9 @@
                   <h4>继续下一次识别</h4>
                   <p>重新上传图片，获取新的识别与分析结果。</p>
                   <n-button type="primary" ghost @click="resetWizard">
-                    <template #icon><n-icon><RefreshOutline /></n-icon></template>
+                    <template #icon
+                      ><n-icon><RefreshOutline /></n-icon
+                    ></template>
                     重新开始
                   </n-button>
                 </div>
@@ -180,15 +195,15 @@
 
 <script setup>
 import { ref, computed } from 'vue'
-import { 
-  CloudUploadOutline, 
-  RestaurantOutline, 
-  BookOutline, 
+import {
+  CloudUploadOutline,
+  RestaurantOutline,
+  BookOutline,
   ArrowForwardOutline,
   ArrowBackOutline,
   CheckmarkCircleOutline,
   RefreshOutline,
-  FlameOutline
+  FlameOutline,
 } from '@vicons/ionicons5'
 import { useMessage } from 'naive-ui'
 import api from '@/api'
@@ -205,13 +220,15 @@ const stepStatus = ref('process')
 const showEncyclopedia = ref(false)
 
 const currentNutrition = computed(() => {
-  if (!result.value) return { calories: 0, protein: 0, carbs: 0, fat: 0 }
+  if (!result.value) return { calories: 0, protein: 0, carbs: 0, fat: 0, fiber: 0, sodium: 0 }
   const nutrition = result.value.nutrition || {}
   return {
     calories: Number(nutrition.total_calories) || 0,
     protein: Number(nutrition.total_protein) || 0,
     carbs: Number(nutrition.total_carbs) || 0,
-    fat: Number(nutrition.total_fat) || 0
+    fat: Number(nutrition.total_fat) || 0,
+    fiber: Number(nutrition.total_fiber) || 0,
+    sodium: Number(nutrition.total_sodium) || 0,
   }
 })
 
@@ -219,43 +236,61 @@ const safeDetails = computed(() => {
   const details = Array.isArray(result.value?.details) ? result.value.details : []
   return details.map((item, index) => {
     const nutrition = item?.nutrition || {}
+    const foodNameZh = item?.food_name_zh || item?.food_name || `食物${index + 1}`
+    const foodNameEn = item?.food_name_en || item?.food_name || foodNameZh
     return {
-      food_name: item?.food_name || `食物${index + 1}`,
+      food_name: foodNameZh,
+      food_name_zh: foodNameZh,
+      food_name_en: foodNameEn,
       confidence: Number(item?.confidence) || 0,
       nutrition: {
         calories: Number(nutrition.calories) || 0,
         protein: Number(nutrition.protein) || 0,
         carbs: Number(nutrition.carbs) || 0,
-        fat: Number(nutrition.fat) || 0
-      }
+        fat: Number(nutrition.fat) || 0,
+        fiber: Number(nutrition.fiber) || 0,
+        sodium: Number(nutrition.sodium) || 0,
+      },
     }
   })
 })
 
-const recommendations = computed(() => {
-  if (!result.value) return []
-  const tips = [
-    '目前的餐食搭配非常均衡，建议维持当前的饮食习惯。',
-    '您可以适当增加优质蛋白质的摄入，如鱼肉或禽肉。',
-    '建议餐后配合适量运动，有助于维持身体的代谢水平。'
-  ]
-  if (currentNutrition.value.calories > 800) {
-    tips.push('当前餐食热量偏高，建议下一餐选择低脂清淡食物，并适当增加水分摄入。')
+const recommendationTips = ref([])
+const recommendationLoading = ref(false)
+
+const loadRecommendation = async () => {
+  if (!result.value?.record_id) return
+  if (recommendationLoading.value) return
+  recommendationLoading.value = true
+  try {
+    const res = await api.generateFoodRecordRecommendation(result.value.record_id)
+    if (res.code === 200) {
+      recommendationTips.value = Array.isArray(res.data?.tips) ? res.data.tips : []
+    } else {
+      recommendationTips.value = []
+      message.error(res.msg || '生成建议失败')
+    }
+  } catch (error) {
+    recommendationTips.value = []
+    message.error('生成建议请求出错')
+  } finally {
+    recommendationLoading.value = false
   }
-  return tips
-})
+}
 
 const handleUpload = async ({ file, onFinish, onError }) => {
   loading.value = true
   result.value = null
-  
+  recommendationTips.value = []
+
   const formData = new FormData()
   formData.append('file', file.file)
-  
+
   try {
     const res = await api.recognizeFood(formData)
     if (res.code === 200) {
       result.value = res.data
+      recommendationTips.value = []
       message.success('识别成功 (Recognized Successfully)')
       currentStep.value = 2
       onFinish()
@@ -274,11 +309,13 @@ const handleUpload = async ({ file, onFinish, onError }) => {
 const onRemove = () => {
   result.value = null
   currentStep.value = 1
+  recommendationTips.value = []
 }
 
 const resetWizard = () => {
   result.value = null
   currentStep.value = 1
+  recommendationTips.value = []
 }
 
 const goToStep = (step) => {
@@ -289,6 +326,9 @@ const goToStep = (step) => {
   if (step === 3 && safeDetails.value.length === 0) {
     message.warning('暂无可分析的识别结果')
     return
+  }
+  if (step === 4) {
+    loadRecommendation()
   }
   currentStep.value = step
 }
@@ -476,6 +516,26 @@ const getImageUrl = (path) => {
   font-size: 15px;
   color: #0f172a;
   font-weight: 600;
+}
+
+.food-name-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.food-name-zh {
+  font-size: 15px;
+  color: #0f172a;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.food-name-en {
+  font-size: 12px;
+  color: #64748b;
+  font-weight: 600;
+  line-height: 1.2;
 }
 
 .food-meta {

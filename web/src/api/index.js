@@ -7,6 +7,7 @@ export default {
   getUserMenu: () => request.get('/base/usermenu'),
   getUserApi: () => request.get('/base/userapi'),
   // profile
+  updateProfile: (data = {}) => request.post('/base/update_profile', data),
   updatePassword: (data = {}) => request.post('/base/update_password', data),
   updateAvatar: (formData) => request.post('/base/update_avatar', formData),
   // users
@@ -45,8 +46,10 @@ export default {
   recognizeFood: (data) => request.post('/food/recognize', data),
   getFoodHistory: (params = {}) => request.get('/food/history', { params }),
   getFoodRecordDetail: (id) => request.get(`/food/record/${id}`),
+  generateFoodRecordRecommendation: (id) => request.post(`/food/record/${id}/recommendation`),
   deleteFoodRecord: (id) => request.delete(`/food/record/${id}`),
-  batchDeleteFoodRecords: (ids) => request.delete('/food/records/batch', { data: { record_ids: ids } }),
+  batchDeleteFoodRecords: (ids) =>
+    request.delete('/food/records/batch', { data: { record_ids: ids } }),
   // food management
   getFoodCategories: (params = {}) => request.get('/food/categories', { params }),
   getFoodCategoryDetail: (id) => request.get(`/food/categories/${id}`),
@@ -54,6 +57,7 @@ export default {
   updateFoodCategory: (id, data) => request.put(`/food/categories/${id}`, data),
   deleteFoodCategory: (id) => request.delete(`/food/categories/${id}`),
   createFoodCategoryWithUpload: (formData) => request.post('/food/categories/upload', formData),
-  updateFoodCategoryWithUpload: (id, formData) => request.put(`/food/categories/${id}/upload`, formData),
+  updateFoodCategoryWithUpload: (id, formData) =>
+    request.put(`/food/categories/${id}/upload`, formData),
   updateNutritionInfo: (foodId, data) => request.put(`/food/nutrition/${foodId}`, data),
 }

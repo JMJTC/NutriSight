@@ -2,12 +2,7 @@
   <div class="food-history">
     <n-card title="识别历史记录">
       <template #header-extra>
-        <n-button
-          type="error"
-          ghost
-          :disabled="!checkedRowKeys.length"
-          @click="handleBatchDelete"
-        >
+        <n-button type="error" ghost :disabled="!checkedRowKeys.length" @click="handleBatchDelete">
           <template #icon>
             <TheIcon icon="mdi:delete" :size="18" />
           </template>
@@ -47,7 +42,7 @@
               {{ currentRecord.analysis?.total_fat?.toFixed(2) }} g
             </n-descriptions-item>
           </n-descriptions>
-          
+
           <n-divider dashed>识别物品</n-divider>
           <n-table size="small" :single-line="false">
             <thead>
@@ -103,17 +98,17 @@ const pagination = reactive({
     pagination.pageSize = pageSize
     pagination.page = 1
     fetchHistory()
-  }
+  },
 })
 
 const columns = [
   {
-    type: 'selection'
+    type: 'selection',
   },
   {
     title: 'ID',
     key: 'id',
-    width: 80
+    width: 80,
   },
   {
     title: '图片预览',
@@ -121,9 +116,9 @@ const columns = [
     render(row) {
       return h('img', {
         src: getImageUrl(row),
-        style: 'width: 50px; height: 50px; object-fit: cover; border-radius: 4px;'
+        style: 'width: 50px; height: 50px; object-fit: cover; border-radius: 4px;',
       })
-    }
+    },
   },
   {
     title: '识别状态',
@@ -133,22 +128,22 @@ const columns = [
         NTag,
         {
           type: row.status === 'success' ? 'success' : 'error',
-          bordered: false
+          bordered: false,
         },
         { default: () => (row.status === 'success' ? '成功' : '失败') }
       )
-    }
+    },
   },
   {
     title: '总热量 (kcal)',
     key: 'total_energy',
     render(row) {
       return row.total_energy?.toFixed(2) || '0.00'
-    }
+    },
   },
   {
     title: '识别时间',
-    key: 'created_at'
+    key: 'created_at',
   },
   {
     title: '操作',
@@ -163,14 +158,14 @@ const columns = [
               size: 'small',
               type: 'primary',
               ghost: true,
-              onClick: () => viewDetail(row)
+              onClick: () => viewDetail(row),
             },
             { default: () => '详情' }
           ),
           h(
             NPopconfirm,
             {
-              onPositiveClick: () => handleDelete(row.id)
+              onPositiveClick: () => handleDelete(row.id),
             },
             {
               trigger: () =>
@@ -179,17 +174,17 @@ const columns = [
                   {
                     size: 'small',
                     type: 'error',
-                    ghost: true
+                    ghost: true,
                   },
                   { default: () => '删除' }
                 ),
-              default: () => '确定要删除这条识别记录吗？'
+              default: () => '确定要删除这条识别记录吗？',
             }
-          )
-        ]
+          ),
+        ],
       })
-    }
-  }
+    },
+  },
 ]
 
 const handleCheck = (rowKeys) => {
@@ -210,7 +205,7 @@ const handleDelete = async (id) => {
 
 const handleBatchDelete = async () => {
   if (!checkedRowKeys.value.length) return
-  
+
   window.$dialog?.warning({
     title: '批量删除',
     content: `确定要删除选中的 ${checkedRowKeys.value.length} 条记录吗？`,
@@ -227,7 +222,7 @@ const handleBatchDelete = async () => {
       } catch (error) {
         message.error('批量删除失败')
       }
-    }
+    },
   })
 }
 
@@ -248,7 +243,7 @@ const fetchHistory = async () => {
   try {
     const res = await api.getFoodHistory({
       page: pagination.page,
-      page_size: pagination.pageSize
+      page_size: pagination.pageSize,
     })
     if (res.code === 200) {
       historyList.value = res.data

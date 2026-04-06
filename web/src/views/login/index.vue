@@ -13,8 +13,8 @@
         <h5 f-c-c text-24 font-normal color="#6a6a6a">
           <icon-custom-logo mr-10 text-50 color-primary />{{ $t('app_name') }}
         </h5>
-        
-        <n-tabs type="line" animated mt-20 v-model:value="activeTab">
+
+        <n-tabs v-model:value="activeTab" type="line" animated mt-20>
           <n-tab-pane name="login" tab="登录">
             <div mt-20>
               <n-input
@@ -50,7 +50,7 @@
               </n-button>
             </div>
           </n-tab-pane>
-          
+
           <n-tab-pane name="register" tab="注册">
             <div mt-20>
               <n-input
@@ -131,7 +131,7 @@ const registerInfo = ref({
   username: '',
   email: '',
   password: '',
-  confirmPassword: ''
+  confirmPassword: '',
 })
 
 initLoginInfo()
@@ -173,27 +173,27 @@ async function handleLogin() {
 
 async function handleRegister() {
   const { username, email, password, confirmPassword } = registerInfo.value
-  
+
   if (!username || !email || !password || !confirmPassword) {
     $message.warning('请填写所有必填项')
     return
   }
-  
+
   if (username.length < 3) {
     $message.warning('用户名至少需要3个字符')
     return
   }
-  
+
   if (password.length < 6) {
     $message.warning('密码至少需要6个字符')
     return
   }
-  
+
   if (password !== confirmPassword) {
     $message.warning('两次输入的密码不一致')
     return
   }
-  
+
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
   if (!emailRegex.test(email)) {
     $message.warning('请输入有效的邮箱地址')

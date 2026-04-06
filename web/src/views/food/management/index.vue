@@ -16,11 +16,10 @@ import {
 } from 'naive-ui'
 
 import CommonPage from '@/components/page/CommonPage.vue'
-import QueryBarItem from '@/components/query-bar/QueryBarItem.vue'
 import CrudModal from '@/components/table/CrudModal.vue'
 import CrudTable from '@/components/table/CrudTable.vue'
 
-import { formatDate, renderIcon } from '@/utils'
+import { renderIcon } from '@/utils'
 import { useCRUD } from '@/composables'
 import api from '@/api'
 import TheIcon from '@/components/icon/TheIcon.vue'
@@ -28,7 +27,6 @@ import TheIcon from '@/components/icon/TheIcon.vue'
 defineOptions({ name: '食物管理' })
 
 const $table = ref(null)
-const queryItems = ref({})
 const vPermission = resolveDirective('permission')
 
 const getImageUrl = (url) => {
@@ -95,7 +93,7 @@ const handleSave = async () => {
     }
 
     modalLoading.value = true
-    
+
     const formData = new FormData()
     formData.append('name', modalForm.value.name)
     if (modalForm.value.chinese_name) formData.append('chinese_name', modalForm.value.chinese_name)
@@ -112,7 +110,7 @@ const handleSave = async () => {
 
     // 处理营养信息
     const nutritionValues = Object.values(modalForm.value.nutrition || {})
-    if (nutritionValues.some(v => v !== undefined && v !== null && v !== '')) {
+    if (nutritionValues.some((v) => v !== undefined && v !== null && v !== '')) {
       formData.append('nutrition', JSON.stringify(modalForm.value.nutrition))
     }
 
@@ -128,11 +126,13 @@ const handleSave = async () => {
         console.log('调用更新API，ID：', modalForm.value.id)
         result = await api.updateFoodCategoryWithUpload(modalForm.value.id, formData)
       }
-      
+
       console.log('API响应：', result)
-      
+
       if (result && result.code < 400) {
-        window.$message?.success(result.msg || (modalAction.value === 'add' ? '食物创建成功！' : '食物更新成功！'))
+        window.$message?.success(
+          result.msg || (modalAction.value === 'add' ? '食物创建成功！' : '食物更新成功！')
+        )
         uploadFileList.value = []
         imageUrl.value = ''
         modalVisible.value = false
@@ -143,13 +143,14 @@ const handleSave = async () => {
           }
         }, 500)
       } else {
-        const errorMsg = result?.msg || (modalAction.value === 'add' ? '创建失败，请重试' : '更新失败，请重试')
+        const errorMsg =
+          result?.msg || (modalAction.value === 'add' ? '创建失败，请重试' : '更新失败，请重试')
         window.$message?.error(errorMsg)
         console.error('操作失败，响应：', result)
       }
     } catch (apiError) {
       console.error('API调用异常：', apiError)
-      
+
       let errorMsg = '操作失败，请检查网络连接'
       if (apiError?.response?.data?.msg) {
         errorMsg = apiError.response.data.msg
@@ -158,7 +159,7 @@ const handleSave = async () => {
       } else if (apiError?.message) {
         errorMsg = apiError.message
       }
-      
+
       window.$message?.error(errorMsg)
     }
   } catch (error) {
@@ -305,10 +306,6 @@ const columns = [
   },
 ]
 
-const handleQueryChange = () => {
-  $table.value?.handleSearch()
-}
-
 const handleOpenModal = (action) => {
   uploadFileList.value = []
   imageUrl.value = ''
@@ -345,12 +342,7 @@ const handleOpenModal = (action) => {
       </NSpace>
     </template>
 
-    <CrudTable
-      ref="$table"
-      :columns="columns"
-      :get-data="api.getFoodCategories"
-      :scroll-x="1200"
-    />
+    <CrudTable ref="$table" :columns="columns" :get-data="api.getFoodCategories" :scroll-x="1200" />
 
     <CrudModal
       v-model:visible="modalVisible"
@@ -358,11 +350,7 @@ const handleOpenModal = (action) => {
       :loading="modalLoading"
       @save="handleSave"
     >
-      <NForm
-        ref="modalFormRef"
-        :model="modalForm"
-        label-placement="top"
-      >
+      <NForm ref="modalFormRef" :model="modalForm" label-placement="top">
         <!-- 食物基本信息 -->
         <NCard title="基本信息" style="margin-bottom: 16px">
           <NFormItem label="食物名称">
@@ -374,21 +362,16 @@ const handleOpenModal = (action) => {
           </NFormItem>
 
           <NFormItem label="中文名">
-            <NInput
-              v-model:value="modalForm.chinese_name"
-              placeholder="请输入食物中文名"
-            />
+            <NInput v-model:value="modalForm.chinese_name" placeholder="请输入食物中文名" />
           </NFormItem>
 
           <NFormItem v-if="modalAction === 'edit'" label="YOLO 类别 ID">
-            <NInput
-              :value="`${modalForm.code}`"
-              :disabled="true"
-              placeholder="自动生成"
-            />
+            <NInput :value="`${modalForm.code}`" :disabled="true" placeholder="自动生成" />
             <template #label>
               YOLO 类别 ID
-              <span style="color: #999; font-size: 12px; margin-left: 4px">（自动生成，不可修改）</span>
+              <span style="color: #999; font-size: 12px; margin-left: 4px"
+                >（自动生成，不可修改）</span
+              >
             </template>
           </NFormItem>
 

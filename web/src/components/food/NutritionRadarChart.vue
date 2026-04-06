@@ -6,21 +6,11 @@
 import { use } from 'echarts/core'
 import { CanvasRenderer } from 'echarts/renderers'
 import { RadarChart } from 'echarts/charts'
-import {
-  TitleComponent,
-  TooltipComponent,
-  LegendComponent,
-} from 'echarts/components'
+import { TitleComponent, TooltipComponent, LegendComponent } from 'echarts/components'
 import VChart from 'vue-echarts'
 import { ref, watch } from 'vue'
 
-use([
-  CanvasRenderer,
-  RadarChart,
-  TitleComponent,
-  TooltipComponent,
-  LegendComponent,
-])
+use([CanvasRenderer, RadarChart, TitleComponent, TooltipComponent, LegendComponent])
 
 const props = defineProps({
   data: {
@@ -83,7 +73,13 @@ const updateChart = () => {
       },
       splitLine: {
         lineStyle: {
-          color: ['rgba(0, 168, 150, 0.1)', 'rgba(0, 168, 150, 0.2)', 'rgba(0, 168, 150, 0.4)', 'rgba(0, 168, 150, 0.6)', 'rgba(0, 168, 150, 0.8)'],
+          color: [
+            'rgba(0, 168, 150, 0.1)',
+            'rgba(0, 168, 150, 0.2)',
+            'rgba(0, 168, 150, 0.4)',
+            'rgba(0, 168, 150, 0.6)',
+            'rgba(0, 168, 150, 0.8)',
+          ],
         },
       },
       splitArea: {

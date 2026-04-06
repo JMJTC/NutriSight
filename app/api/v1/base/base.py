@@ -11,10 +11,11 @@ from app.core.dependency import DependAuth
 from app.models.admin import Api, Menu, Role, User
 from app.schemas.base import Fail, Success
 from app.schemas.login import *
-from app.schemas.users import UpdatePassword, UserRegister, UserCreate
+from app.schemas.users import UpdatePassword, UserRegister, UserCreate, UserSelfUpdate
 from app.settings import settings
 from app.utils.jwt_utils import create_access_token
 from app.utils.password import get_password_hash, verify_password
+from tortoise.exceptions import IntegrityError
 
 router = APIRouter()
 
@@ -82,6 +83,32 @@ async def get_userinfo():
     if not data.get("avatar"):
         data["avatar"] = "https://avatars.githubusercontent.com/u/54677442?v=4"
     return Success(data=data)
+
+
+@router.post("/update_profile", summary="修改个人信息", dependencies=[DependAuth])
+async def update_profile(req_in: UserSelfUpdate):
+    user_id = CTX_USER_ID.get()
+    user_obj = await user_controller.get(id=user_id)
+    user_obj.username = req_in.username
+    user_obj.email = req_in.email
+    user_obj.height_cm = req_in.height_cm
+    user_obj.weight_kg = req_in.weight_kg
+    user_obj.gender = req_in.gender
+    user_obj.age = req_in.age
+    if req_in.avatar is not None:
+        user_obj.avatar = req_in.avatar
+
+    try:
+        await user_obj.save()
+    except IntegrityError:
+        return Fail(code=400, msg="用户名或邮箱已存在")
+    except Exception as e:
+        return Fail(code=500, msg=f"更新失败: {str(e)}")
+
+    data = await user_obj.to_dict(exclude_fields=["password"])
+    if not data.get("avatar"):
+        data["avatar"] = "https://avatars.githubusercontent.com/u/54677442?v=4"
+    return Success(data=data, msg="更新成功")
 
 
 @router.get("/usermenu", summary="查看用户菜单", dependencies=[DependAuth])

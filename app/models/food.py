@@ -64,6 +64,8 @@ class NutritionAnalysis(BaseModel, TimestampMixin):
     total_protein = fields.FloatField(default=0.0, description="总蛋白质")
     total_fat = fields.FloatField(default=0.0, description="总脂肪")
     total_carbohydrate = fields.FloatField(default=0.0, description="总碳水")
+    total_fiber = fields.FloatField(default=0.0, description="总膳食纤维")
+    total_sodium = fields.FloatField(default=0.0, description="总钠")
     summary = fields.TextField(null=True, description="分析总结")
     
     class Meta:
@@ -72,6 +74,7 @@ class NutritionAnalysis(BaseModel, TimestampMixin):
 class NutritionRecommendation(BaseModel, TimestampMixin):
     """营养推荐表"""
     user = fields.ForeignKeyField("models.User", related_name="recommendations", description="关联用户")
+    record = fields.ForeignKeyField("models.RecognitionRecord", related_name="recommendations", null=True, description="关联识别记录")
     content = fields.TextField(description="推荐内容")
     reference = fields.CharField(max_length=255, null=True, description="推荐依据")
     
