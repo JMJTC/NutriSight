@@ -15,6 +15,7 @@ class UserProfile(BaseModel, TimestampMixin):
 class FoodCategory(BaseModel, TimestampMixin):
     """食物类别表"""
     name = fields.CharField(max_length=100, unique=True, description="食物名称")
+    chinese_name = fields.CharField(max_length=100, null=True, description="食物中文名称")
     code = fields.IntField(unique=True, description="YOLO类别ID")
     food_type = fields.CharField(max_length=50, null=True, description="食物类型")
     description = fields.CharField(max_length=255, null=True, description="描述")

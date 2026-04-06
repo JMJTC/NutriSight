@@ -5,6 +5,7 @@ from pydantic import BaseModel, Field, validator
 
 class FoodCategoryBase(BaseModel):
     name: str = Field(..., min_length=1, max_length=100, description="食物名称")
+    chinese_name: Optional[str] = Field(None, max_length=100, description="食物中文名称")
     code: int = Field(..., ge=0, description="YOLO 类别 ID")
     food_type: Optional[str] = Field(None, max_length=50, description="食物类型（蔬菜、肉类、水果等）")
     description: Optional[str] = Field(None, max_length=255, description="食物描述")
@@ -19,6 +20,7 @@ class FoodCategoryCreate(FoodCategoryBase):
 class FoodCategoryUpdate(BaseModel):
     """更新食物类别"""
     name: Optional[str] = Field(None, min_length=1, max_length=100)
+    chinese_name: Optional[str] = Field(None, max_length=100)
     food_type: Optional[str] = Field(None, max_length=50)
     description: Optional[str] = Field(None, max_length=255)
     image_url: Optional[str] = Field(None, max_length=255)
