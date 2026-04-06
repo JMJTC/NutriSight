@@ -20,4 +20,12 @@ export const PROXY_CONFIG = {
     target: 'http://127.0.0.1:9999',
     changeOrigin: true,
   },
+  '/chinesefood207': {
+    target: 'http://127.0.0.1:9999',
+    changeOrigin: true,
+  },
+  '/static': {
+    target: 'http://127.0.0.1:9999',
+    changeOrigin: true,
+  },
 }

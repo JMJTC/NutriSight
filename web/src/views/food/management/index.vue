@@ -30,6 +30,14 @@ defineOptions({ name: '食物管理' })
 const $table = ref(null)
 const queryItems = ref({})
 const vPermission = resolveDirective('permission')
+
+const getImageUrl = (url) => {
+  if (!url) return ''
+  if (/^https?:\/\//.test(url)) return url
+  const backendHost = import.meta.env.VITE_APP_API_BASE_URL || 'http://127.0.0.1:9999'
+  return `${backendHost}${url}`
+}
+
 const foodTypeOptions = ref([
   { label: '蔬菜', value: 'Vegetable' },
   { label: '肉类', value: 'Meat' },
@@ -58,6 +66,7 @@ const {
   name: '食物类别',
   initForm: {
     name: '',
+    chinese_name: '',
     food_type: '',
     description: '',
     image_url: '',
@@ -89,6 +98,7 @@ const handleSave = async () => {
     
     const formData = new FormData()
     formData.append('name', modalForm.value.name)
+    if (modalForm.value.chinese_name) formData.append('chinese_name', modalForm.value.chinese_name)
     if (modalForm.value.food_type) formData.append('food_type', modalForm.value.food_type)
     if (modalForm.value.description) formData.append('description', modalForm.value.description)
 
@@ -167,14 +177,21 @@ const columns = [
   {
     title: '名称',
     key: 'name',
-    width: 80,
+    width: 100,
+    align: 'center',
+    ellipsis: { tooltip: true },
+  },
+  {
+    title: '中文名',
+    key: 'chinese_name',
+    width: 100,
     align: 'center',
     ellipsis: { tooltip: true },
   },
   {
     title: 'YOLO ID',
     key: 'code',
-    width: 60,
+    width: 50,
     align: 'center',
   },
   {
@@ -191,18 +208,18 @@ const columns = [
     },
   },
   {
-    title: '热量 (kcal)',
+    title: '热量',
     key: 'nutrition.energy',
-    width: 80,
+    width: 50,
     align: 'center',
     render(row) {
       return row.nutrition?.energy || '-'
     },
   },
   {
-    title: '蛋白质 (g)',
+    title: '蛋白质',
     key: 'nutrition.protein',
-    width: 80,
+    width: 50,
     align: 'center',
     render(row) {
       return row.nutrition?.protein || '-'
@@ -214,9 +231,10 @@ const columns = [
     width: 80,
     align: 'center',
     render(row) {
-      return row.image_url
+      const src = getImageUrl(row.image_url)
+      return src
         ? h(NImage, {
-            src: row.image_url,
+            src,
             style: { width: '50px', height: '50px', 'object-fit': 'cover' },
             lazy: true,
           })
@@ -355,6 +373,13 @@ const handleOpenModal = (action) => {
             />
           </NFormItem>
 
+          <NFormItem label="中文名">
+            <NInput
+              v-model:value="modalForm.chinese_name"
+              placeholder="请输入食物中文名"
+            />
+          </NFormItem>
+
           <NFormItem v-if="modalAction === 'edit'" label="YOLO 类别 ID">
             <NInput
               :value="`${modalForm.code}`"
@@ -391,7 +416,7 @@ const handleOpenModal = (action) => {
           <div v-if="imageUrl && !uploadFileList.length" style="margin-bottom: 12px">
             <div style="margin-bottom: 8px; font-size: 12px; color: #999">当前图片：</div>
             <NImage
-              :src="imageUrl"
+              :src="getImageUrl(imageUrl)"
               style="width: 100px; height: 100px; object-fit: cover; border-radius: 4px"
             />
           </div>

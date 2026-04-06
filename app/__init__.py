@@ -42,6 +42,13 @@ def create_app() -> FastAPI:
         app.mount("/static", StaticFiles(directory=static_path), name="static")
     else:
         print(f"Warning: Static files directory not found at {static_path}")
+
+    # Mount chinesefood207 images
+    chinesefood_path = os.path.join(settings.BASE_DIR, "deploy", "chinesefood207")
+    if os.path.exists(chinesefood_path):
+        app.mount("/chinesefood207", StaticFiles(directory=chinesefood_path), name="chinesefood207")
+    else:
+        print(f"Warning: chinesefood207 directory not found at {chinesefood_path}")
     
     register_exceptions(app)
     register_routers(app, prefix="/api")

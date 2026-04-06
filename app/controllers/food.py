@@ -438,6 +438,7 @@ class FoodController:
                 cat_dict = {
                     "id": cat.id,
                     "name": cat.name,
+                    "chinese_name": cat.chinese_name,
                     "code": cat.code,
                     "food_type": cat.food_type,
                     "description": cat.description,
@@ -485,6 +486,7 @@ class FoodController:
             
             category = await FoodCategory.create(
                 name=category_in.name,
+                chinese_name=category_in.chinese_name,
                 code=category_in.code,
                 food_type=category_in.food_type,
                 description=category_in.description,
@@ -496,6 +498,7 @@ class FoodController:
             return {
                 "id": category.id,
                 "name": category.name,
+                "chinese_name": category.chinese_name,
                 "code": category.code,
                 "food_type": category.food_type,
                 "description": category.description,
@@ -533,6 +536,8 @@ class FoodController:
             # 更新字段
             if category_in.name is not None:
                 category.name = category_in.name
+            if category_in.chinese_name is not None:
+                category.chinese_name = category_in.chinese_name
             if category_in.food_type is not None:
                 category.food_type = category_in.food_type
             if category_in.description is not None:
@@ -547,6 +552,7 @@ class FoodController:
             return {
                 "id": category.id,
                 "name": category.name,
+                "chinese_name": category.chinese_name,
                 "code": category.code,
                 "food_type": category.food_type,
                 "description": category.description,

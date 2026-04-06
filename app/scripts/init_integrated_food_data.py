@@ -72,6 +72,11 @@ async def load_and_insert_data():
                 logger.warning(f"Skipping duplicate code {item['code']} for food: {item['english_name']} (already exists as {existing.name})")
                 continue
 
+            # 修正 image_url 中的后缀名（JSON 中缺失了 .）
+            image_url = item["image_url"]
+            if image_url and image_url.endswith("jpg"):
+                image_url = image_url[:-3] + ".jpg"
+
             # 创建食物类别
             category = await FoodCategory.create(
                 name=item["english_name"],
@@ -79,7 +84,7 @@ async def load_and_insert_data():
                 code=item["code"],
                 food_type=item["food_type"],
                 description=item["description"],
-                image_url=item["image_url"]
+                image_url=image_url
             )
             
             # 创建营养信息

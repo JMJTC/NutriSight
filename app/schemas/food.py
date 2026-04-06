@@ -118,6 +118,7 @@ class FoodCategoryResponse(BaseModel):
     """食物类别响应"""
     id: int = Field(..., description="食物类别 ID")
     name: str = Field(..., description="食物名称")
+    chinese_name: Optional[str] = Field(None, description="食物中文名称")
     code: int = Field(..., description="YOLO 类别 ID")
     food_type: Optional[str] = Field(None, description="食物类型")
     description: Optional[str] = Field(None, description="食物描述")
