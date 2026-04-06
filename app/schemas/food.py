@@ -48,6 +48,14 @@ class NutritionCreate(NutritionBase):
     food_id: int = Field(..., description="食物类别 ID")
 
 
+class RecommendationRequest(BaseModel):
+    """营养推荐请求"""
+    height_cm: int = Field(..., ge=130, le=250, description="身高(cm)")
+    weight_kg: float = Field(..., ge=30.0, le=200.0, description="体重(kg)")
+    gender: int = Field(..., ge=1, le=3, description="性别 (1:男, 2:女, 3:其他)")
+    age: int = Field(..., ge=1, le=120, description="年龄")
+
+
 class RecognitionResult(BaseModel):
     """单个识别结果"""
     class_id: int = Field(..., description="YOLO 类别 ID")

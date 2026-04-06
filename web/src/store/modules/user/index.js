@@ -41,8 +41,8 @@ export const useUserStore = defineStore('user', {
           this.logout()
           return
         }
-        const { id, username, email, avatar, roles, is_superuser, is_active } = res.data
-        this.userInfo = { id, username, email, avatar, roles, is_superuser, is_active }
+        const { id, username, email, avatar, roles, is_superuser, is_active, height_cm, weight_kg, gender, age } = res.data
+        this.userInfo = { id, username, email, avatar, roles, is_superuser, is_active, height_cm, weight_kg, gender, age }
         return res.data
       } catch (error) {
         return error

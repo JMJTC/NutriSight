@@ -42,8 +42,22 @@ async def HttpExcHandle(_: Request, exc: HTTPException) -> JSONResponse:
 
 
 async def RequestValidationHandle(_: Request, exc: RequestValidationError) -> JSONResponse:
-    content = dict(code=422, msg=f"RequestValidationError, {exc}")
-    return JSONResponse(content=content, status_code=422)
+    # 按照需求，如果缺失身体数据，返回 400
+    errors = exc.errors()
+    msg = f"RequestValidationError, {exc}"
+    code = 422
+    
+    # 检查是否是缺失特定身体指标
+    target_fields = ['height_cm', 'weight_kg', 'gender', 'age']
+    for error in errors:
+        loc = error.get('loc', [])
+        if any(field in loc for field in target_fields):
+            code = 400
+            msg = f"缺失必填字段: {error.get('loc')[-1]}"
+            break
+            
+    content = dict(code=code, msg=msg, data=None)
+    return JSONResponse(content=content, status_code=code)
 
 
 async def ResponseValidationHandle(_: Request, exc: ResponseValidationError) -> JSONResponse:

@@ -18,6 +18,12 @@ class User(BaseModel, TimestampMixin):
     roles = fields.ManyToManyField("models.Role", related_name="user_roles")
     dept_id = fields.IntField(null=True, description="部门ID", index=True)
     avatar = fields.CharField(max_length=255, null=True, description="头像路径")
+    
+    # 新增身体指标字段
+    height_cm = fields.IntField(null=True, description="身高(cm)")
+    weight_kg = fields.DecimalField(max_digits=4, decimal_places=1, null=True, description="体重(kg)")
+    gender = fields.IntField(null=True, description="性别 (1:男, 2:女, 3:其他)")
+    age = fields.IntField(null=True, description="年龄")
 
     class Meta:
         table = "user"

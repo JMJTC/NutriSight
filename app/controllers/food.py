@@ -657,6 +657,77 @@ class FoodController:
             }
 
     @staticmethod
+    async def get_nutrition_recommendation(user_id: int, height: int, weight: float, gender: int, age: int) -> Dict:
+        """
+        根据身体数据生成营养推荐方案
+        
+        Args:
+            user_id: 用户ID
+            height: 身高(cm)
+            weight: 体重(kg)
+            gender: 性别 (1:男, 2:女, 3:其他)
+            age: 年龄
+            
+        Returns:
+            Dict: 推荐方案内容
+        """
+        try:
+            # 基础代谢计算 (Mifflin-St Jeor Equation)
+            if gender == 1: # 男
+                bmr = 10 * weight + 6.25 * height - 5 * age + 5
+            elif gender == 2: # 女
+                bmr = 10 * weight + 6.25 * height - 5 * age - 161
+            else: # 其他/平均
+                bmr = 10 * weight + 6.25 * height - 5 * age - 78
+                
+            # 每日推荐总热量 (假设轻微活动量)
+            total_calories = round(bmr * 1.375)
+            
+            # 宏量营养素比例
+            protein_calories = total_calories * 0.15
+            fat_calories = total_calories * 0.25
+            carb_calories = total_calories * 0.60
+            
+            # 换算成克数
+            protein_g = round(protein_calories / 4)
+            fat_g = round(fat_calories / 9)
+            carb_g = round(carb_calories / 4)
+            
+            # 计算 BMI
+            bmi = round(weight / ((height/100)**2), 1)
+            bmi_status = "正常"
+            if bmi < 18.5: bmi_status = "偏瘦"
+            elif 24 <= bmi < 28: bmi_status = "超重"
+            elif bmi >= 28: bmi_status = "肥胖"
+            
+            # 生成建议文本
+            content = (
+                f"您的BMI为{bmi}，属于{bmi_status}。建议每日摄入热量约{total_calories}kcal。 "
+                f"其中蛋白质约{protein_g}g，脂肪约{fat_g}g，碳水化合物约{carb_g}g。"
+            )
+            
+            # 记录到数据库
+            user = await User.get(id=user_id)
+            recommendation = await NutritionRecommendation.create(
+                user=user,
+                content=content,
+                reference=f"BMI: {bmi}, Status: {bmi_status}"
+            )
+            
+            return {
+                "bmi": bmi,
+                "bmi_status": bmi_status,
+                "total_calories": total_calories,
+                "protein_g": protein_g,
+                "fat_g": fat_g,
+                "carb_g": carb_g,
+                "content": content
+            }
+        except Exception as e:
+            logger.error(f"Failed to generate recommendation: {str(e)}")
+            raise CustomException(message=f"推荐生成失败: {str(e)}", code=500)
+            
+    @staticmethod
     async def get_food_category_detail(category_id: int) -> Dict:
         """
         获取单个食物类别的详细信息，包括营养信息

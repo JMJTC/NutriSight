@@ -11,11 +11,31 @@ from app.schemas.food import (
     FoodCategoryCreate,
     FoodCategoryUpdate,
     NutritionCreate,
+    RecommendationRequest,
 )
 from app.core.exceptions import CustomException
 from app.log import logger
 
 food_router = APIRouter()
+
+
+@food_router.post("/recommendation", summary="获取营养推荐", dependencies=[DependAuth])
+async def get_recommendation(req: RecommendationRequest):
+    """根据身体数据生成推荐建议"""
+    user_id = CTX_USER_ID.get()
+    
+    # 按照需求返回 422 错误信息
+    if req.height_cm is None or req.weight_kg is None or req.gender is None or req.age is None:
+        raise CustomException(message="缺少基础身体数据，无法生成营养建议", code=422)
+        
+    res = await FoodController.get_nutrition_recommendation(
+        user_id=user_id,
+        height=req.height_cm,
+        weight=req.weight_kg,
+        gender=req.gender,
+        age=req.age
+    )
+    return Success(data=res)
 
 
 @food_router.post("/recognize", summary="上传图片进行食物识别", dependencies=[DependAuth])

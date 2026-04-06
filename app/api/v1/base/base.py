@@ -57,6 +57,10 @@ async def user_register(obj_in: UserRegister):
         username=obj_in.username,
         email=obj_in.email,
         password=obj_in.password,
+        height_cm=obj_in.height_cm,
+        weight_kg=obj_in.weight_kg,
+        gender=obj_in.gender,
+        age=obj_in.age,
         is_active=True,
         is_superuser=False
     )

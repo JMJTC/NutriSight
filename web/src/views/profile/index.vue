@@ -1,6 +1,6 @@
 <script setup>
-import { ref, computed } from 'vue'
-import { NButton, NForm, NFormItem, NInput, NTabPane, NTabs, NImage, NUpload, NSpace } from 'naive-ui'
+import { ref, computed, onMounted } from 'vue'
+import { NButton, NForm, NFormItem, NInput, NTabPane, NTabs, NImage, NUpload, NSpace, NSelect, NInputNumber } from 'naive-ui'
 import { useI18n } from 'vue-i18n'
 import CommonPage from '@/components/page/CommonPage.vue'
 import { useUserStore } from '@/store'
@@ -57,11 +57,37 @@ const infoForm = ref({
   avatar: userStore.userInfo.avatar,
   username: userStore.name,
   email: userStore.email,
+  height_cm: userStore.userInfo.height_cm,
+  weight_kg: userStore.userInfo.weight_kg,
+  gender: userStore.userInfo.gender,
+  age: userStore.userInfo.age,
 })
+
+const genderOptions = [
+  { label: '男', value: 1 },
+  { label: '女', value: 2 },
+  { label: '其他', value: 3 },
+]
+
+const isFormInvalid = computed(() => {
+  const { username, email, height_cm, weight_kg, gender, age } = infoForm.value
+  return (
+    !username ||
+    !email ||
+    height_cm === null || height_cm < 130 || height_cm > 250 ||
+    weight_kg === null || weight_kg < 30 || weight_kg > 200 ||
+    gender === null ||
+    age === null || age < 1 || age > 120
+  )
+})
+
 async function updateProfile() {
   isLoading.value = true
   infoFormRef.value?.validate(async (err) => {
-    if (err) return
+    if (err) {
+      isLoading.value = false
+      return
+    }
     await api
       .updateUser({ ...infoForm.value, id: userStore.userId })
       .then(() => {
@@ -79,7 +105,61 @@ const infoFormRules = {
     {
       required: true,
       message: t('views.profile.message_username_required'),
-      trigger: ['input', 'blur', 'change'],
+      trigger: ['input', 'blur'],
+    },
+  ],
+  email: [
+    {
+      required: true,
+      message: t('views.profile.message_email_required'),
+      trigger: ['input', 'blur'],
+    },
+  ],
+  height_cm: [
+    {
+      required: true,
+      type: 'number',
+      message: '请输入130-250之间的整数',
+      trigger: ['input', 'blur'],
+    },
+    {
+      validator: (rule, value) => value >= 130 && value <= 250,
+      message: '请输入130-250之间的整数',
+      trigger: ['input', 'blur'],
+    },
+  ],
+  weight_kg: [
+    {
+      required: true,
+      type: 'number',
+      message: '请输入30.0-200.0之间的数值',
+      trigger: ['input', 'blur'],
+    },
+    {
+      validator: (rule, value) => value >= 30 && value <= 200,
+      message: '请输入30.0-200.0之间的数值',
+      trigger: ['input', 'blur'],
+    },
+  ],
+  gender: [
+    {
+      required: true,
+      type: 'number',
+      message: '请选择性别',
+      trigger: ['blur', 'change'],
+    },
+  ],
+  age: [
+    {
+      required: true,
+      type: 'number',
+      message: '请输入1-120之间的整数',
+      trigger: ['input', 'blur'],
+    },
+    {
+      validator: (rule, value) => value >= 1 && value <= 120,
+      message: '请输入1-120之间的整数',
+      trigger: ['input', 'blur'],
     },
   ],
 }
@@ -208,8 +288,55 @@ function validatePasswordSame(rule, value) {
                 :placeholder="$t('views.profile.placeholder_email')"
               />
             </NFormItem>
-            <NButton type="primary" :loading="isLoading" @click="updateProfile">
-              {{ $t('common.buttons.update') }}
+            
+            <NFormItem label="身高(cm)" path="height_cm">
+              <NInputNumber
+                v-model:value="infoForm.height_cm"
+                :min="130"
+                :max="250"
+                :precision="0"
+                placeholder="请输入130-250之间的整数"
+                class="w-full"
+              />
+            </NFormItem>
+
+            <NFormItem label="体重(kg)" path="weight_kg">
+              <NInputNumber
+                v-model:value="infoForm.weight_kg"
+                :min="30"
+                :max="200"
+                :precision="1"
+                placeholder="请输入30.0-200.0之间的数值"
+                class="w-full"
+              />
+            </NFormItem>
+
+            <NFormItem label="性别" path="gender">
+              <NSelect
+                v-model:value="infoForm.gender"
+                :options="genderOptions"
+                placeholder="请选择性别"
+              />
+            </NFormItem>
+
+            <NFormItem label="年龄" path="age">
+              <NInputNumber
+                v-model:value="infoForm.age"
+                :min="1"
+                :max="120"
+                :precision="0"
+                placeholder="请输入1-120之间的整数"
+                class="w-full"
+              />
+            </NFormItem>
+
+            <NButton 
+              type="primary" 
+              :loading="isLoading" 
+              :disabled="isFormInvalid"
+              @click="updateProfile"
+            >
+              {{ isFormInvalid ? '请完善必填信息' : $t('common.buttons.update') }}
             </NButton>
           </NForm>
         </div>
