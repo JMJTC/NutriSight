@@ -1,8 +1,6 @@
-import json
 import os
 import shutil
 import uuid
-from datetime import datetime
 from typing import List, Optional, Dict
 
 from fastapi import UploadFile
@@ -17,7 +15,6 @@ from app.models.food import (
     RecognitionDetail,
     NutritionAnalysis,
     NutritionRecommendation,
-    UserProfile
 )
 from app.schemas.food import (
     RecognitionResponse, 
@@ -55,16 +52,6 @@ class FoodController:
         else:
             bmr = 10 * weight_kg + 6.25 * height_cm - 5 * age - 78
 
-        total_calories = round(bmr * 1.375)
-
-        protein_calories = total_calories * 0.15
-        fat_calories = total_calories * 0.25
-        carb_calories = total_calories * 0.60
-
-        protein_g = round(protein_calories / 4)
-        fat_g = round(fat_calories / 9)
-        carb_g = round(carb_calories / 4)
-
         bmi = round(weight_kg / ((height_cm / 100) ** 2), 1)
         bmi_status = "正常"
         if bmi < 18.5:
@@ -74,12 +61,49 @@ class FoodController:
         elif bmi >= 28:
             bmi_status = "肥胖"
 
-        fiber_g = 25 if gender != 2 else 21
+        activity_factor = 1.375
+        calorie_adjust = 0
+        if bmi_status == "偏瘦":
+            calorie_adjust = 250
+        elif bmi_status == "超重":
+            calorie_adjust = -300
+        elif bmi_status == "肥胖":
+            calorie_adjust = -500
+
+        total_calories = int(round(bmr * activity_factor + calorie_adjust))
+        if gender == 1:
+            total_calories = max(total_calories, 1500)
+        elif gender == 2:
+            total_calories = max(total_calories, 1200)
+        else:
+            total_calories = max(total_calories, 1350)
+
+        protein_factor = 1.0
+        if bmi_status in {"超重", "肥胖"}:
+            protein_factor = 1.2
+        elif bmi_status == "偏瘦":
+            protein_factor = 1.2
+        protein_g = int(round(min(2.0, protein_factor) * weight_kg))
+        protein_calories = protein_g * 4
+
+        fat_ratio = 0.28
+        fat_calories = total_calories * fat_ratio
+        fat_g = int(round(fat_calories / 9))
+
+        remaining_calories = max(0, total_calories - protein_calories - fat_g * 9)
+        carb_g = int(round(remaining_calories / 4))
+        carb_g = max(carb_g, 130)
+
+        fiber_min_by_sex = 25 if gender != 2 else 21
+        fiber_g = int(round(max(fiber_min_by_sex, 14 * total_calories / 1000)))
         sodium_mg = 2000
 
         return {
             "bmi": bmi,
             "bmi_status": bmi_status,
+            "bmr": round(bmr, 1),
+            "activity_factor": activity_factor,
+            "calorie_adjust": calorie_adjust,
             "targets": {
                 "calories": total_calories,
                 "protein": protein_g,
@@ -141,7 +165,7 @@ class FoodController:
             user = await User.get(id=user_id)
         except Exception as e:
             logger.error(f"User not found: {str(e)}")
-            raise CustomException(message=f"用户不存在", code=404)
+            raise CustomException(message="用户不存在", code=404)
             
         record = await RecognitionRecord.create(
             user=user,
@@ -193,7 +217,7 @@ class FoodController:
                         total_nutrition["sodium"] += nutrition.sodium
 
                 # 保存识别详情
-                detail = await RecognitionDetail.create(
+                await RecognitionDetail.create(
                     record=record,
                     food=food_cat if food_cat else None,
                     confidence=pred["confidence"],
@@ -768,9 +792,12 @@ class FoodController:
             # 计算 BMI
             bmi = round(weight / ((height/100)**2), 1)
             bmi_status = "正常"
-            if bmi < 18.5: bmi_status = "偏瘦"
-            elif 24 <= bmi < 28: bmi_status = "超重"
-            elif bmi >= 28: bmi_status = "肥胖"
+            if bmi < 18.5:
+                bmi_status = "偏瘦"
+            elif 24 <= bmi < 28:
+                bmi_status = "超重"
+            elif bmi >= 28:
+                bmi_status = "肥胖"
             
             # 生成建议文本
             content = (
@@ -780,7 +807,7 @@ class FoodController:
             
             # 记录到数据库
             user = await User.get(id=user_id)
-            recommendation = await NutritionRecommendation.create(
+            await NutritionRecommendation.create(
                 user=user,
                 record=None,
                 content=content,
@@ -807,12 +834,28 @@ class FoodController:
             if not user:
                 raise CustomException(message="用户不存在", code=404)
 
-            targets_info = FoodController._calculate_daily_targets(
-                height_cm=getattr(user, "height_cm", None),
-                weight_kg=getattr(user, "weight_kg", None),
-                gender=getattr(user, "gender", None),
-                age=getattr(user, "age", None),
-            )
+            try:
+                targets_info = FoodController._calculate_daily_targets(
+                    height_cm=getattr(user, "height_cm", None),
+                    weight_kg=getattr(user, "weight_kg", None),
+                    gender=getattr(user, "gender", None),
+                    age=getattr(user, "age", None),
+                )
+            except CustomException as e:
+                if e.status_code != 422:
+                    raise
+                targets_info = {
+                    "bmi": None,
+                    "bmi_status": "未知",
+                    "targets": {
+                        "calories": 2000,
+                        "protein": 60,
+                        "fat": 65,
+                        "carbs": 250,
+                        "fiber": 25,
+                        "sodium": 2000,
+                    },
+                }
 
             record = await RecognitionRecord.get_or_none(id=record_id, user_id=user_id).prefetch_related(
                 "analysis", "details", "details__food", "details__food__nutrition"
@@ -837,7 +880,38 @@ class FoodController:
                 total["fiber"] = float(getattr(record.analysis, "total_fiber", 0) or 0)
                 total["sodium"] = float(getattr(record.analysis, "total_sodium", 0) or 0)
 
-            if total["fiber"] == 0 or total["sodium"] == 0:
+            item_summaries: List[Dict] = []
+            for d in record.details:
+                if d.food and d.food.nutrition:
+                    n = d.food.nutrition
+                    calories = float(n.energy or 0)
+                    protein = float(n.protein or 0)
+                    carbs = float(n.carbohydrate or 0)
+                    fat = float(n.fat or 0)
+                    fiber = float(n.fiber or 0)
+                    sodium = float(n.sodium or 0)
+                    item_summaries.append(
+                        {
+                            "name_zh": d.food.chinese_name or d.food.name,
+                            "name_en": d.food.name,
+                            "calories": calories,
+                            "protein": protein,
+                            "carbs": carbs,
+                            "fat": fat,
+                            "fiber": fiber,
+                            "sodium": sodium,
+                        }
+                    )
+
+            if total["calories"] == 0 and item_summaries:
+                total["calories"] = sum(i["calories"] for i in item_summaries)
+                total["protein"] = sum(i["protein"] for i in item_summaries)
+                total["carbs"] = sum(i["carbs"] for i in item_summaries)
+                total["fat"] = sum(i["fat"] for i in item_summaries)
+                total["fiber"] = sum(i["fiber"] for i in item_summaries)
+                total["sodium"] = sum(i["sodium"] for i in item_summaries)
+
+            if (total["fiber"] == 0 or total["sodium"] == 0) and item_summaries:
                 for d in record.details:
                     if d.food and d.food.nutrition:
                         n = d.food.nutrition
@@ -848,29 +922,77 @@ class FoodController:
 
             tips: List[str] = []
             tips.append("说明：当前识别的营养值按每种食物 100g 估算（未输入重量）。")
+            if targets_info.get("bmi") is None:
+                tips.append("提示：请先在个人资料完善身高、体重、性别、年龄，可获得更精准的个性化建议。")
 
-            cal_ratio = total["calories"] / targets["calories"] if targets["calories"] else 0
-            if cal_ratio >= 1.1:
-                tips.append("本次餐食热量偏高，建议下一餐选择清淡、低脂的食物，并适当增加活动量。")
-            elif cal_ratio >= 0.8:
-                tips.append("本次餐食热量接近目标范围，注意保持全天总摄入平衡。")
-            else:
-                tips.append("本次餐食热量偏低，若今日其他餐也偏少，可适当补充优质主食或蛋白。")
+            meal_calories = total["calories"]
+            if meal_calories <= 0:
+                tips.append("本次餐食热量数据不足，建议补充更清晰的图片或完善食物库营养信息。")
+                meal_calories = max(0.0, total["protein"] * 4 + total["carbs"] * 4 + total["fat"] * 9)
 
-            protein_ratio = total["protein"] / targets["protein"] if targets["protein"] else 0
-            if protein_ratio < 0.6:
-                tips.append("蛋白质摄入偏低，建议增加瘦肉、鱼虾、蛋奶或豆制品。")
+            daily_calories = float(targets.get("calories") or 0)
+            meal_cal_ratio = meal_calories / daily_calories if daily_calories else 0
+            if daily_calories:
+                tips.append(f"本次餐食约 {round(meal_calories)} kcal，占您全天目标 {daily_calories} kcal 的 {round(meal_cal_ratio * 100)}%。")
+
+            bmi_status = targets_info.get("bmi_status") or "未知"
+            if meal_cal_ratio >= 0.6:
+                if bmi_status in {"超重", "肥胖"}:
+                    tips.append("本次热量占比偏高且体重偏高，建议下一餐减少主食与油脂，优先选择高纤维蔬菜 + 优质蛋白。")
+                else:
+                    tips.append("本次热量占比偏高，建议下一餐以清淡为主并控制油脂与含糖饮料。")
+            elif 0.25 <= meal_cal_ratio < 0.6:
+                tips.append("本次热量占比适中，建议继续保持全天均衡分配。")
+            elif daily_calories:
+                if bmi_status == "偏瘦":
+                    tips.append("本次热量占比偏低且体重偏轻，可在下一餐适量增加主食与优质脂肪（坚果、牛油果、橄榄油）。")
+                else:
+                    tips.append("本次热量占比偏低，若今日其他餐也偏少，可适当补充主食或蛋白以避免能量不足。")
+
+            protein_kcal = total["protein"] * 4
+            carb_kcal = total["carbs"] * 4
+            fat_kcal = total["fat"] * 9
+            kcal_base = meal_calories if meal_calories > 0 else (protein_kcal + carb_kcal + fat_kcal)
+            kcal_base = kcal_base if kcal_base > 0 else 1
+
+            protein_pct = protein_kcal / kcal_base
+            carb_pct = carb_kcal / kcal_base
+            fat_pct = fat_kcal / kcal_base
+
+            if protein_pct < 0.12:
+                tips.append("本次蛋白质占比偏低，建议补充鸡蛋、牛奶、豆制品、鱼虾或瘦肉，提升饱腹感与肌肉维持。")
+            elif protein_pct > 0.35:
+                tips.append("本次蛋白质占比偏高，注意搭配蔬菜与主食，避免膳食结构过于单一。")
+
+            if fat_pct > 0.40:
+                tips.append("本次脂肪占比偏高，建议减少煎炸/肥肉/奶油，改用蒸煮炖并控制用油。")
+            elif fat_pct < 0.15:
+                tips.append("本次脂肪占比偏低，可适量加入坚果、橄榄油或深海鱼，帮助脂溶性维生素吸收。")
+
+            if carb_pct < 0.40:
+                tips.append("本次碳水占比偏低，若伴随疲劳或训练，可适量增加全谷物、薯类等优质主食。")
+            elif carb_pct > 0.70:
+                tips.append("本次碳水占比偏高，建议用全谷物替代精制主食，并搭配蛋白与蔬菜降低血糖波动。")
 
             fiber_ratio = total["fiber"] / targets["fiber"] if targets["fiber"] else 0
-            if fiber_ratio < 0.6:
-                tips.append("膳食纤维摄入偏低，建议增加蔬菜、全谷物与豆类。")
+            fiber_density = (total["fiber"] / kcal_base) * 1000 if kcal_base else 0
+            if fiber_ratio < 0.6 or fiber_density < 10:
+                tips.append("膳食纤维偏低，建议在下一餐增加深色蔬菜、豆类或全谷物，并保证足量饮水。")
 
             if total["sodium"] > targets["sodium"]:
                 tips.append("钠摄入偏高，建议减少咸菜、酱料与加工食品，烹饪少盐。")
+            elif total["sodium"] > targets["sodium"] * 0.6:
+                tips.append("本次钠占比较高，注意控制蘸料与汤汁摄入，优先选择清蒸/白灼做法。")
+
+            if item_summaries:
+                top_sodium = sorted(item_summaries, key=lambda x: x["sodium"], reverse=True)[:2]
+                top_sodium_names = [f"{i['name_zh']}({round(i['sodium'])}mg)" for i in top_sodium if i["sodium"] > 0]
+                if top_sodium_names:
+                    tips.append(f"本次钠主要来源：{ '、'.join(top_sodium_names) }。")
 
             bmi = targets_info["bmi"]
-            bmi_status = targets_info["bmi_status"]
-            tips.append(f"您的 BMI 为 {bmi}（{bmi_status}），建议以长期稳定的饮食与运动习惯为主。")
+            if bmi is not None:
+                tips.append(f"您的 BMI 为 {bmi}（{bmi_status}），建议结合目标（维持/增重/减脂）长期坚持饮食结构优化与规律运动。")
 
             content = "\n".join(tips)
             reference = (
@@ -1091,7 +1213,7 @@ class FoodController:
             
             # 创建营养信息（如果提供）
             if nutrition_data:
-                nutrition = await Nutrition.create(
+                await Nutrition.create(
                     food=category,
                     energy=float(nutrition_data.get("energy", 0)),
                     protein=float(nutrition_data.get("protein", 0)),
