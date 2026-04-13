@@ -3,7 +3,16 @@
     <template #header>
       <div class="flex items-center px-4 space-x-5">
         <span class="h-12 w-3 rounded-full bg-emerald-500"></span>
-        <h3 class="text-5xl font-black tracking-tighter text-slate-900">个性化营养目标仪表盘</h3>
+        <div class="flex flex-col">
+          <h3 class="text-5xl font-black tracking-tighter text-slate-900">个性化营养目标仪表盘</h3>
+          <div v-if="foodNameZh || foodNameEn" class="mt-2 flex items-baseline gap-3">
+            <span v-if="foodNameZh" class="text-2xl font-black text-slate-700">{{ foodNameZh }}</span>
+            <span v-if="foodNameEn" class="text-xl font-bold text-slate-400">{{ foodNameEn }}</span>
+            <span v-if="confidencePercent !== ''" class="text-xl font-bold text-emerald-600"
+              >{{ confidencePercent }}</span
+            >
+          </div>
+        </div>
       </div>
     </template>
     <template #header-extra>
@@ -98,6 +107,18 @@ const props = defineProps({
       fiber: 0,
       sodium: 0,
     }),
+  },
+  foodNameZh: {
+    type: String,
+    default: '',
+  },
+  foodNameEn: {
+    type: String,
+    default: '',
+  },
+  confidence: {
+    type: Number,
+    default: null,
   },
 })
 
@@ -204,6 +225,12 @@ const analysisSummary = computed(() => {
   if (calPercent > 80) return '今天的热量摄入已经接近目标，建议晚餐清淡一些。'
   if (calPercent > 40) return '目前的营养摄入较为均衡，保持良好的饮食习惯。'
   return '今日营养摄入还不足，建议多摄入一些优质蛋白和新鲜蔬菜。'
+})
+
+const confidencePercent = computed(() => {
+  const v = props.confidence
+  if (!Number.isFinite(v)) return ''
+  return `${(v * 100).toFixed(1)}%`
 })
 </script>
 

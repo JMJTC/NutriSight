@@ -235,8 +235,33 @@ class FoodController:
                 logger.error(f"Failed to process prediction {pred}: {str(e)}")
                 continue
 
+        best_result = None
+        if results:
+            best_result = max(results, key=lambda r: float(r.confidence or 0))
+
+        if best_result and best_result.nutrition:
+            total_nutrition = {
+                "energy": float(best_result.nutrition.energy or 0),
+                "protein": float(best_result.nutrition.protein or 0),
+                "fat": float(best_result.nutrition.fat or 0),
+                "carbohydrate": float(best_result.nutrition.carbohydrate or 0),
+                "fiber": float(best_result.nutrition.fiber or 0),
+                "sodium": float(best_result.nutrition.sodium or 0),
+            }
+        else:
+            total_nutrition = {
+                "energy": 0.0,
+                "protein": 0.0,
+                "fat": 0.0,
+                "carbohydrate": 0.0,
+                "fiber": 0.0,
+                "sodium": 0.0,
+            }
+
         # 5. 保存营养分析结果
-        analysis_summary = f"识别到 {len(predictions)} 项食物。"
+        analysis_summary = "未识别到食物。"
+        if best_result:
+            analysis_summary = f"识别到食物：{best_result.class_name}（置信度 {(best_result.confidence * 100):.1f}%）。"
         if total_nutrition["energy"] > 800:
             analysis_summary += " 这是一顿高热量餐食。"
         elif total_nutrition["energy"] > 500:
@@ -259,7 +284,8 @@ class FoodController:
         
         # 处理识别详情，转换为前端期望的格式
         details = []
-        for result in results:
+        results_for_response = [best_result] if best_result else []
+        for result in results_for_response:
             food_name_en = result.class_name
             food_name_zh = result.class_name
             try:
@@ -436,7 +462,12 @@ class FoodController:
             
             # 处理识别详情，转换为前端期望的格式
             details = []
-            for d in record.details:
+            best_detail = None
+            if record.details:
+                best_detail = max(record.details, key=lambda x: float(getattr(x, "confidence", 0) or 0))
+            details_for_response = [best_detail] if best_detail else []
+
+            for d in details_for_response:
                 nut_dict = {}
                 if d.food and d.food.nutrition:
                     n = d.food.nutrition
@@ -880,28 +911,25 @@ class FoodController:
                 total["fiber"] = float(getattr(record.analysis, "total_fiber", 0) or 0)
                 total["sodium"] = float(getattr(record.analysis, "total_sodium", 0) or 0)
 
+            best_detail = None
+            if record.details:
+                best_detail = max(record.details, key=lambda x: float(getattr(x, "confidence", 0) or 0))
+
             item_summaries: List[Dict] = []
-            for d in record.details:
-                if d.food and d.food.nutrition:
-                    n = d.food.nutrition
-                    calories = float(n.energy or 0)
-                    protein = float(n.protein or 0)
-                    carbs = float(n.carbohydrate or 0)
-                    fat = float(n.fat or 0)
-                    fiber = float(n.fiber or 0)
-                    sodium = float(n.sodium or 0)
-                    item_summaries.append(
-                        {
-                            "name_zh": d.food.chinese_name or d.food.name,
-                            "name_en": d.food.name,
-                            "calories": calories,
-                            "protein": protein,
-                            "carbs": carbs,
-                            "fat": fat,
-                            "fiber": fiber,
-                            "sodium": sodium,
-                        }
-                    )
+            if best_detail and best_detail.food and best_detail.food.nutrition:
+                n = best_detail.food.nutrition
+                item_summaries.append(
+                    {
+                        "name_zh": best_detail.food.chinese_name or best_detail.food.name,
+                        "name_en": best_detail.food.name,
+                        "calories": float(n.energy or 0),
+                        "protein": float(n.protein or 0),
+                        "carbs": float(n.carbohydrate or 0),
+                        "fat": float(n.fat or 0),
+                        "fiber": float(n.fiber or 0),
+                        "sodium": float(n.sodium or 0),
+                    }
+                )
 
             if total["calories"] == 0 and item_summaries:
                 total["calories"] = sum(i["calories"] for i in item_summaries)
@@ -912,11 +940,8 @@ class FoodController:
                 total["sodium"] = sum(i["sodium"] for i in item_summaries)
 
             if (total["fiber"] == 0 or total["sodium"] == 0) and item_summaries:
-                for d in record.details:
-                    if d.food and d.food.nutrition:
-                        n = d.food.nutrition
-                        total["fiber"] += float(n.fiber or 0)
-                        total["sodium"] += float(n.sodium or 0)
+                total["fiber"] = float(item_summaries[0]["fiber"] or 0)
+                total["sodium"] = float(item_summaries[0]["sodium"] or 0)
 
             targets = targets_info["targets"]
 

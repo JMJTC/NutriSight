@@ -9,7 +9,7 @@
           </h1>
           <p class="subtitle mt-2">上传图片，一键完成识别、营养分析与饮食建议。</p>
         </div>
-        <n-button
+        <!-- <n-button
           type="primary"
           round
           tertiary
@@ -20,7 +20,7 @@
             <n-icon><BookOutline /></n-icon>
           </template>
           食物百科
-        </n-button>
+        </n-button> -->
       </div>
 
       <n-card class="wizard-card" :bordered="false">
@@ -148,7 +148,12 @@
             </div>
 
             <div v-else-if="currentStep === 4" class="recommend-step">
-              <NutritionDashboard :current="currentNutrition" />
+              <NutritionDashboard
+                :current="currentNutrition"
+                :food-name-zh="primaryFood.food_name_zh"
+                :food-name-en="primaryFood.food_name_en"
+                :confidence="primaryFood.confidence"
+              />
               <div class="recommend-grid">
                 <n-card class="recommend-card" :bordered="false">
                   <template #header>
@@ -185,7 +190,12 @@
       </n-card>
 
       <div v-if="result && currentStep !== 4" class="mt-6 animate-fade-in">
-        <NutritionDashboard :current="currentNutrition" />
+        <NutritionDashboard
+          :current="currentNutrition"
+          :food-name-zh="primaryFood.food_name_zh"
+          :food-name-en="primaryFood.food_name_en"
+          :confidence="primaryFood.confidence"
+        />
       </div>
     </div>
 
@@ -219,20 +229,7 @@ const currentStep = ref(1)
 const stepStatus = ref('process')
 const showEncyclopedia = ref(false)
 
-const currentNutrition = computed(() => {
-  if (!result.value) return { calories: 0, protein: 0, carbs: 0, fat: 0, fiber: 0, sodium: 0 }
-  const nutrition = result.value.nutrition || {}
-  return {
-    calories: Number(nutrition.total_calories) || 0,
-    protein: Number(nutrition.total_protein) || 0,
-    carbs: Number(nutrition.total_carbs) || 0,
-    fat: Number(nutrition.total_fat) || 0,
-    fiber: Number(nutrition.total_fiber) || 0,
-    sodium: Number(nutrition.total_sodium) || 0,
-  }
-})
-
-const safeDetails = computed(() => {
+const mappedDetails = computed(() => {
   const details = Array.isArray(result.value?.details) ? result.value.details : []
   return details.map((item, index) => {
     const nutrition = item?.nutrition || {}
@@ -253,6 +250,40 @@ const safeDetails = computed(() => {
       },
     }
   })
+})
+
+const primaryDetail = computed(() => {
+  const list = mappedDetails.value
+  if (!list.length) return null
+  return list.reduce((best, cur) => (cur.confidence > best.confidence ? cur : best), list[0])
+})
+
+const safeDetails = computed(() => {
+  const best = primaryDetail.value
+  return best ? [best] : []
+})
+
+const currentNutrition = computed(() => {
+  const best = primaryDetail.value
+  if (!best) return { calories: 0, protein: 0, carbs: 0, fat: 0, fiber: 0, sodium: 0 }
+  return {
+    calories: Number(best.nutrition?.calories) || 0,
+    protein: Number(best.nutrition?.protein) || 0,
+    carbs: Number(best.nutrition?.carbs) || 0,
+    fat: Number(best.nutrition?.fat) || 0,
+    fiber: Number(best.nutrition?.fiber) || 0,
+    sodium: Number(best.nutrition?.sodium) || 0,
+  }
+})
+
+const primaryFood = computed(() => {
+  const best = primaryDetail.value
+  if (!best) return { food_name_zh: '', food_name_en: '', confidence: null }
+  return {
+    food_name_zh: best.food_name_zh || '',
+    food_name_en: best.food_name_en || '',
+    confidence: Number.isFinite(best.confidence) ? best.confidence : null,
+  }
 })
 
 const recommendationTips = ref([])
