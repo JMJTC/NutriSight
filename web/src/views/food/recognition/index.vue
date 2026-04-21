@@ -59,6 +59,23 @@
                 </n-upload-dragger>
               </n-upload>
 
+              <input
+                ref="cameraInputRef"
+                type="file"
+                accept="image/*"
+                capture="environment"
+                style="display: none"
+                @change="handleCameraChange"
+              />
+              <div class="mt-4 flex justify-center">
+                <n-button :disabled="loading" type="primary" secondary @click="openCameraUpload">
+                  <template #icon
+                    ><n-icon><CameraOutline /></n-icon
+                  ></template>
+                  拍照上传
+                </n-button>
+              </div>
+
               <div v-if="loading" class="loading-wrap">
                 <n-spin size="medium" />
                 <span class="loading-text">AI 正在分析图片，请稍候...</span>
@@ -84,15 +101,25 @@
 
                 <n-scrollbar class="result-list-scroll">
                   <div class="result-list">
-                    <div v-for="(item, index) in safeDetails" :key="index" class="result-item">
+                    <div v-for="(item, index) in mappedDetails" :key="index" class="result-item">
                       <div class="flex items-center justify-between gap-2">
                         <div class="food-name-wrap">
                           <div class="food-name-zh">{{ item.food_name_zh }}</div>
                           <div class="food-name-en">{{ item.food_name_en }}</div>
                         </div>
-                        <n-tag size="small" type="success" :bordered="false">
-                          {{ (item.confidence * 100).toFixed(1) }}%
-                        </n-tag>
+                        <div class="flex items-center gap-2">
+                          <n-tag
+                            v-if="primaryDetail && item.class_id === primaryDetail.class_id"
+                            size="small"
+                            type="warning"
+                            :bordered="false"
+                          >
+                            最高
+                          </n-tag>
+                          <n-tag size="small" type="success" :bordered="false">
+                            {{ (item.confidence * 100).toFixed(1) }}%
+                          </n-tag>
+                        </div>
                       </div>
                       <div class="food-meta">
                         <n-icon size="16"><FlameOutline /></n-icon>
@@ -208,12 +235,12 @@ import { ref, computed } from 'vue'
 import {
   CloudUploadOutline,
   RestaurantOutline,
-  BookOutline,
   ArrowForwardOutline,
   ArrowBackOutline,
   CheckmarkCircleOutline,
   RefreshOutline,
   FlameOutline,
+  CameraOutline,
 } from '@vicons/ionicons5'
 import { useMessage } from 'naive-ui'
 import api from '@/api'
@@ -228,14 +255,17 @@ const result = ref(null)
 const currentStep = ref(1)
 const stepStatus = ref('process')
 const showEncyclopedia = ref(false)
+const cameraInputRef = ref(null)
 
 const mappedDetails = computed(() => {
   const details = Array.isArray(result.value?.details) ? result.value.details : []
   return details.map((item, index) => {
     const nutrition = item?.nutrition || {}
+    const classId = Number(item?.class_id)
     const foodNameZh = item?.food_name_zh || item?.food_name || `食物${index + 1}`
     const foodNameEn = item?.food_name_en || item?.food_name || foodNameZh
     return {
+      class_id: Number.isFinite(classId) ? classId : -1,
       food_name: foodNameZh,
       food_name_zh: foodNameZh,
       food_name_en: foodNameEn,
@@ -306,6 +336,43 @@ const loadRecommendation = async () => {
     message.error('生成建议请求出错')
   } finally {
     recommendationLoading.value = false
+  }
+}
+
+const openCameraUpload = () => {
+  if (loading.value) return
+  cameraInputRef.value?.click?.()
+}
+
+const handleCameraChange = async (e) => {
+  const file = e?.target?.files?.[0]
+  if (!file) return
+  e.target.value = ''
+  await uploadByRawFile(file)
+}
+
+const uploadByRawFile = async (rawFile) => {
+  loading.value = true
+  result.value = null
+  recommendationTips.value = []
+
+  const formData = new FormData()
+  formData.append('file', rawFile)
+
+  try {
+    const res = await api.recognizeFood(formData)
+    if (res.code === 200) {
+      result.value = res.data
+      recommendationTips.value = []
+      message.success('识别成功 (Recognized Successfully)')
+      currentStep.value = 2
+    } else {
+      message.error(res.msg || '识别失败')
+    }
+  } catch (error) {
+    message.error('请求出错')
+  } finally {
+    loading.value = false
   }
 }
 

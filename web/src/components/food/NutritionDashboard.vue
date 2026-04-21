@@ -6,11 +6,13 @@
         <div class="flex flex-col">
           <h3 class="text-5xl font-black tracking-tighter text-slate-900">个性化营养目标仪表盘</h3>
           <div v-if="foodNameZh || foodNameEn" class="mt-2 flex items-baseline gap-3">
-            <span v-if="foodNameZh" class="text-2xl font-black text-slate-700">{{ foodNameZh }}</span>
+            <span v-if="foodNameZh" class="text-2xl font-black text-slate-700">{{
+              foodNameZh
+            }}</span>
             <span v-if="foodNameEn" class="text-xl font-bold text-slate-400">{{ foodNameEn }}</span>
-            <span v-if="confidencePercent !== ''" class="text-xl font-bold text-emerald-600"
-              >{{ confidencePercent }}</span
-            >
+            <span v-if="confidencePercent !== ''" class="text-xl font-bold text-emerald-600">{{
+              confidencePercent
+            }}</span>
           </div>
         </div>
       </div>

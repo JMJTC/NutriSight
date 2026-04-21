@@ -284,7 +284,7 @@ class FoodController:
         
         # 处理识别详情，转换为前端期望的格式
         details = []
-        results_for_response = [best_result] if best_result else []
+        results_for_response = sorted(results, key=lambda r: float(r.confidence or 0), reverse=True)
         for result in results_for_response:
             food_name_en = result.class_name
             food_name_zh = result.class_name
