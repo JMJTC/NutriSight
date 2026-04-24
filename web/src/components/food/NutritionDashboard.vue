@@ -134,9 +134,17 @@ const targets = computed(() => {
 
   const hasProfile =
     Number.isFinite(heightCm) &&
+    heightCm >= 130 &&
+    heightCm <= 250 &&
     Number.isFinite(weightKg) &&
+    weightKg >= 20 &&
+    weightKg <= 200 &&
     Number.isFinite(gender) &&
-    Number.isFinite(age)
+    gender >= 1 &&
+    gender <= 3 &&
+    Number.isFinite(age) &&
+    age >= 1 &&
+    age <= 120
   if (!hasProfile) {
     return { calories: 2000, protein: 60, carbs: 250, fat: 65, fiber: 25, sodium: 2000 }
   }

@@ -231,7 +231,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import {
   CloudUploadOutline,
   RestaurantOutline,
@@ -243,19 +243,75 @@ import {
   CameraOutline,
 } from '@vicons/ionicons5'
 import { useMessage } from 'naive-ui'
+import { useRouter } from 'vue-router'
 import api from '@/api'
 import ConfidenceHeatmap from '@/components/food/ConfidenceHeatmap.vue'
 import NutritionRadarChart from '@/components/food/NutritionRadarChart.vue'
 import FoodEncyclopedia from '@/components/food/FoodEncyclopedia.vue'
 import NutritionDashboard from '@/components/food/NutritionDashboard.vue'
+import { useUserStore } from '@/store'
 
 const message = useMessage()
+const router = useRouter()
+const userStore = useUserStore()
 const loading = ref(false)
 const result = ref(null)
 const currentStep = ref(1)
 const stepStatus = ref('process')
 const showEncyclopedia = ref(false)
 const cameraInputRef = ref(null)
+const hasShownProfileDialog = ref(false)
+
+const isValidHeight = (v) => Number.isFinite(v) && v >= 130 && v <= 250
+const isValidWeight = (v) => Number.isFinite(v) && v >= 30 && v <= 200
+const isValidGender = (v) => Number.isFinite(v) && v >= 1 && v <= 3
+const isValidAge = (v) => Number.isFinite(v) && v >= 1 && v <= 120
+
+const missingProfileFields = computed(() => {
+  const heightCm = Number(userStore.userInfo?.height_cm)
+  const weightKg = Number(userStore.userInfo?.weight_kg)
+  const gender = Number(userStore.userInfo?.gender)
+  const age = Number(userStore.userInfo?.age)
+
+  const missing = []
+  if (!isValidHeight(heightCm)) missing.push('身高')
+  if (!isValidWeight(weightKg)) missing.push('体重')
+  if (!isValidGender(gender)) missing.push('性别')
+  if (!isValidAge(age)) missing.push('年龄')
+  return missing
+})
+
+const isProfileComplete = computed(() => missingProfileFields.value.length === 0)
+
+const promptCompleteProfile = (actionLabel = '使用核心功能') => {
+  if (hasShownProfileDialog.value) return
+  hasShownProfileDialog.value = true
+  const missingText = missingProfileFields.value.join('、')
+  const content = missingText
+    ? `为保证识别分析与个性化建议准确性，${actionLabel}前请先完善：${missingText}。现在去完善吗？`
+    : `为保证识别分析与个性化建议准确性，${actionLabel}前请先完善个人信息。现在去完善吗？`
+  if (typeof $dialog?.confirm === 'function') {
+    $dialog.confirm({
+      title: '请先完善个人信息',
+      type: 'warning',
+      content,
+      async confirm() {
+        await router.push('/profile')
+      },
+      cancel() {
+        message.warning('请先完善个人信息后再使用该功能')
+      },
+    })
+  } else {
+    message.warning(content)
+  }
+}
+
+const ensureProfileComplete = (actionLabel) => {
+  if (isProfileComplete.value) return true
+  promptCompleteProfile(actionLabel)
+  return false
+}
 
 const mappedDetails = computed(() => {
   const details = Array.isArray(result.value?.details) ? result.value.details : []
@@ -320,6 +376,7 @@ const recommendationTips = ref([])
 const recommendationLoading = ref(false)
 
 const loadRecommendation = async () => {
+  if (!ensureProfileComplete('生成饮食建议')) return
   if (!result.value?.record_id) return
   if (recommendationLoading.value) return
   recommendationLoading.value = true
@@ -341,6 +398,7 @@ const loadRecommendation = async () => {
 
 const openCameraUpload = () => {
   if (loading.value) return
+  if (!ensureProfileComplete('拍照上传')) return
   cameraInputRef.value?.click?.()
 }
 
@@ -352,6 +410,7 @@ const handleCameraChange = async (e) => {
 }
 
 const uploadByRawFile = async (rawFile) => {
+  if (!ensureProfileComplete('上传识别')) return
   loading.value = true
   result.value = null
   recommendationTips.value = []
@@ -377,6 +436,10 @@ const uploadByRawFile = async (rawFile) => {
 }
 
 const handleUpload = async ({ file, onFinish, onError }) => {
+  if (!ensureProfileComplete('上传识别')) {
+    onError?.()
+    return
+  }
   loading.value = true
   result.value = null
   recommendationTips.value = []
@@ -417,6 +480,7 @@ const resetWizard = () => {
 }
 
 const goToStep = (step) => {
+  if (step > 1 && !ensureProfileComplete('使用食物识别分析')) return
   if (!result.value && step > 1) {
     currentStep.value = 1
     return
@@ -437,6 +501,11 @@ const getImageUrl = (path) => {
   const backendHost = import.meta.env.VITE_APP_API_BASE_URL || 'http://127.0.0.1:9999'
   return `${backendHost}${path}`
 }
+
+onMounted(async () => {
+  await userStore.getUserInfo().catch(() => null)
+  if (!isProfileComplete.value) promptCompleteProfile('使用食物识别分析')
+})
 </script>
 
 <style scoped>
