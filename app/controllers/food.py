@@ -1,7 +1,11 @@
+import asyncio
+import io
 import os
 import shutil
 import uuid
 from typing import List, Optional, Dict
+
+from PIL import Image, UnidentifiedImageError
 
 from fastapi import UploadFile
 from tortoise.expressions import Q
@@ -31,6 +35,73 @@ from app.models.admin import User
 
 class FoodController:
     """食物识别业务控制器"""
+
+    ALLOWED_IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".bmp", ".webp"}
+    ALLOWED_IMAGE_CONTENT_TYPES = {
+        "image/jpeg",
+        "image/png",
+        "image/bmp",
+        "image/webp",
+        "application/octet-stream",
+    }
+    MAX_UPLOAD_IMAGE_SIZE = 8 * 1024 * 1024
+    MAX_UPLOAD_IMAGE_PIXELS = 20_000_000
+
+    @staticmethod
+    async def _validate_image_upload(file: UploadFile) -> tuple[bytes, str]:
+        """校验上传图片的类型、大小和内容，避免无效或超大文件进入推理链路。"""
+        filename = (file.filename or "").strip()
+        if not filename:
+            raise CustomException(message="图片文件名不能为空", code=400)
+
+        file_ext = os.path.splitext(filename)[1].lower()
+        if file_ext not in FoodController.ALLOWED_IMAGE_EXTENSIONS:
+            raise CustomException(
+                message="仅支持 jpg、jpeg、png、bmp、webp 格式的图片",
+                code=400,
+            )
+
+        content_type = (file.content_type or "").lower()
+        if content_type and content_type not in FoodController.ALLOWED_IMAGE_CONTENT_TYPES:
+            raise CustomException(message="上传文件不是受支持的图片类型", code=400)
+
+        file_bytes = await file.read(FoodController.MAX_UPLOAD_IMAGE_SIZE + 1)
+        if not file_bytes:
+            raise CustomException(message="上传图片不能为空", code=400)
+
+        if len(file_bytes) > FoodController.MAX_UPLOAD_IMAGE_SIZE:
+            raise CustomException(message="图片大小不能超过 8MB", code=400)
+
+        try:
+            with Image.open(io.BytesIO(file_bytes)) as image:
+                image.verify()
+            with Image.open(io.BytesIO(file_bytes)) as image:
+                width, height = image.size
+                if width <= 0 or height <= 0:
+                    raise CustomException(message="图片尺寸无效", code=400)
+                if width * height > FoodController.MAX_UPLOAD_IMAGE_PIXELS:
+                    raise CustomException(message="图片分辨率过高，请压缩后重试", code=400)
+        except CustomException:
+            raise
+        except (UnidentifiedImageError, OSError) as exc:
+            raise CustomException(message=f"无法解析图片内容: {str(exc)}", code=400)
+
+        return file_bytes, file_ext.lstrip(".")
+
+    @staticmethod
+    def _save_upload_bytes(file_bytes: bytes, file_path: str) -> None:
+        with open(file_path, "wb") as buffer:
+            buffer.write(file_bytes)
+
+    @staticmethod
+    def _safe_delete_file(file_path: Optional[str]) -> None:
+        if not file_path:
+            return
+        try:
+            if os.path.exists(file_path):
+                os.remove(file_path)
+        except Exception as exc:
+            logger.warning(f"Failed to cleanup file {file_path}: {str(exc)}")
 
     @staticmethod
     def _calculate_daily_targets(height_cm: int, weight_kg: float, gender: int, age: int) -> Dict:
@@ -126,45 +197,56 @@ class FoodController:
         Returns:
             RecognitionResponse: 识别结果响应
         """
-        # 1. 保存图片文件
+        # 1. 先做上传校验，避免无效文件进入保存和推理链路
+        file_bytes, file_ext = await FoodController._validate_image_upload(file)
+
+        # 2. 保存图片文件，磁盘写入放在线程池中避免阻塞事件循环
         upload_dir = os.path.join(settings.BASE_DIR, "deploy", "static", "uploads")
-        if not os.path.exists(upload_dir):
-            os.makedirs(upload_dir)
-        
-        file_ext = file.filename.split(".")[-1] if file.filename else "png"
+        os.makedirs(upload_dir, exist_ok=True)
+
         file_name = f"{uuid.uuid4()}.{file_ext}"
         file_path = os.path.join(upload_dir, file_name)
-        
+        annotated_full_path = None
+
         try:
-            with open(file_path, "wb") as buffer:
-                shutil.copyfileobj(file.file, buffer)
+            await asyncio.to_thread(FoodController._save_upload_bytes, file_bytes, file_path)
         except Exception as e:
             logger.error(f"File save failed: {str(e)}")
             raise CustomException(message=f"文件保存失败: {str(e)}", code=500)
-        
+
         # 相对路径用于 URL 访问
         relative_path = f"/static/uploads/{file_name}"
 
-        # 2. 执行 YOLO 推理
+        # 3. 执行 YOLO 推理，模型加载/预测/标注图生成放在线程池中
         try:
-            if not yolo_service.is_ready():
-                raise CustomException(message="YOLO 模型未就绪，请检查模型文件", code=500)
-            predictions, annotated_image_path = yolo_service.predict_with_annotation(file_path)
+            predictions, annotated_image_path = await asyncio.to_thread(
+                yolo_service.predict_with_annotation,
+                file_path,
+            )
             # 如果模型未生成标注图，仍保留原图用作展示(避免前端src空导致显示问题)
             if not annotated_image_path and predictions:
                 annotated_image_path = relative_path
+            if annotated_image_path and annotated_image_path.startswith("/static/uploads/"):
+                annotated_file_name = annotated_image_path.replace("/static/uploads/", "", 1)
+                annotated_full_path = os.path.join(upload_dir, annotated_file_name)
             logger.info(f"YOLO prediction returned {len(predictions)} results")
         except CustomException:
+            FoodController._safe_delete_file(file_path)
+            FoodController._safe_delete_file(annotated_full_path)
             raise
         except Exception as e:
             logger.error(f"Model inference failed: {str(e)}")
+            FoodController._safe_delete_file(file_path)
+            FoodController._safe_delete_file(annotated_full_path)
             raise CustomException(message=f"模型推理失败: {str(e)}", code=500)
 
-        # 3. 保存识别记录
+        # 4. 保存识别记录
         try:
             user = await User.get(id=user_id)
         except Exception as e:
             logger.error(f"User not found: {str(e)}")
+            FoodController._safe_delete_file(file_path)
+            FoodController._safe_delete_file(annotated_full_path)
             raise CustomException(message="用户不存在", code=404)
             
         record = await RecognitionRecord.create(
@@ -184,7 +266,7 @@ class FoodController:
             "sodium": 0.0
         }
 
-        # 4. 处理预测结果并聚合营养信息
+        # 5. 处理预测结果并聚合营养信息
         for pred in predictions:
             try:
                 # 根据 YOLO class_id 查找食物类别
@@ -258,7 +340,7 @@ class FoodController:
                 "sodium": 0.0,
             }
 
-        # 5. 保存营养分析结果
+        # 6. 保存营养分析结果
         analysis_summary = "未识别到食物。"
         if best_result:
             analysis_summary = f"识别到食物：{best_result.class_name}（置信度 {(best_result.confidence * 100):.1f}%）。"

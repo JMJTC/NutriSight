@@ -1,4 +1,5 @@
 import os
+import threading
 from typing import List, Dict, Optional, Tuple
 from pathlib import Path
 from ultralytics import YOLO
@@ -14,6 +15,8 @@ class YoloService:
     _model = None
     _model_loaded = False
     _load_error = None
+    _load_lock = threading.Lock()
+    _predict_lock = threading.Lock()
 
     def __new__(cls):
         if cls._instance is None:
@@ -42,35 +45,36 @@ class YoloService:
         Returns:
             bool: 模型是否成功加载
         """
-        if self._model is not None and self._model_loaded:
-            logger.debug("YOLO model already loaded")
-            return True
+        with self._load_lock:
+            if self._model is not None and self._model_loaded:
+                logger.debug("YOLO model already loaded")
+                return True
 
-        if self._load_error:
-            logger.error(f"Previous model loading failed: {self._load_error}")
-            return False
+            if self._load_error:
+                logger.error(f"Previous model loading failed: {self._load_error}")
+                return False
 
-        model_path = self._get_model_path()
-        
-        if not model_path.exists():
-            error_msg = f"YOLO model not found at {model_path}"
-            logger.error(error_msg)
-            self._load_error = error_msg
-            return False
-        
-        try:
-            logger.info(f"Loading YOLO model from {model_path}...")
-            self._model = YOLO(str(model_path))
-            self._model_loaded = True
-            logger.info("YOLO model loaded successfully")
-            return True
-        except Exception as e:
-            error_msg = f"Failed to load YOLO model: {str(e)}"
-            logger.error(error_msg)
-            self._load_error = error_msg
-            self._model = None
-            self._model_loaded = False
-            return False
+            model_path = self._get_model_path()
+
+            if not model_path.exists():
+                error_msg = f"YOLO model not found at {model_path}"
+                logger.error(error_msg)
+                self._load_error = error_msg
+                return False
+
+            try:
+                logger.info(f"Loading YOLO model from {model_path}...")
+                self._model = YOLO(str(model_path))
+                self._model_loaded = True
+                logger.info("YOLO model loaded successfully")
+                return True
+            except Exception as e:
+                error_msg = f"Failed to load YOLO model: {str(e)}"
+                logger.error(error_msg)
+                self._load_error = error_msg
+                self._model = None
+                self._model_loaded = False
+                return False
 
     def is_ready(self) -> bool:
         """检查服务是否就绪"""
@@ -103,7 +107,9 @@ class YoloService:
         
         try:
             logger.info(f"Running YOLO prediction on {image_path}")
-            results = self._model.predict(image_path, conf=conf, save=False, verbose=False)
+            # 模型推理为 CPU/GPU 密集型同步任务，使用锁避免并发请求同时抢占同一个模型实例。
+            with self._predict_lock:
+                results = self._model.predict(image_path, conf=conf, save=False, verbose=False)
             
             # 检查 results 是否为 None
             if results is None:
