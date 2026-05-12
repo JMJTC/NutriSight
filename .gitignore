@@ -17,3 +17,7 @@ db.sqlite3-wal
 
 .trae/
 deploy/static/uploads/
+
+.agents/
+.claude/
+unpacked_thesis/
