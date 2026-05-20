@@ -33,7 +33,6 @@ export default defineConfig(({ command, mode }) => {
             [VITE_BASE_API]: PROXY_CONFIG[VITE_BASE_API],
           }
         : undefined,
-      allowedHosts: ['taunt-playback-uncheck.ngrok-free.dev'],
     },
     build: {
       target: 'es2015',
