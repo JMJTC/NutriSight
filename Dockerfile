@@ -2,7 +2,7 @@ FROM node:18.12.0-alpine3.16 AS web
 
 WORKDIR /opt/vue-fastapi-admin
 COPY /web ./web
-RUN npm i -g pnpm --registry=https://registry.npmmirror.com \
+RUN npm i -g pnpm@9 --registry=https://registry.npmmirror.com \
     && cd /opt/vue-fastapi-admin/web \
     && pnpm i --registry=https://registry.npmmirror.com \
     && pnpm build
