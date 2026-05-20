@@ -32,7 +32,7 @@ const vPermission = resolveDirective('permission')
 const getImageUrl = (url) => {
   if (!url) return ''
   if (/^https?:\/\//.test(url)) return url
-  const backendHost = import.meta.env.VITE_APP_API_BASE_URL || 'http://127.0.0.1:9999'
+  const backendHost = import.meta.env.VITE_APP_API_BASE_URL || ''
   return `${backendHost}${url}`
 }
 

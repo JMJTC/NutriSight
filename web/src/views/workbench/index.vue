@@ -163,7 +163,7 @@ const message = useMessage()
 const avatarUrl = computed(() => {
   if (!userStore.userInfo.avatar) return 'https://avatars.githubusercontent.com/u/54677442?v=4'
   if (userStore.userInfo.avatar.startsWith('http')) return userStore.userInfo.avatar
-  const backendHost = import.meta.env.VITE_APP_API_BASE_URL || 'http://127.0.0.1:9999'
+  const backendHost = import.meta.env.VITE_APP_API_BASE_URL || ''
   return `${backendHost}${userStore.userInfo.avatar}`
 })
 
@@ -179,7 +179,7 @@ const getImageUrl = (row) => {
   const imagePath = row.annotated_image_path || row.image_path
   if (!imagePath) return ''
   if (/^https?:\/\//.test(imagePath)) return imagePath
-  const backendHost = import.meta.env.VITE_APP_API_BASE_URL || 'http://127.0.0.1:9999'
+  const backendHost = import.meta.env.VITE_APP_API_BASE_URL || ''
   return `${backendHost}${imagePath}`
 }
 

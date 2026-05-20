@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+  app:
+    build: .
+    container_name: smart-food-eye
+    ports:
+      - "80:80"
+    volumes:
+      # 持久化 SQLite 数据库
+      - ./db.sqlite3:/opt/vue-fastapi-admin/db.sqlite3
+      # 持久化上传的图片
+      - ./deploy/static/uploads:/opt/vue-fastapi-admin/deploy/static/uploads
+      # 模型权重文件 (大文件不打包进镜像, 通过挂载使用)
+      - ./weights:/opt/vue-fastapi-admin/weights:ro
+    environment:
+      - DEBUG=false
+      - SECRET_KEY=${SECRET_KEY:-change-me-to-a-random-secret-key}
+      - ENABLE_DEV_TOKEN=false
+      - UVICORN_RELOAD=false
+      - UVICORN_WORKERS=1
+    restart: unless-stopped
