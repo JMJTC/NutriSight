@@ -228,14 +228,12 @@ const handleBatchDelete = async () => {
 
 const getImageUrl = (row) => {
   if (!row) return ''
-  // 优先显示标注图片，如果没有则显示原图
   const imagePath = row.annotated_image_path || row.image_path
   if (!imagePath) return ''
   if (/^https?:\/\//.test(imagePath)) {
     return imagePath
   }
-  const backendHost = import.meta.env.VITE_APP_API_BASE_URL || 'http://127.0.0.1:9999'
-  return `${backendHost}${imagePath}`
+  return imagePath
 }
 
 const fetchHistory = async () => {

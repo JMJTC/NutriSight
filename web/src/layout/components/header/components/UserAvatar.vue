@@ -23,8 +23,7 @@ const userStore = useUserStore()
 const avatarUrl = computed(() => {
   if (!userStore.userInfo.avatar) return 'https://avatars.githubusercontent.com/u/54677442?v=4'
   if (userStore.userInfo.avatar.startsWith('http')) return userStore.userInfo.avatar
-  const backendHost = import.meta.env.VITE_APP_API_BASE_URL || 'http://127.0.0.1:9999'
-  return `${backendHost}${userStore.userInfo.avatar}`
+  return userStore.userInfo.avatar
 })
 
 const options = [

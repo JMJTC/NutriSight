@@ -12,7 +12,7 @@ export default defineConfig(({ command, mode }) => {
 
   const env = loadEnv(mode, process.cwd())
   const viteEnv = convertEnv(env)
-  const { VITE_PORT, VITE_PUBLIC_PATH, VITE_USE_PROXY, VITE_BASE_API } = viteEnv
+  const { VITE_PORT, VITE_PUBLIC_PATH, VITE_USE_PROXY } = viteEnv
 
   return {
     base: VITE_PUBLIC_PATH || '/',
@@ -28,11 +28,7 @@ export default defineConfig(({ command, mode }) => {
       host: '0.0.0.0',
       port: VITE_PORT,
       open: true,
-      proxy: VITE_USE_PROXY
-        ? {
-            [VITE_BASE_API]: PROXY_CONFIG[VITE_BASE_API],
-          }
-        : undefined,
+      proxy: VITE_USE_PROXY ? PROXY_CONFIG : undefined,
       allowedHosts: ['taunt-playback-uncheck.ngrok-free.dev'],
     },
     build: {

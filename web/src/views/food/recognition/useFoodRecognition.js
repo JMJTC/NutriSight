@@ -227,8 +227,7 @@ export function useFoodRecognition() {
   const getImageUrl = (path) => {
     if (!path) return ''
     if (/^https?:\/\//.test(path)) return path
-    const backendHost = import.meta.env.VITE_APP_API_BASE_URL || 'http://127.0.0.1:9999'
-    return `${backendHost}${path}`
+    return path
   }
 
   onMounted(async () => {
