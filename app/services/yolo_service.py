@@ -230,7 +230,9 @@ class YoloService:
                     draw.text((10, text_y), label, fill="white", font=font)
                     text_y += bbox_text[3] - bbox_text[1] + 6
 
-            # 保存带标注的图片
+            # 保存带标注的图片（JPEG 不支持 RGBA，需转换为 RGB）
+            if image.mode in ("RGBA", "P"):
+                image = image.convert("RGB")
             image.save(output_path)
             logger.info(f"Annotated image saved to {output_path}")
             return True
