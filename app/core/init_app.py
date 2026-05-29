@@ -229,19 +229,78 @@ async def init_roles():
 
 
 async def init_food_data():
-    """初始化食物识别模块数据"""
+    """初始化食物识别模块数据。
+
+    优先使用 deploy/integrated_food_mapping.json（如果存在）进行批量初始化。
+    如果映射文件不存在，则回退到内置的 `app.scripts.init_food_data.init_food_data()`。
+    该初始化仅在 `FoodCategory` 表为空时执行（即首次启动）。
+    """
     try:
-        from app.models.food import FoodCategory
-        from app.scripts.init_food_data import init_food_data as init_food_categories
-        
-        # 检查是否已有食物类别数据
+        from pathlib import Path
+        from app.models.food import FoodCategory, Nutrition
+        # 首先判断是否已存在食物类别
         count = await FoodCategory.all().count()
-        if count == 0:
-            logger.info("No food categories found, initializing food data...")
-            result = await init_food_categories()
-            logger.info(f"Food data initialization complete. Created: {result['created']}, Skipped: {result['skipped']}")
-        else:
+        if count > 0:
             logger.info(f"Food categories already initialized. Total: {count}")
+            return
+
+        # 尝试读取集成映射文件
+        mapping_path = Path(settings.BASE_DIR) / "deploy" / "integrated_food_mapping.json"
+        if mapping_path.exists():
+            logger.info(f"Mapping file found at {mapping_path}, initializing from mapping...")
+            try:
+                import json
+                with open(mapping_path, 'r', encoding='utf-8') as f:
+                    data = json.load(f)
+
+                created = 0
+                skipped = 0
+                for key, item in data.items():
+                    try:
+                        existing = await FoodCategory.get_or_none(code=item.get('code'))
+                        if existing:
+                            skipped += 1
+                            continue
+
+                        category = await FoodCategory.create(
+                            name=item.get('english_name') or item.get('name'),
+                            chinese_name=item.get('chinese_name'),
+                            code=item.get('code'),
+                            food_type=item.get('food_type'),
+                            description=item.get('description'),
+                            image_url=item.get('image_url'),
+                        )
+
+                        nutrition_data = item.get('nutrition') or {}
+                        await Nutrition.create(
+                            food=category,
+                            energy=nutrition_data.get('energy', 0.0),
+                            protein=nutrition_data.get('protein', 0.0),
+                            fat=nutrition_data.get('fat', 0.0),
+                            carbohydrate=nutrition_data.get('carbohydrate', 0.0),
+                            fiber=nutrition_data.get('fiber', 0.0),
+                            sodium=nutrition_data.get('sodium', 0.0),
+                        )
+
+                        created += 1
+                    except Exception as e:
+                        logger.error(f"Failed to insert mapping item {key}: {str(e)}")
+                        skipped += 1
+
+                logger.info(f"Mapping initialization complete. Created: {created}, Skipped/Errors: {skipped}")
+                return
+            except Exception as e:
+                logger.error(f"Failed to initialize from mapping file: {str(e)}")
+
+        # 回退到内置默认初始化脚本
+        try:
+            from app.scripts.init_food_data import init_food_data as _init_default_food
+            logger.info("Initializing default food data...")
+            result = await _init_default_food()
+            logger.info(f"Food data initialization complete. Created: {result.get('created')}, Skipped: {result.get('skipped')}")
+        except Exception as e:
+            logger.error(f"Failed to run default food data initializer: {str(e)}")
+
     except Exception as e:
         logger.error(f"Failed to initialize food data: {str(e)}")
 

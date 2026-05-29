@@ -88,7 +88,7 @@ uv sync
 # aerich init -t app.settings.TORTOISE_ORM
 # aerich init-db
 
-# 启动服务 (默认端口 9999)
+# 启动服务 (默认端口 9999) 进入虚拟环境
 python run.py
 ```
 
