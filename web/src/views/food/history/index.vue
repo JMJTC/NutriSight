@@ -62,6 +62,23 @@
               </tr>
             </tbody>
           </n-table>
+
+          <n-divider dashed>营养建议</n-divider>
+          <div v-if="recommendationLoading" class="recommend-loading">
+            <n-spin size="small" />
+            <span>AI 正在生成建议...</span>
+          </div>
+          <n-list v-else-if="recommendationTips.length" :bordered="false">
+            <n-list-item v-for="(advice, index) in recommendationTips" :key="index">
+              <template #prefix>
+                <n-icon color="#10b981" :size="20">
+                  <CheckmarkCircleOutline />
+                </n-icon>
+              </template>
+              <span class="advice-text">{{ advice }}</span>
+            </n-list-item>
+          </n-list>
+          <n-empty v-else description="暂无营养建议" />
         </div>
       </div>
     </n-modal>
@@ -71,6 +88,7 @@
 <script setup>
 import { ref, onMounted, h, reactive } from 'vue'
 import { NButton, NTag, useMessage, NPopconfirm, NSpace } from 'naive-ui'
+import { CheckmarkCircleOutline } from '@vicons/ionicons5'
 import api from '@/api'
 import TheIcon from '@/components/icon/TheIcon.vue'
 
@@ -80,6 +98,8 @@ const historyList = ref([])
 const showDetail = ref(false)
 const currentRecord = ref(null)
 const checkedRowKeys = ref([])
+const recommendationLoading = ref(false)
+const recommendationTips = ref([])
 
 const pagination = reactive({
   page: 1,
@@ -260,6 +280,18 @@ const viewDetail = async (row) => {
     if (res.code === 200) {
       currentRecord.value = res.data
       showDetail.value = true
+      recommendationTips.value = []
+      recommendationLoading.value = true
+      try {
+        const recRes = await api.generateFoodRecordRecommendation(row.id)
+        if (recRes.code === 200) {
+          recommendationTips.value = Array.isArray(recRes.data?.tips) ? recRes.data.tips : []
+        }
+      } catch {
+        recommendationTips.value = []
+      } finally {
+        recommendationLoading.value = false
+      }
     }
   } catch (error) {
     message.error('获取详情失败')
@@ -296,5 +328,18 @@ onMounted(() => {
   width: auto;
   height: auto;
   object-fit: contain;
+}
+.recommend-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 16px;
+  color: #64748b;
+  font-size: 14px;
+}
+.advice-text {
+  color: #334155;
+  line-height: 1.7;
 }
 </style>
