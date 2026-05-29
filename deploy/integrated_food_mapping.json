@@ -4,7 +4,7 @@
         "chinese_name": "鲍鱼",
         "food_type": "贝类",
         "description": "鲍鱼肉质鲜美，营养丰富，是名贵的海鲜之一，常以清蒸等方式烹饪，展现其原汁原味。",
-        "image_url": "/chinesefood207/Abalone/000000jpg",
+        "image_url": "/chinesefood207/Abalone/000000.jpg",
         "code": 0,
         "nutrition": {
             "energy": 105,
@@ -20,7 +20,7 @@
         "chinese_name": "豆腐花",
         "food_type": "豆腐类",
         "description": "豆腐花是一种常见的中式甜品，口感嫩滑，通常搭配糖水或其他配料食用，香甜可口。",
-        "image_url": "/chinesefood207/Bean curd/000000jpg",
+        "image_url": "/chinesefood207/Bean curd/000000.jpg",
         "code": 1,
         "nutrition": {
             "energy": 24,
@@ -36,7 +36,7 @@
         "chinese_name": "酱牛肉",
         "food_type": "肉类",
         "description": "酱牛肉色泽酱红，五香味浓，口感紧实有嚼劲，是一道美味又营养的经典菜肴。",
-        "image_url": "/chinesefood207/Beef Seasoned with Soy Sauce/000000jpg",
+        "image_url": "/chinesefood207/Beef Seasoned with Soy Sauce/000000.jpg",
         "code": 2,
         "nutrition": {
             "energy": 180,
@@ -52,7 +52,7 @@
         "chinese_name": "啤酒鸭",
         "food_type": "肉类",
         "description": "啤酒鸭鸭肉鲜嫩，融入了啤酒的香气，味道醇厚，是一道具有浓郁地方特色的佳肴。",
-        "image_url": "/chinesefood207/Beer duck/000000jpg",
+        "image_url": "/chinesefood207/Beer duck/000000.jpg",
         "code": 3,
         "nutrition": {
             "energy": 150,
@@ -68,7 +68,7 @@
         "chinese_name": "饼干",
         "food_type": "其他",
         "description": "饼干以面粉、糖、油脂等为主要原料，经过烘焙等工艺制成，口感酥脆，种类多样，是常见的休闲食品之一。",
-        "image_url": "/chinesefood207/Biscuits/000000jpg",
+        "image_url": "/chinesefood207/Biscuits/000000.jpg",
         "code": 4,
         "nutrition": {
             "energy": 450,
@@ -84,7 +84,7 @@
         "chinese_name": "凉拌木耳",
         "food_type": "菌类",
         "description": "凉拌木耳是一道常见的凉菜，木耳口感脆嫩，搭配各种调料，味道清爽可口。",
-        "image_url": "/chinesefood207/Black Fungus in Vinegar Sauce/000000jpg",
+        "image_url": "/chinesefood207/Black Fungus in Vinegar Sauce/000000.jpg",
         "code": 5,
         "nutrition": {
             "energy": 30,
@@ -100,7 +100,7 @@
         "chinese_name": "乌鸡汤",
         "food_type": "汤类",
         "description": "乌鸡汤以乌鸡为主要原料，经过炖煮而成，汤汁浓郁，营养丰富，具有滋补功效。",
-        "image_url": "/chinesefood207/Black bone chicken soup/000000jpg",
+        "image_url": "/chinesefood207/Black bone chicken soup/000000.jpg",
         "code": 6,
         "nutrition": {
             "energy": 50,
@@ -116,7 +116,7 @@
         "chinese_name": "酸菜鱼",
         "food_type": "鱼类",
         "description": "酸菜鱼以鲜鱼为主料，搭配泡酸菜等食材，经煮制而成，鱼肉鲜嫩，酸菜酸爽开胃，汤鲜味美。",
-        "image_url": "/chinesefood207/Boiled Fish with Picked Cabbage and Chili/000000jpg",
+        "image_url": "/chinesefood207/Boiled Fish with Picked Cabbage and Chili/000000.jpg",
         "code": 7,
         "nutrition": {
             "energy": 120,
@@ -132,7 +132,7 @@
         "chinese_name": "水煮肉片",
         "food_type": "肉类",
         "description": "水煮肉片肉质鲜嫩，麻辣鲜香，以其独特的口感和浓郁的辣椒香味而闻名，辣椒的香气与嫩滑的肉片完美融合，是一道深受人们喜爱的川菜。",
-        "image_url": "/chinesefood207/Boiled Shredded pork in chili oil/000000jpg",
+        "image_url": "/chinesefood207/Boiled Shredded pork in chili oil/000000.jpg",
         "code": 8,
         "nutrition": {
             "energy": 200,
@@ -148,7 +148,7 @@
         "chinese_name": "白斩鸡",
         "food_type": "肉类",
         "description": "白斩鸡皮黄肉白，肥嫩鲜美，原汁原味，是一道清爽可口的美食。",
-        "image_url": "/chinesefood207/Boiled chicken/000000jpg",
+        "image_url": "/chinesefood207/Boiled chicken/000000.jpg",
         "code": 9,
         "nutrition": {
             "energy": 165,
@@ -164,7 +164,7 @@
         "chinese_name": "罗宋汤",
         "food_type": "汤类",
         "description": "罗宋汤以卷心菜、土豆、番茄等为主要食材，炖煮而成，汤汁浓郁，蔬菜软烂，酸甜可口，开胃下饭。",
-        "image_url": "/chinesefood207/Borsch/000000jpg",
+        "image_url": "/chinesefood207/Borsch/000000.jpg",
         "code": 10,
         "nutrition": {
             "energy": 40,
@@ -180,7 +180,7 @@
         "chinese_name": "木耳炒肉丝",
         "food_type": "肉类",
         "description": "木耳炒肉丝以木耳和肉丝为主要食材，木耳脆嫩，肉丝鲜香，二者搭配炒制，口感丰富，营养美味。",
-        "image_url": "/chinesefood207/Braised Fungus with pork slice/000000jpg",
+        "image_url": "/chinesefood207/Braised Fungus with pork slice/000000.jpg",
         "code": 11,
         "nutrition": {
             "energy": 100,
@@ -196,7 +196,7 @@
         "chinese_name": "红烧带鱼",
         "food_type": "鱼类",
         "description": "红烧带鱼以带鱼为主料，经过红烧的烹饪方式，色泽红亮，味道鲜香，肉质鲜嫩。",
-        "image_url": "/chinesefood207/Braised Hairtail in Brown Sauce/000000jpg",
+        "image_url": "/chinesefood207/Braised Hairtail in Brown Sauce/000000.jpg",
         "code": 12,
         "nutrition": {
             "energy": 140,
@@ -212,7 +212,7 @@
         "chinese_name": "猪肉炖粉条",
         "food_type": "肉类",
         "description": "猪肉炖粉条是一道东北名菜，猪肉鲜嫩，粉条软糯，汤汁浓郁，味道十分醇厚，是冬季餐桌上的暖身佳肴。",
-        "image_url": "/chinesefood207/Braised Pork with Vermicelli/000000jpg",
+        "image_url": "/chinesefood207/Braised Pork with Vermicelli/000000.jpg",
         "code": 13,
         "nutrition": {
             "energy": 180,
@@ -228,7 +228,7 @@
         "chinese_name": "油焖大虾",
         "food_type": "虾类",
         "description": "油焖大虾以鲜虾为原料，用酱油等调料焖制而成，色泽红亮，味道鲜香，虾肉紧实有弹性。",
-        "image_url": "/chinesefood207/Braised Shrimp in chili oil/000000jpg",
+        "image_url": "/chinesefood207/Braised Shrimp in chili oil/000000.jpg",
         "code": 14,
         "nutrition": {
             "energy": 130,
@@ -244,7 +244,7 @@
         "chinese_name": "土豆焖豆角",
         "food_type": "土豆类",
         "description": "土豆焖豆角是一道家常美食，以土豆和豆角为主要食材，经过焖煮后，豆角软烂，土豆吸收了豆角的汤汁，味道浓郁，十分下饭。",
-        "image_url": "/chinesefood207/Braised beans with potato/000000jpg",
+        "image_url": "/chinesefood207/Braised beans with potato/000000.jpg",
         "code": 15,
         "nutrition": {
             "energy": 80,
@@ -260,7 +260,7 @@
         "chinese_name": "红烧牛肉",
         "food_type": "肉类",
         "description": "红烧牛肉牛肉质地软烂，汤汁浓郁醇厚，具有丰富的口感和营养，深受大众喜爱。",
-        "image_url": "/chinesefood207/Braised beef/000000jpg",
+        "image_url": "/chinesefood207/Braised beef/000000.jpg",
         "code": 16,
         "nutrition": {
             "energy": 200,
@@ -276,7 +276,7 @@
         "chinese_name": "红烧牛肉面",
         "food_type": "面类",
         "description": "红烧牛肉面以牛肉和面条为主要食材，牛肉炖煮得软烂入味，汤汁浓郁香醇，面条爽滑劲道，是深受欢迎的美食。",
-        "image_url": "/chinesefood207/Braised beef noodle/000000jpg",
+        "image_url": "/chinesefood207/Braised beef noodle/000000.jpg",
         "code": 17,
         "nutrition": {
             "energy": 150,
@@ -292,7 +292,7 @@
         "chinese_name": "酱焖猪蹄",
         "food_type": "肉类",
         "description": "酱焖猪蹄选用猪蹄，经过酱焖工艺，色泽红亮，口感软糯，富含胶原蛋白，是一道营养丰富的美食。",
-        "image_url": "/chinesefood207/Braised pig feet with soy sauce/000000jpg",
+        "image_url": "/chinesefood207/Braised pig feet with soy sauce/000000.jpg",
         "code": 18,
         "nutrition": {
             "energy": 220,
@@ -308,7 +308,7 @@
         "chinese_name": "红烧肉",
         "food_type": "肉类",
         "description": "红烧肉色泽红亮，肥而不腻，入口即化，浓郁的酱汁味道让人回味无穷，是经典的中式美食。",
-        "image_url": "/chinesefood207/Braised pork/000000jpg",
+        "image_url": "/chinesefood207/Braised pork/000000.jpg",
         "code": 19,
         "nutrition": {
             "energy": 250,
@@ -324,7 +324,7 @@
         "chinese_name": "海带炖排骨",
         "food_type": "肉类",
         "description": "海带炖排骨汤汁浓郁，海带软糯，排骨肉质鲜嫩，营养丰富，是一道适合家庭制作的美味汤品。",
-        "image_url": "/chinesefood207/Braised spareribs with kelp/000000jpg",
+        "image_url": "/chinesefood207/Braised spareribs with kelp/000000.jpg",
         "code": 20,
         "nutrition": {
             "energy": 120,
@@ -340,7 +340,7 @@
         "chinese_name": "面包",
         "food_type": "其他",
         "description": "面包以面粉、酵母、水等为主要原料，经过发酵、烘焙等工艺制成，口感多样，可作为主食或零食。",
-        "image_url": "/chinesefood207/Bread/000000jpg",
+        "image_url": "/chinesefood207/Bread/000000.jpg",
         "code": 21,
         "nutrition": {
             "energy": 250,
@@ -356,7 +356,7 @@
         "chinese_name": "蚝油西兰花",
         "food_type": "白菜类",
         "description": "蚝油西兰花是一道经典的家常菜，西兰花脆嫩爽口，搭配蚝油的鲜美，营养丰富。",
-        "image_url": "/chinesefood207/Broccoli with Oyster Sauce/000000jpg",
+        "image_url": "/chinesefood207/Broccoli with Oyster Sauce/000000.jpg",
         "code": 22,
         "nutrition": {
             "energy": 40,
@@ -372,7 +372,7 @@
         "chinese_name": "芹菜香干",
         "food_type": "果蔬类",
         "description": "芹菜香干是一道常见的家常菜，芹菜的清爽与香干的醇厚完美结合，口感丰富，营养均衡，适合搭配各种主食，是餐桌上的常客。",
-        "image_url": "/chinesefood207/Celery and tofu/000000jpg",
+        "image_url": "/chinesefood207/Celery and tofu/000000.jpg",
         "code": 23,
         "nutrition": {
             "energy": 70,
@@ -388,7 +388,7 @@
         "chinese_name": "芝士虾球",
         "food_type": "虾类",
         "description": "芝士虾球以虾肉和芝士为主要原料，经过油炸等方式制作而成，外皮金黄酥脆，内部虾肉鲜嫩，芝士香浓。",
-        "image_url": "/chinesefood207/Cheese Shrimp Meat/000000jpg",
+        "image_url": "/chinesefood207/Cheese Shrimp Meat/000000.jpg",
         "code": 24,
         "nutrition": {
             "energy": 180,
@@ -404,7 +404,7 @@
         "chinese_name": "泡椒凤爪",
         "food_type": "肉类",
         "description": "泡椒凤爪酸辣可口，口感Q弹有嚼劲，是一道开胃的休闲小吃。",
-        "image_url": "/chinesefood207/Chicken Feet with Pickled Peppers/000000jpg",
+        "image_url": "/chinesefood207/Chicken Feet with Pickled Peppers/000000.jpg",
         "code": 25,
         "nutrition": {
             "energy": 150,
@@ -420,7 +420,7 @@
         "chinese_name": "红烧鸡爪",
         "food_type": "肉类",
         "description": "红烧鸡爪色泽红亮，软糯脱骨，味道浓郁，是一道美味的下酒菜。",
-        "image_url": "/chinesefood207/Chicken Feet with black bean sauce/000000jpg",
+        "image_url": "/chinesefood207/Chicken Feet with black bean sauce/000000.jpg",
         "code": 26,
         "nutrition": {
             "energy": 160,
@@ -436,7 +436,7 @@
         "chinese_name": "蛋糕",
         "food_type": "其他",
         "description": "蛋糕以鸡蛋、面粉、糖等为主要原料，经过搅拌、烘焙等工艺制成，口感松软，香甜可口，是常见的甜点之一。",
-        "image_url": "/chinesefood207/Chiffon Cake/000000jpg",
+        "image_url": "/chinesefood207/Chiffon Cake/000000.jpg",
         "code": 27,
         "nutrition": {
             "energy": 300,
@@ -452,7 +452,7 @@
         "chinese_name": "拔丝山药",
         "food_type": "果蔬类",
         "description": "拔丝山药是一道经典的中式甜品，山药经过油炸后裹上糖浆，吃起来香甜可口，还能拔出丝来。",
-        "image_url": "/chinesefood207/Chinese Yam in Hot Toffee/000000jpg",
+        "image_url": "/chinesefood207/Chinese Yam in Hot Toffee/000000.jpg",
         "code": 28,
         "nutrition": {
             "energy": 150,
@@ -468,7 +468,7 @@
         "chinese_name": "肉夹馍",
         "food_type": "饼类",
         "description": "肉夹馍馍酥肉香，味道鲜美，是广受欢迎的美食。",
-        "image_url": "/chinesefood207/Chinese hamburger/000000jpg",
+        "image_url": "/chinesefood207/Chinese hamburger/000000.jpg",
         "code": 29,
         "nutrition": {
             "energy": 280,
@@ -484,7 +484,7 @@
         "chinese_name": "重庆酸辣粉",
         "food_type": "粉类",
         "description": "重庆酸辣粉以红薯粉为主料，搭配酸辣调料，口感酸辣开胃，是重庆特色美食。",
-        "image_url": "/chinesefood207/Chongqing Hot and Sour Rice Noodles/000000jpg",
+        "image_url": "/chinesefood207/Chongqing Hot and Sour Rice Noodles/000000.jpg",
         "code": 30,
         "nutrition": {
             "energy": 120,
@@ -500,7 +500,7 @@
         "chinese_name": "可乐鸡翅",
         "food_type": "肉类",
         "description": "可乐鸡翅色泽红亮，味道香甜可口，鸡肉鲜嫩多汁，是一道深受小朋友喜爱的家常菜肴。",
-        "image_url": "/chinesefood207/Cola Chicken wings/000000jpg",
+        "image_url": "/chinesefood207/Cola Chicken wings/000000.jpg",
         "code": 31,
         "nutrition": {
             "energy": 200,
@@ -516,7 +516,7 @@
         "chinese_name": "凉皮",
         "food_type": "面类",
         "description": "凉皮以面粉为原料，制成薄而有弹性的面皮，搭配各种调料，口感清爽，是夏季的消暑美食。",
-        "image_url": "/chinesefood207/Cold Rice Noodles/000000jpg",
+        "image_url": "/chinesefood207/Cold Rice Noodles/000000.jpg",
         "code": 32,
         "nutrition": {
             "energy": 150,
@@ -532,7 +532,7 @@
         "chinese_name": "凉拌凉面",
         "food_type": "面类",
         "description": "凉拌凉面将面条煮熟后过凉水，加入各种调料拌匀，口感清爽，是夏季常见的美食。",
-        "image_url": "/chinesefood207/Cold noodles/000000jpg",
+        "image_url": "/chinesefood207/Cold noodles/000000.jpg",
         "code": 33,
         "nutrition": {
             "energy": 140,
@@ -548,7 +548,7 @@
         "chinese_name": "玉米棒",
         "food_type": "粗粮类",
         "description": "玉米棒是玉米的果穗部分，富含膳食纤维和多种维生素，可直接煮熟食用，香甜可口。",
-        "image_url": "/chinesefood207/Corn Cob/000000jpg",
+        "image_url": "/chinesefood207/Corn Cob/000000.jpg",
         "code": 34,
         "nutrition": {
             "energy": 86,
@@ -564,7 +564,7 @@
         "chinese_name": "玉米排骨汤",
         "food_type": "汤类",
         "description": "玉米排骨汤以玉米和排骨为主要食材，炖煮而成，汤汁香甜，玉米清甜，排骨肉香，滋补养颜。",
-        "image_url": "/chinesefood207/Corn and sparerib soup/000000jpg",
+        "image_url": "/chinesefood207/Corn and sparerib soup/000000.jpg",
         "code": 35,
         "nutrition": {
             "energy": 70,
@@ -580,7 +580,7 @@
         "chinese_name": "螃蟹",
         "food_type": "甲壳类",
         "description": "螃蟹肉质鲜嫩，蟹黄和蟹膏味道鲜美，烹饪方式多样，如清蒸、香辣炒等，是人们喜爱的美食。",
-        "image_url": "/chinesefood207/Crab/000000jpg",
+        "image_url": "/chinesefood207/Crab/000000.jpg",
         "code": 36,
         "nutrition": {
             "energy": 97,
@@ -596,7 +596,7 @@
         "chinese_name": "咕噜肉",
         "food_type": "肉类",
         "description": "咕噜肉肉质鲜嫩，裹上酸甜的酱汁，口感丰富，是一道具有独特风味的美食。",
-        "image_url": "/chinesefood207/Cripsy sweet & sour pork slices/000000jpg",
+        "image_url": "/chinesefood207/Cripsy sweet & sour pork slices/000000.jpg",
         "code": 37,
         "nutrition": {
             "energy": 250,
@@ -612,7 +612,7 @@
         "chinese_name": "牛角包",
         "food_type": "其他",
         "description": "牛角包以面粉、黄油等为原料，制作成牛角形状，经过烘焙等工艺制成，外皮酥脆，内部柔软，奶香味十足。",
-        "image_url": "/chinesefood207/Croissant/000000jpg",
+        "image_url": "/chinesefood207/Croissant/000000.jpg",
         "code": 38,
         "nutrition": {
             "energy": 400,
@@ -628,7 +628,7 @@
         "chinese_name": "鲫鱼豆腐汤",
         "food_type": "汤类",
         "description": "鲫鱼豆腐汤以鲫鱼和豆腐为主要原料，经过炖煮而成，汤汁鲜美，富含蛋白质等营养成分。",
-        "image_url": "/chinesefood207/Crucian and Bean Curd Soup/000000jpg",
+        "image_url": "/chinesefood207/Crucian and Bean Curd Soup/000000.jpg",
         "code": 39,
         "nutrition": {
             "energy": 60,
@@ -644,7 +644,7 @@
         "chinese_name": "口水黄瓜",
         "food_type": "果蔬类",
         "description": "口水黄瓜是一道经典的凉拌菜，黄瓜清爽脆嫩，酱汁麻辣鲜香，非常开胃。",
-        "image_url": "/chinesefood207/Cucumber in Sauce/000000jpg",
+        "image_url": "/chinesefood207/Cucumber in Sauce/000000.jpg",
         "code": 40,
         "nutrition": {
             "energy": 20,
@@ -660,7 +660,7 @@
         "chinese_name": "香煎藕盒",
         "food_type": "白菜类",
         "description": "香煎藕盒是一道美味的菜肴，藕片夹着肉馅，经过煎制后外皮金黄酥脆，内馅鲜嫩多汁。",
-        "image_url": "/chinesefood207/Deep Fried lotus root/000000jpg",
+        "image_url": "/chinesefood207/Deep Fried lotus root/000000.jpg",
         "code": 41,
         "nutrition": {
             "energy": 120,
@@ -676,7 +676,7 @@
         "chinese_name": "油条",
         "food_type": "油条类",
         "description": "油条口感松脆有韧劲，是中国传统的早点之一。",
-        "image_url": "/chinesefood207/Deep-Fried Dough Sticks/000000jpg",
+        "image_url": "/chinesefood207/Deep-Fried Dough Sticks/000000.jpg",
         "code": 42,
         "nutrition": {
             "energy": 380,
@@ -692,7 +692,7 @@
         "chinese_name": "回锅肉",
         "food_type": "肉类",
         "description": "回锅肉色泽红亮，口感肥而不腻，猪肉经过先煮后炒的过程，搭配青椒等配菜，味道十分鲜美，是一道常见的家常菜。",
-        "image_url": "/chinesefood207/Double cooked pork slices/000000jpg",
+        "image_url": "/chinesefood207/Double cooked pork slices/000000.jpg",
         "code": 43,
         "nutrition": {
             "energy": 220,
@@ -708,7 +708,7 @@
         "chinese_name": "双皮奶",
         "food_type": "其他",
         "description": "双皮奶以牛奶、蛋清和糖等为原料，蒸制而成，上层奶皮甘香，下层奶皮嫩滑，口感细腻，香甜可口。",
-        "image_url": "/chinesefood207/Double skin milk/000000jpg",
+        "image_url": "/chinesefood207/Double skin milk/000000.jpg",
         "code": 44,
         "nutrition": {
             "energy": 80,
@@ -724,7 +724,7 @@
         "chinese_name": "疙瘩汤",
         "food_type": "汤类",
         "description": "疙瘩汤以面粉、蔬菜等为主要原料，将面粉搅拌成疙瘩后煮制而成，口感爽滑，容易消化。",
-        "image_url": "/chinesefood207/Dough Drop and Assorted Vegetable Soup/000000jpg",
+        "image_url": "/chinesefood207/Dough Drop and Assorted Vegetable Soup/000000.jpg",
         "code": 45,
         "nutrition": {
             "energy": 80,
@@ -740,7 +740,7 @@
         "chinese_name": "毛血旺",
         "food_type": "川菜",
         "description": "毛血旺以鸭血、毛肚等为主要食材，加入辣椒、花椒等调料烹制而成，色泽红亮，口感麻辣鲜香，是一道经典的川菜。",
-        "image_url": "/chinesefood207/Duck Blood in Chili Sauce/000000jpg",
+        "image_url": "/chinesefood207/Duck Blood in Chili Sauce/000000.jpg",
         "code": 46,
         "nutrition": {
             "energy": 100,
@@ -756,7 +756,7 @@
         "chinese_name": "饺子",
         "food_type": "面食类",
         "description": "饺子以面粉为皮，包入各种馅料，通过煮、蒸、煎等方式烹饪，是中国传统美食，口味多样。",
-        "image_url": "/chinesefood207/Dumplings/000000jpg",
+        "image_url": "/chinesefood207/Dumplings/000000.jpg",
         "code": 47,
         "nutrition": {
             "energy": 180,
@@ -772,7 +772,7 @@
         "chinese_name": "蛋挞",
         "food_type": "其他",
         "description": "蛋挞以鸡蛋、牛奶、糖等为馅料，放入蛋挞皮中烤制而成，外皮酥脆，内馅嫩滑，香甜美味。",
-        "image_url": "/chinesefood207/Egg Tart/000000jpg",
+        "image_url": "/chinesefood207/Egg Tart/000000.jpg",
         "code": 48,
         "nutrition": {
             "energy": 280,
@@ -788,7 +788,7 @@
         "chinese_name": "鸡蛋灌饼",
         "food_type": "主食类",
         "description": "鸡蛋灌饼外酥里嫩，鸡蛋香软，饼皮劲道，可搭配多种食材，是常见的街头美食。",
-        "image_url": "/chinesefood207/Egg pie cake/000000jpg",
+        "image_url": "/chinesefood207/Egg pie cake/000000.jpg",
         "code": 49,
         "nutrition": {
             "energy": 250,
@@ -804,7 +804,7 @@
         "chinese_name": "鸡蛋布丁",
         "food_type": "其他",
         "description": "鸡蛋布丁以鸡蛋、牛奶、糖等为原料，蒸制或烤制而成，口感嫩滑，蛋香浓郁，香甜可口。",
-        "image_url": "/chinesefood207/Egg pudding/000000jpg",
+        "image_url": "/chinesefood207/Egg pudding/000000.jpg",
         "code": 50,
         "nutrition": {
             "energy": 100,
@@ -820,7 +820,7 @@
         "chinese_name": "肉末茄子",
         "food_type": "茄子类",
         "description": "肉末茄子是一道家常菜，以茄子和猪肉末为主要食材，经过炒制而成。茄子吸收了肉末的香味，口感软糯，味道鲜美。",
-        "image_url": "/chinesefood207/Eggplant with mince pork/000000jpg",
+        "image_url": "/chinesefood207/Eggplant with mince pork/000000.jpg",
         "code": 51,
         "nutrition": {
             "energy": 90,
@@ -836,7 +836,7 @@
         "chinese_name": "水煮鱼",
         "food_type": "鱼类",
         "description": "水煮鱼以鲜鱼为主料，经水煮烹饪，鱼片滑嫩，麻辣鲜香，汤汁浓郁。",
-        "image_url": "/chinesefood207/Fish Filets in Hot Chili Oil/000000jpg",
+        "image_url": "/chinesefood207/Fish Filets in Hot Chili Oil/000000.jpg",
         "code": 52,
         "nutrition": {
             "energy": 130,
@@ -852,7 +852,7 @@
         "chinese_name": "薯条",
         "food_type": "土豆类",
         "description": "薯条是一种常见的快餐食品，以土豆为主要原料，切成条状后炸制而成。外皮金黄酥脆，内部柔软，通常搭配番茄酱等调味料食用，口感香脆可口，深受大众喜爱。",
-        "image_url": "/chinesefood207/French fries/000000jpg",
+        "image_url": "/chinesefood207/French fries/000000.jpg",
         "code": 53,
         "nutrition": {
             "energy": 312,
@@ -868,7 +868,7 @@
         "chinese_name": "煎饺",
         "food_type": "面食类",
         "description": "煎饺以面粉为皮，包入各种馅料后煎制而成，外皮金黄酥脆，内馅鲜香可口，是一种受欢迎的中式美食。",
-        "image_url": "/chinesefood207/Fried Dumplings/000000jpg",
+        "image_url": "/chinesefood207/Fried Dumplings/000000.jpg",
         "code": 54,
         "nutrition": {
             "energy": 200,
@@ -884,7 +884,7 @@
         "chinese_name": "孜然羊肉",
         "food_type": "肉类",
         "description": "孜然羊肉以羊肉为主要食材，用孜然等调料炒制而成，羊肉外焦里嫩，孜然味浓郁，风味独特。",
-        "image_url": "/chinesefood207/Fried Lamb with Cumin/000000jpg",
+        "image_url": "/chinesefood207/Fried Lamb with Cumin/000000.jpg",
         "code": 55,
         "nutrition": {
             "energy": 220,
@@ -900,7 +900,7 @@
         "chinese_name": "地三鲜",
         "food_type": "土豆类",
         "description": "地三鲜是一道经典的东北菜肴，主要由土豆、青椒和茄子三种食材组成。经过油炸和炒制后，三种食材的味道相互融合，口感鲜香，是一道非常受欢迎的家常菜。",
-        "image_url": "/chinesefood207/Fried Potato, Green Pepper & Eggplant/000000jpg",
+        "image_url": "/chinesefood207/Fried Potato, Green Pepper & Eggplant/000000.jpg",
         "code": 56,
         "nutrition": {
             "energy": 100,
@@ -916,7 +916,7 @@
         "chinese_name": "糖醋里脊",
         "food_type": "肉类",
         "description": "糖醋里脊外酥里嫩，酸甜可口，色泽红亮，是一道经典的中式菜肴，深受大众喜爱。",
-        "image_url": "/chinesefood207/Fried Sweet and Sour Tenderloin/000000jpg",
+        "image_url": "/chinesefood207/Fried Sweet and Sour Tenderloin/000000.jpg",
         "code": 57,
         "nutrition": {
             "energy": 200,
@@ -932,7 +932,7 @@
         "chinese_name": "煎豆腐",
         "food_type": "豆腐类",
         "description": "煎豆腐是一道简单易做的家常菜，将豆腐切成块，放入锅中煎至两面金黄，可根据个人口味添加调料，口感香脆可口。",
-        "image_url": "/chinesefood207/Fried Tofu/000000jpg",
+        "image_url": "/chinesefood207/Fried Tofu/000000.jpg",
         "code": 58,
         "nutrition": {
             "energy": 120,
@@ -948,7 +948,7 @@
         "chinese_name": "清炒山药",
         "food_type": "果蔬类",
         "description": "清炒山药是一道简单家常的菜肴，山药口感脆爽，清鲜可口，保留了食材本身的营养和风味。",
-        "image_url": "/chinesefood207/Fried Yam/000000jpg",
+        "image_url": "/chinesefood207/Fried Yam/000000.jpg",
         "code": 59,
         "nutrition": {
             "energy": 70,
@@ -964,7 +964,7 @@
         "chinese_name": "干煸豆角",
         "food_type": "果蔬类",
         "description": "干煸豆角是一道很受欢迎的家常菜，豆角经过干煸后，外皮微皱，口感干香，味道浓郁。",
-        "image_url": "/chinesefood207/Fried beans/000000jpg",
+        "image_url": "/chinesefood207/Fried beans/000000.jpg",
         "code": 60,
         "nutrition": {
             "energy": 80,
@@ -980,7 +980,7 @@
         "chinese_name": "炸鸡腿",
         "food_type": "肉类",
         "description": "炸鸡腿外皮金黄酥脆，鸡肉鲜嫩多汁，一口咬下去，香味四溢，是备受欢迎的美食。",
-        "image_url": "/chinesefood207/Fried chicken drumsticks/000000jpg",
+        "image_url": "/chinesefood207/Fried chicken drumsticks/000000.jpg",
         "code": 61,
         "nutrition": {
             "energy": 250,
@@ -996,7 +996,7 @@
         "chinese_name": "水果沙拉",
         "food_type": "其他",
         "description": "水果沙拉是将各种新鲜水果切成小块后混合，加入酸奶、沙拉酱等调料拌匀而成的美食，色彩丰富，营养均衡，口感清爽。",
-        "image_url": "/chinesefood207/Fruit salad/000000jpg",
+        "image_url": "/chinesefood207/Fruit salad/000000.jpg",
         "code": 62,
         "nutrition": {
             "energy": 50,
@@ -1012,7 +1012,7 @@
         "chinese_name": "鸡鸭胗",
         "food_type": "肉类",
         "description": "鸡鸭胗质地紧实，富有嚼劲，可炒、卤等，是常见的食材。",
-        "image_url": "/chinesefood207/Gizzard/000000jpg",
+        "image_url": "/chinesefood207/Gizzard/000000.jpg",
         "code": 63,
         "nutrition": {
             "energy": 130,
@@ -1028,7 +1028,7 @@
         "chinese_name": "黄金如意肉卷",
         "food_type": "其他",
         "description": "黄金如意肉卷通常选用猪肉等食材，制作成肉卷形状，经过炸制或烤制等烹饪方式，外皮金黄酥脆，内部肉质鲜嫩，口感丰富。",
-        "image_url": "/chinesefood207/Golden meat rolls/000000jpg",
+        "image_url": "/chinesefood207/Golden meat rolls/000000.jpg",
         "code": 64,
         "nutrition": {
             "energy": 250,
@@ -1044,7 +1044,7 @@
         "chinese_name": "家常豆腐",
         "food_type": "豆腐类",
         "description": "家常豆腐是一道特色传统名菜，属于川菜系或浙菜系。以豆腐为主料，先煎后烧，再加入各种调料，口感外酥里嫩，味道浓郁。",
-        "image_url": "/chinesefood207/Home style sauteed Tofu/000000jpg",
+        "image_url": "/chinesefood207/Home style sauteed Tofu/000000.jpg",
         "code": 65,
         "nutrition": {
             "energy": 100,
@@ -1060,7 +1060,7 @@
         "chinese_name": "酸辣汤",
         "food_type": "汤类",
         "description": "酸辣汤以多种食材为原料，加入辣椒、醋等调料煮制而成，味道酸辣开胃，口感丰富。",
-        "image_url": "/chinesefood207/Hot and Sour Soup/000000jpg",
+        "image_url": "/chinesefood207/Hot and Sour Soup/000000.jpg",
         "code": 66,
         "nutrition": {
             "energy": 30,
@@ -1076,7 +1076,7 @@
         "chinese_name": "海蛰",
         "food_type": "海鲜类",
         "description": "海蛰是一种常见的海鲜，口感爽脆，通常经过加工处理后凉拌食用，味道鲜美，是夏日餐桌上的佳肴。",
-        "image_url": "/chinesefood207/Jellyfish/000000jpg",
+        "image_url": "/chinesefood207/Jellyfish/000000.jpg",
         "code": 67,
         "nutrition": {
             "energy": 20,
@@ -1092,7 +1092,7 @@
         "chinese_name": "宫保鸡丁",
         "food_type": "肉类",
         "description": "宫保鸡丁鸡肉滑嫩，花生米香脆，酱汁酸甜微辣，口感丰富。",
-        "image_url": "/chinesefood207/Kung Pao Chicken/000000jpg",
+        "image_url": "/chinesefood207/Kung Pao Chicken/000000.jpg",
         "code": 68,
         "nutrition": {
             "energy": 180,
@@ -1108,7 +1108,7 @@
         "chinese_name": "羊肉串",
         "food_type": "肉类",
         "description": "羊肉串选用新鲜羊肉切成小块串在签子上烤制而成，肉质鲜嫩多汁，充满了孜然和辣椒的香味，是广受欢迎的美食。",
-        "image_url": "/chinesefood207/Lamb shashlik/000000jpg",
+        "image_url": "/chinesefood207/Lamb shashlik/000000.jpg",
         "code": 69,
         "nutrition": {
             "energy": 200,
@@ -1124,7 +1124,7 @@
         "chinese_name": "紫菜包饭",
         "food_type": "饭类",
         "description": "紫菜包饭以米饭、紫菜为主要原料，搭配各种蔬菜、肉类等食材卷制而成，口感丰富，方便食用。",
-        "image_url": "/chinesefood207/Laver rice/000000jpg",
+        "image_url": "/chinesefood207/Laver rice/000000.jpg",
         "code": 70,
         "nutrition": {
             "energy": 120,
@@ -1140,7 +1140,7 @@
         "chinese_name": "韭菜炒香干",
         "food_type": "果蔬类",
         "description": "韭菜炒香干是一道简单又美味的家常菜，韭菜的独特香味与香干的韧性相得益彰，口感鲜香，富含多种维生素和营养成分，是家庭餐桌上的常见佳肴。",
-        "image_url": "/chinesefood207/Leak and tofu/000000jpg",
+        "image_url": "/chinesefood207/Leak and tofu/000000.jpg",
         "code": 71,
         "nutrition": {
             "energy": 80,
@@ -1156,7 +1156,7 @@
         "chinese_name": "韭菜盒子",
         "food_type": "饼类",
         "description": "韭菜盒子外皮金黄酥脆，内馅鲜香，是经典的中式点心。",
-        "image_url": "/chinesefood207/Leek box/000000jpg",
+        "image_url": "/chinesefood207/Leek box/000000.jpg",
         "code": 72,
         "nutrition": {
             "energy": 220,
@@ -1172,7 +1172,7 @@
         "chinese_name": "莴笋肉丝",
         "food_type": "肉类",
         "description": "莴笋肉丝以莴笋和肉丝为主要食材，莴笋脆爽，肉丝鲜嫩，搭配炒制后口感清爽，营养丰富。",
-        "image_url": "/chinesefood207/Lettuce shredded meat/000000jpg",
+        "image_url": "/chinesefood207/Lettuce shredded meat/000000.jpg",
         "code": 73,
         "nutrition": {
             "energy": 90,
@@ -1188,7 +1188,7 @@
         "chinese_name": "蒜蓉油麦菜",
         "food_type": "白菜类",
         "description": "蒜蓉油麦菜是一道美味可口的家常菜，以油麦菜为主料，加入蒜蓉炒制而成。蒜香浓郁，油麦菜鲜嫩爽口，营养丰富。",
-        "image_url": "/chinesefood207/Lettuce with smashed garlic/000000jpg",
+        "image_url": "/chinesefood207/Lettuce with smashed garlic/000000.jpg",
         "code": 74,
         "nutrition": {
             "energy": 40,
@@ -1204,7 +1204,7 @@
         "chinese_name": "莲藕排骨汤",
         "food_type": "汤类",
         "description": "莲藕排骨汤以莲藕和排骨为主要食材，炖煮而成，汤汁浓郁，莲藕粉糯，排骨肉香，营养丰富。",
-        "image_url": "/chinesefood207/Lotus Root and Rib soup/000000jpg",
+        "image_url": "/chinesefood207/Lotus Root and Rib soup/000000.jpg",
         "code": 75,
         "nutrition": {
             "energy": 70,
@@ -1220,7 +1220,7 @@
         "chinese_name": "莲藕",
         "food_type": "根茎类",
         "description": "莲藕是常见的根茎类蔬菜，口感脆爽或粉糯，可生食、煲汤、炒菜等，营养丰富。",
-        "image_url": "/chinesefood207/Lotus root/000000jpg",
+        "image_url": "/chinesefood207/Lotus root/000000.jpg",
         "code": 76,
         "nutrition": {
             "energy": 74,
@@ -1236,7 +1236,7 @@
         "chinese_name": "麻婆豆腐",
         "food_type": "豆腐类",
         "description": "麻婆豆腐是四川省传统名菜之一，属于川菜系。主要原料为豆腐，搭配肉末、辣椒、花椒等调料，采用炒的烹饪方法制作而成，口味麻辣鲜香。",
-        "image_url": "/chinesefood207/Mapo Tofu/000000jpg",
+        "image_url": "/chinesefood207/Mapo Tofu/000000.jpg",
         "code": 77,
         "nutrition": {
             "energy": 120,
@@ -1252,7 +1252,7 @@
         "chinese_name": "卤蛋",
         "food_type": "蛋类",
         "description": "卤蛋咸香入味，蛋白Q弹，蛋黄沙软，是早餐或搭配面条的好选择。",
-        "image_url": "/chinesefood207/Marinated Egg/000000jpg",
+        "image_url": "/chinesefood207/Marinated Egg/000000.jpg",
         "code": 78,
         "nutrition": {
             "energy": 155,
@@ -1268,7 +1268,7 @@
         "chinese_name": "蒜泥茄子",
         "food_type": "茄子类",
         "description": "蒜泥茄子是一道美味的凉拌菜，将茄子蒸熟后撕成条或切成块，加入蒜泥、酱油、醋、香油等调料拌匀即可。口感软烂，蒜香浓郁，清爽可口。",
-        "image_url": "/chinesefood207/Mashed garlic eggplant/000000jpg",
+        "image_url": "/chinesefood207/Mashed garlic eggplant/000000.jpg",
         "code": 79,
         "nutrition": {
             "energy": 60,
@@ -1284,7 +1284,7 @@
         "chinese_name": "小米粥",
         "food_type": "粥类",
         "description": "小米粥以小米为主要原料熬制而成，口感软糯，营养丰富，具有健脾和胃、滋阴养血等功效，是常见的养生粥品。",
-        "image_url": "/chinesefood207/Millet congee/000000jpg",
+        "image_url": "/chinesefood207/Millet congee/000000.jpg",
         "code": 80,
         "nutrition": {
             "energy": 50,
@@ -1300,7 +1300,7 @@
         "chinese_name": "皮蛋瘦肉粥",
         "food_type": "粥类",
         "description": "皮蛋瘦肉粥以皮蛋、瘦肉和大米为主要原料熬制而成，皮蛋独特的风味与瘦肉的鲜美相互融合，粥体浓稠，口感丰富，营养美味。",
-        "image_url": "/chinesefood207/Minced Pork Congee with Preserved Egg/000000jpg",
+        "image_url": "/chinesefood207/Minced Pork Congee with Preserved Egg/000000.jpg",
         "code": 81,
         "nutrition": {
             "energy": 70,
@@ -1316,7 +1316,7 @@
         "chinese_name": "酱汤",
         "food_type": "汤类",
         "description": "酱汤以味噌为主要调味料，搭配各种食材煮制而成，味道浓郁醇厚，富含营养，能增进食欲。",
-        "image_url": "/chinesefood207/Miso soup/000000jpg",
+        "image_url": "/chinesefood207/Miso soup/000000.jpg",
         "code": 82,
         "nutrition": {
             "energy": 30,
@@ -1332,7 +1332,7 @@
         "chinese_name": "西红柿鸡蛋面",
         "food_type": "面类",
         "description": "西红柿鸡蛋面以面条为主料，搭配西红柿和鸡蛋炒制的卤汁，口感鲜香，营养丰富。",
-        "image_url": "/chinesefood207/Noodles with egg and tomato/000000jpg",
+        "image_url": "/chinesefood207/Noodles with egg and tomato/000000.jpg",
         "code": 83,
         "nutrition": {
             "energy": 150,
@@ -1348,7 +1348,7 @@
         "chinese_name": "茄汁拌面",
         "food_type": "面类",
         "description": "茄汁拌面以面条为主料，搭配茄汁，口感酸甜可口，是一道美味的面食。",
-        "image_url": "/chinesefood207/Noodles with tomato sauce/000000jpg",
+        "image_url": "/chinesefood207/Noodles with tomato sauce/000000.jpg",
         "code": 84,
         "nutrition": {
             "energy": 140,
@@ -1364,7 +1364,7 @@
         "chinese_name": "蛋包饭",
         "food_type": "主食类",
         "description": "蛋包饭将米饭包裹在鸡蛋饼中，搭配各种配菜，味道鲜美，是受欢迎的美食。",
-        "image_url": "/chinesefood207/Omelette/000000jpg",
+        "image_url": "/chinesefood207/Omelette/000000.jpg",
         "code": 85,
         "nutrition": {
             "energy": 180,
@@ -1380,7 +1380,7 @@
         "chinese_name": "蚝油杏鲍菇",
         "food_type": "菌类",
         "description": "蚝油杏鲍菇是一道美味的菌类菜肴，杏鲍菇肉质肥厚，富有弹性，搭配蚝油等调料，味道鲜美。",
-        "image_url": "/chinesefood207/Oyster mushroom/000000jpg",
+        "image_url": "/chinesefood207/Oyster mushroom/000000.jpg",
         "code": 86,
         "nutrition": {
             "energy": 50,
@@ -1396,7 +1396,7 @@
         "chinese_name": "生蚝",
         "food_type": "贝类",
         "description": "生蚝肉质鲜嫩，富含多种营养物质，可生吃、清蒸或烤制，味道鲜美，深受人们喜爱。",
-        "image_url": "/chinesefood207/Oysters/000000jpg",
+        "image_url": "/chinesefood207/Oysters/000000.jpg",
         "code": 87,
         "nutrition": {
             "energy": 68,
@@ -1412,7 +1412,7 @@
         "chinese_name": "香煎土豆",
         "food_type": "土豆类",
         "description": "香煎土豆是一道美味的菜肴，将土豆切成适当大小后进行香煎，外皮金黄酥脆，内部软糯香甜，口感丰富。",
-        "image_url": "/chinesefood207/Pan fried potato/000000jpg",
+        "image_url": "/chinesefood207/Pan fried potato/000000.jpg",
         "code": 88,
         "nutrition": {
             "energy": 90,
@@ -1428,7 +1428,7 @@
         "chinese_name": "猪耳朵",
         "food_type": "肉类",
         "description": "猪耳朵口感脆爽，富有嚼劲，是常见的下酒菜，可凉拌、卤制等，味道鲜香可口。",
-        "image_url": "/chinesefood207/Pig ears/000000jpg",
+        "image_url": "/chinesefood207/Pig ears/000000.jpg",
         "code": 89,
         "nutrition": {
             "energy": 200,
@@ -1444,7 +1444,7 @@
         "chinese_name": "葱花手抓饼",
         "food_type": "饼类",
         "description": "葱花手抓饼葱香四溢，饼皮酥脆，口感丰富，是美味的小吃。",
-        "image_url": "/chinesefood207/Pine cake with Diced Scallion/000000jpg",
+        "image_url": "/chinesefood207/Pine cake with Diced Scallion/000000.jpg",
         "code": 90,
         "nutrition": {
             "energy": 280,
@@ -1460,7 +1460,7 @@
         "chinese_name": "皮皮虾",
         "food_type": "虾类",
         "description": "皮皮虾肉质鲜嫩，味道鲜美，可采用多种烹饪方式，如椒盐、清蒸等，能充分展现其独特的风味。",
-        "image_url": "/chinesefood207/Pipi shrimp/000000jpg",
+        "image_url": "/chinesefood207/Pipi shrimp/000000.jpg",
         "code": 91,
         "nutrition": {
             "energy": 85,
@@ -1476,7 +1476,7 @@
         "chinese_name": "披萨",
         "food_type": "披萨类",
         "description": "披萨有丰富的馅料和多样的口味，是深受喜爱的西式美食。",
-        "image_url": "/chinesefood207/Pizza/000000jpg",
+        "image_url": "/chinesefood207/Pizza/000000.jpg",
         "code": 92,
         "nutrition": {
             "energy": 250,
@@ -1492,7 +1492,7 @@
         "chinese_name": "荷包蛋",
         "food_type": "蛋类",
         "description": "荷包蛋口感嫩滑，金黄的蛋黄流淌出浓郁的香味，是简单又美味的食物。",
-        "image_url": "/chinesefood207/Poached Egg/000000jpg",
+        "image_url": "/chinesefood207/Poached Egg/000000.jpg",
         "code": 93,
         "nutrition": {
             "energy": 155,
@@ -1508,7 +1508,7 @@
         "chinese_name": "夫妻肺片",
         "food_type": "川菜",
         "description": "夫妻肺片以牛头皮、牛心、牛舌、牛肚等为主料，卤制后切片，加入辣椒油、花椒面等调料拌匀而成，色泽美观，质嫩味鲜，麻辣浓香。",
-        "image_url": "/chinesefood207/Pork Lungs in Chili Sauce/000000jpg",
+        "image_url": "/chinesefood207/Pork Lungs in Chili Sauce/000000.jpg",
         "code": 94,
         "nutrition": {
             "energy": 120,
@@ -1524,7 +1524,7 @@
         "chinese_name": "猪肝",
         "food_type": "肉类",
         "description": "猪肝是一种营养丰富的食材，富含铁、维生素A等多种营养物质，具有补血明目等功效，可通过多种烹饪方式制作成美味菜肴。",
-        "image_url": "/chinesefood207/Pork liver/000000jpg",
+        "image_url": "/chinesefood207/Pork liver/000000.jpg",
         "code": 95,
         "nutrition": {
             "energy": 165,
@@ -1540,7 +1540,7 @@
         "chinese_name": "萝卜排骨汤",
         "food_type": "汤类",
         "description": "萝卜排骨汤以萝卜和排骨为主要原料，经过炖煮，汤汁浓郁，萝卜清甜，排骨鲜嫩，营养丰富。",
-        "image_url": "/chinesefood207/Pork ribs soup with radish/000000jpg",
+        "image_url": "/chinesefood207/Pork ribs soup with radish/000000.jpg",
         "code": 96,
         "nutrition": {
             "energy": 80,
@@ -1556,7 +1556,7 @@
         "chinese_name": "梅菜扣肉",
         "food_type": "肉类",
         "description": "梅菜扣肉肥而不腻，梅菜的香味融入到猪肉中，肉质软糯，咸香可口，是一道经典的传统菜肴。",
-        "image_url": "/chinesefood207/Pork with salted vegetable/000000jpg",
+        "image_url": "/chinesefood207/Pork with salted vegetable/000000.jpg",
         "code": 97,
         "nutrition": {
             "energy": 250,
@@ -1572,7 +1572,7 @@
         "chinese_name": "鲜肉小馄饨",
         "food_type": "面食类",
         "description": "鲜肉小馄饨以薄面皮包入鲜肉馅，汤鲜味美，馄饨皮滑嫩，肉馅鲜嫩多汁，是常见的中式小吃。",
-        "image_url": "/chinesefood207/Pork wonton/000000jpg",
+        "image_url": "/chinesefood207/Pork wonton/000000.jpg",
         "code": 98,
         "nutrition": {
             "energy": 160,
@@ -1588,7 +1588,7 @@
         "chinese_name": "锅包肉",
         "food_type": "肉类",
         "description": "锅包肉色泽金黄，外酥里嫩，酸甜适口，是一道具有东北特色的传统菜肴。",
-        "image_url": "/chinesefood207/Pot bag meat/000000jpg",
+        "image_url": "/chinesefood207/Pot bag meat/000000.jpg",
         "code": 99,
         "nutrition": {
             "energy": 220,
@@ -1604,7 +1604,7 @@
         "chinese_name": "土豆鸡蛋饼",
         "food_type": "主食类",
         "description": "土豆鸡蛋饼口感软糯，土豆和鸡蛋的搭配营养丰富，是美味又饱腹的主食选择。",
-        "image_url": "/chinesefood207/Potato omelet/000000jpg",
+        "image_url": "/chinesefood207/Potato omelet/000000.jpg",
         "code": 100,
         "nutrition": {
             "energy": 150,
@@ -1620,7 +1620,7 @@
         "chinese_name": "酸辣土豆丝",
         "food_type": "土豆类",
         "description": "酸辣土豆丝是一道经典的家常菜，以土豆为主要食材，切成细丝后炒制而成。口感酸辣爽口，土豆丝脆嫩，是一道深受大众喜爱的菜肴。",
-        "image_url": "/chinesefood207/Potato silk/000000jpg",
+        "image_url": "/chinesefood207/Potato silk/000000.jpg",
         "code": 101,
         "nutrition": {
             "energy": 70,
@@ -1636,7 +1636,7 @@
         "chinese_name": "南瓜饼",
         "food_type": "饼类",
         "description": "南瓜饼以南瓜为主要原料，香甜可口，外酥里嫩。",
-        "image_url": "/chinesefood207/Pumpkin pie/000000jpg",
+        "image_url": "/chinesefood207/Pumpkin pie/000000.jpg",
         "code": 102,
         "nutrition": {
             "energy": 200,
@@ -1652,7 +1652,7 @@
         "chinese_name": "臊子面",
         "food_type": "面类",
         "description": "臊子面以面条和臊子为主要食材，汤汁浓郁，面条劲道，是陕西地区的传统美食。",
-        "image_url": "/chinesefood207/Qishan noodles/000000jpg",
+        "image_url": "/chinesefood207/Qishan noodles/000000.jpg",
         "code": 103,
         "nutrition": {
             "energy": 180,
@@ -1668,7 +1668,7 @@
         "chinese_name": "米饭",
         "food_type": "饭类",
         "description": "米饭以大米为主要原料蒸煮而成，颗粒饱满，口感软糯，是人们日常饮食中的主食之一。",
-        "image_url": "/chinesefood207/Rice/000000jpg",
+        "image_url": "/chinesefood207/Rice/000000.jpg",
         "code": 104,
         "nutrition": {
             "energy": 130,
@@ -1684,7 +1684,7 @@
         "chinese_name": "大米粥",
         "food_type": "粥类",
         "description": "大米粥以大米为主要原料熬制而成，粥品质地细腻，口感清淡，容易消化，是常见的养生粥品。",
-        "image_url": "/chinesefood207/Rice porridge/000000jpg",
+        "image_url": "/chinesefood207/Rice porridge/000000.jpg",
         "code": 105,
         "nutrition": {
             "energy": 50,
@@ -1700,7 +1700,7 @@
         "chinese_name": "烤鸭烧鹅",
         "food_type": "肉类",
         "description": "烤鸭烧鹅皮脆肉嫩，香气四溢，是一道备受喜爱的传统佳肴。",
-        "image_url": "/chinesefood207/Roast goose/000000jpg",
+        "image_url": "/chinesefood207/Roast goose/000000.jpg",
         "code": 106,
         "nutrition": {
             "energy": 250,
@@ -1716,7 +1716,7 @@
         "chinese_name": "大盘鸡",
         "food_type": "肉类",
         "description": "大盘鸡鸡肉鲜嫩，土豆软糯，汤汁浓郁，搭配皮带面，是一道令人满足的佳肴。",
-        "image_url": "/chinesefood207/Saute Spicy Chicken/000000jpg",
+        "image_url": "/chinesefood207/Saute Spicy Chicken/000000.jpg",
         "code": 107,
         "nutrition": {
             "energy": 200,
@@ -1732,7 +1732,7 @@
         "chinese_name": "炒青菜",
         "food_type": "白菜类",
         "description": "炒青菜是一道简单美味的家常菜，选用新鲜青菜清炒而成。口感清爽，保留了青菜的自然风味和营养价值，是餐桌上常见的健康菜品。",
-        "image_url": "/chinesefood207/Saute vegetable/000000jpg",
+        "image_url": "/chinesefood207/Saute vegetable/000000.jpg",
         "code": 108,
         "nutrition": {
             "energy": 30,
@@ -1748,7 +1748,7 @@
         "chinese_name": "香菇青菜",
         "food_type": "果蔬类",
         "description": "香菇青菜是一道清爽可口的家常菜，香菇鲜嫩多汁，青菜翠绿爽口，两者搭配在一起，营养丰富，口感鲜美，是一道适合日常食用的健康菜肴。",
-        "image_url": "/chinesefood207/Sauted Chinese Greens with Mushrooms/000000jpg",
+        "image_url": "/chinesefood207/Sauted Chinese Greens with Mushrooms/000000.jpg",
         "code": 109,
         "nutrition": {
             "energy": 40,
@@ -1764,7 +1764,7 @@
         "chinese_name": "杭椒牛柳",
         "food_type": "肉类",
         "description": "杭椒牛柳色泽鲜艳，杭椒的辣味与牛柳的鲜嫩相互融合，口感清爽，是一道美味的下饭菜。",
-        "image_url": "/chinesefood207/Sauteed Beef Fillet with Hot Green Pepper/000000jpg",
+        "image_url": "/chinesefood207/Sauteed Beef Fillet with Hot Green Pepper/000000.jpg",
         "code": 110,
         "nutrition": {
             "energy": 150,
@@ -1780,7 +1780,7 @@
         "chinese_name": "蚝油生菜",
         "food_type": "白菜类",
         "description": "蚝油生菜是一道常见的素菜，以生菜为主要食材，加入蚝油等调料炒制而成。生菜鲜嫩，味道鲜美，营养丰富。",
-        "image_url": "/chinesefood207/Sauteed Lettuce in Oyster Sauce/000000jpg",
+        "image_url": "/chinesefood207/Sauteed Lettuce in Oyster Sauce/000000.jpg",
         "code": 111,
         "nutrition": {
             "energy": 40,
@@ -1796,7 +1796,7 @@
         "chinese_name": "西芹百合",
         "food_type": "果蔬类",
         "description": "西芹百合是一道清新雅致的菜肴，西芹的脆嫩与百合的甜润相互映衬，色泽清新，口感清甜，具有一定的养生功效，是一道备受喜爱的健康美食。",
-        "image_url": "/chinesefood207/Sauteed Lily Bulbs and Celery/000000jpg",
+        "image_url": "/chinesefood207/Sauteed Lily Bulbs and Celery/000000.jpg",
         "code": 112,
         "nutrition": {
             "energy": 50,
@@ -1812,7 +1812,7 @@
         "chinese_name": "京酱肉丝",
         "food_type": "肉类",
         "description": "京酱肉丝以猪肉为主料，搭配葱丝和甜面酱，酱香浓郁，口感鲜嫩，是一道经典的北京菜。",
-        "image_url": "/chinesefood207/Sauteed Shredded Pork in Sweet Bean Sauce/000000jpg",
+        "image_url": "/chinesefood207/Sauteed Shredded Pork in Sweet Bean Sauce/000000.jpg",
         "code": 113,
         "nutrition": {
             "energy": 180,
@@ -1828,7 +1828,7 @@
         "chinese_name": "清炒虾仁",
         "food_type": "虾类",
         "description": "清炒虾仁以新鲜虾仁为主要食材，炒制后虾仁色泽洁白，口感鲜嫩，味道清淡鲜美。",
-        "image_url": "/chinesefood207/Sauteed Shrimp meat/000000jpg",
+        "image_url": "/chinesefood207/Sauteed Shrimp meat/000000.jpg",
         "code": 114,
         "nutrition": {
             "energy": 100,
@@ -1844,7 +1844,7 @@
         "chinese_name": "葱爆羊肉",
         "food_type": "肉类",
         "description": "葱爆羊肉以羊肉和葱为主要食材，快速爆炒而成，羊肉鲜嫩，葱香浓郁，口感鲜美。",
-        "image_url": "/chinesefood207/Sauteed Sliced Lamb with Scallion/000000jpg",
+        "image_url": "/chinesefood207/Sauteed Sliced Lamb with Scallion/000000.jpg",
         "code": 115,
         "nutrition": {
             "energy": 180,
@@ -1860,7 +1860,7 @@
         "chinese_name": "木须肉",
         "food_type": "肉类",
         "description": "木须肉主要由猪肉、鸡蛋和木耳等食材炒制而成，口感鲜香，味道醇厚，是一道经典的北方家常菜。",
-        "image_url": "/chinesefood207/Sauteed Sliced Pork,Eggs and Black Fungus/000000jpg",
+        "image_url": "/chinesefood207/Sauteed Sliced Pork,Eggs and Black Fungus/000000.jpg",
         "code": 116,
         "nutrition": {
             "energy": 120,
@@ -1876,7 +1876,7 @@
         "chinese_name": "松仁玉米",
         "food_type": "果蔬类",
         "description": "松仁玉米是一道香甜可口的菜肴，玉米清甜多汁，松仁香脆可口，搭配在一起口感丰富，是一道老少皆宜的美食。",
-        "image_url": "/chinesefood207/Sauteed Sweet Corn with Pine Nuts/000000jpg",
+        "image_url": "/chinesefood207/Sauteed Sweet Corn with Pine Nuts/000000.jpg",
         "code": 117,
         "nutrition": {
             "energy": 120,
@@ -1892,7 +1892,7 @@
         "chinese_name": "蚂蚁上树",
         "food_type": "肉类",
         "description": "蚂蚁上树主要由粉丝和肉末炒制而成，粉丝劲道，肉末香辣，口感丰富，是一道美味的家常菜。",
-        "image_url": "/chinesefood207/Sauteed Vermicelli with Spicy Minced Pork/000000jpg",
+        "image_url": "/chinesefood207/Sauteed Vermicelli with Spicy Minced Pork/000000.jpg",
         "code": 118,
         "nutrition": {
             "energy": 140,
@@ -1908,7 +1908,7 @@
         "chinese_name": "炒豆芽",
         "food_type": "白菜类",
         "description": "炒豆芽是一道清爽可口的家常菜，以豆芽为主料炒制而成。豆芽口感脆嫩，味道鲜美，富含多种维生素。",
-        "image_url": "/chinesefood207/Sauteed bean sprouts/000000jpg",
+        "image_url": "/chinesefood207/Sauteed bean sprouts/000000.jpg",
         "code": 119,
         "nutrition": {
             "energy": 30,
@@ -1924,7 +1924,7 @@
         "chinese_name": "炒蚕豆",
         "food_type": "白菜类",
         "description": "炒蚕豆是一道常见的菜肴，选用新鲜蚕豆炒制。蚕豆口感软糯，风味独特，含有丰富的膳食纤维和蛋白质。",
-        "image_url": "/chinesefood207/Sauteed broad beans/000000jpg",
+        "image_url": "/chinesefood207/Sauteed broad beans/000000.jpg",
         "code": 120,
         "nutrition": {
             "energy": 100,
@@ -1940,7 +1940,7 @@
         "chinese_name": "清炒菠菜",
         "food_type": "白菜类",
         "description": "清炒菠菜是一道简单的素菜，选用新鲜菠菜清炒。菠菜口感软嫩，味道清淡，富含多种维生素和矿物质，是健康的饮食选择。",
-        "image_url": "/chinesefood207/Sauteed spainch/000000jpg",
+        "image_url": "/chinesefood207/Sauteed spainch/000000.jpg",
         "code": 121,
         "nutrition": {
             "energy": 25,
@@ -1956,7 +1956,7 @@
         "chinese_name": "扇贝",
         "food_type": "贝类",
         "description": "扇贝肉质鲜嫩，营养丰富，烹饪后口感鲜美，是一道受欢迎的海鲜美食。",
-        "image_url": "/chinesefood207/Scallop in Shell/000000jpg",
+        "image_url": "/chinesefood207/Scallop in Shell/000000.jpg",
         "code": 122,
         "nutrition": {
             "energy": 85,
@@ -1972,7 +1972,7 @@
         "chinese_name": "腰花",
         "food_type": "肉类",
         "description": "腰花口感鲜嫩，爽脆可口，烹饪后的腰花香气扑鼻，是一道餐桌上常见的美味佳肴。",
-        "image_url": "/chinesefood207/Scalloped pork or lamb kidneys/000000jpg",
+        "image_url": "/chinesefood207/Scalloped pork or lamb kidneys/000000.jpg",
         "code": 123,
         "nutrition": {
             "energy": 140,
@@ -1988,7 +1988,7 @@
         "chinese_name": "韭菜炒鸡蛋",
         "food_type": "果蔬类",
         "description": "韭菜炒鸡蛋是一道常见的家常菜，韭菜的辛辣与鸡蛋的嫩滑相互搭配，味道鲜美，营养丰富，适合各个年龄段的人食用。",
-        "image_url": "/chinesefood207/Scrambled Egg with Leek/000000jpg",
+        "image_url": "/chinesefood207/Scrambled Egg with Leek/000000.jpg",
         "code": 124,
         "nutrition": {
             "energy": 120,
@@ -2004,7 +2004,7 @@
         "chinese_name": "黄瓜炒鸡蛋",
         "food_type": "果蔬类",
         "description": "黄瓜炒鸡蛋是一道清爽可口的菜肴，黄瓜的脆嫩与鸡蛋的鲜香相结合，口感丰富，富含维生素和蛋白质，是家庭餐桌上的常见选择。",
-        "image_url": "/chinesefood207/Scrambled Egg with cucumber/000000jpg",
+        "image_url": "/chinesefood207/Scrambled Egg with cucumber/000000.jpg",
         "code": 125,
         "nutrition": {
             "energy": 100,
@@ -2020,7 +2020,7 @@
         "chinese_name": "西红柿炒鸡蛋",
         "food_type": "果蔬类",
         "description": "西红柿炒鸡蛋是一道经典的中式菜肴，西红柿的酸甜与鸡蛋的嫩滑完美融合，色泽鲜艳，口感丰富，是一道老少皆宜的美食，常作为家庭日常菜肴。",
-        "image_url": "/chinesefood207/Scrambled egg with tomato/000000jpg",
+        "image_url": "/chinesefood207/Scrambled egg with tomato/000000.jpg",
         "code": 126,
         "nutrition": {
             "energy": 80,
@@ -2036,7 +2036,7 @@
         "chinese_name": "紫菜蛋花汤",
         "food_type": "汤类",
         "description": "紫菜蛋花汤以紫菜和鸡蛋为主要食材，煮制而成，汤汁清爽，蛋花嫩滑，味道鲜美。",
-        "image_url": "/chinesefood207/Seaweed and Egg Soup/000000jpg",
+        "image_url": "/chinesefood207/Seaweed and Egg Soup/000000.jpg",
         "code": 127,
         "nutrition": {
             "energy": 30,
@@ -2052,7 +2052,7 @@
         "chinese_name": "凉拌海带丝",
         "food_type": "藻类",
         "description": "凉拌海带丝是一道清爽可口的凉菜，海带丝口感脆嫩，搭配各种调料，味道鲜美。",
-        "image_url": "/chinesefood207/Seaweed salad/000000jpg",
+        "image_url": "/chinesefood207/Seaweed salad/000000.jpg",
         "code": 128,
         "nutrition": {
             "energy": 20,
@@ -2068,7 +2068,7 @@
         "chinese_name": "海带豆腐汤",
         "food_type": "汤类",
         "description": "海带豆腐汤以海带和豆腐为主要食材，煮制而成，汤汁清淡，海带脆嫩，豆腐软滑，营养丰富。",
-        "image_url": "/chinesefood207/Seaweed tofu soup/000000jpg",
+        "image_url": "/chinesefood207/Seaweed tofu soup/000000.jpg",
         "code": 129,
         "nutrition": {
             "energy": 40,
@@ -2084,7 +2084,7 @@
         "chinese_name": "芝麻烧饼",
         "food_type": "饼类",
         "description": "芝麻烧饼芝麻香气浓郁，饼体酥脆，是传统的中式面食。",
-        "image_url": "/chinesefood207/Sesame seed cake/000000jpg",
+        "image_url": "/chinesefood207/Sesame seed cake/000000.jpg",
         "code": 130,
         "nutrition": {
             "energy": 350,
@@ -2100,7 +2100,7 @@
         "chinese_name": "农家小炒肉",
         "food_type": "肉类",
         "description": "农家小炒肉以猪肉和青椒为主要食材，香辣可口，是一道下饭的家常菜。",
-        "image_url": "/chinesefood207/Shredded Pork with Vegetables/000000jpg",
+        "image_url": "/chinesefood207/Shredded Pork with Vegetables/000000.jpg",
         "code": 131,
         "nutrition": {
             "energy": 150,
@@ -2116,7 +2116,7 @@
         "chinese_name": "手撕包菜",
         "food_type": "白菜类",
         "description": "手撕包菜是一道经典的家常菜，将包菜用手撕开后进行炒制。口感爽脆，味道香辣可口，是一道很受欢迎的下饭菜。",
-        "image_url": "/chinesefood207/Shredded cabbage/000000jpg",
+        "image_url": "/chinesefood207/Shredded cabbage/000000.jpg",
         "code": 132,
         "nutrition": {
             "energy": 25,
@@ -2132,7 +2132,7 @@
         "chinese_name": "鸡丝、鸡丝面",
         "food_type": "肉类",
         "description": "鸡丝口感嫩滑，鸡丝面汤鲜味美，面条劲道，二者搭配相得益彰，是一道美味又便捷的佳肴。",
-        "image_url": "/chinesefood207/Shredded chicken/000000jpg",
+        "image_url": "/chinesefood207/Shredded chicken/000000.jpg",
         "code": 133,
         "nutrition": {
             "energy": 120,
@@ -2148,7 +2148,7 @@
         "chinese_name": "青椒肉丝",
         "food_type": "肉类",
         "description": "青椒肉丝以青椒和猪肉为主料，青椒的清爽与肉丝的鲜嫩相结合，口感丰富，是一道经典的家常菜。",
-        "image_url": "/chinesefood207/Shredded pork and green pepper/000000jpg",
+        "image_url": "/chinesefood207/Shredded pork and green pepper/000000.jpg",
         "code": 134,
         "nutrition": {
             "energy": 100,
@@ -2164,7 +2164,7 @@
         "chinese_name": "豆角肉丝",
         "food_type": "肉类",
         "description": "豆角肉丝以猪肉和豆角为主料，豆角脆嫩，肉丝滑嫩，味道鲜美，是一道常见的家常菜。",
-        "image_url": "/chinesefood207/Shredded pork with bean/000000jpg",
+        "image_url": "/chinesefood207/Shredded pork with bean/000000.jpg",
         "code": 135,
         "nutrition": {
             "energy": 110,
@@ -2180,7 +2180,7 @@
         "chinese_name": "水晶虾饺",
         "food_type": "虾类",
         "description": "水晶虾饺以透明澄面皮包裹鲜美的虾仁，外形晶莹剔透，口感爽滑有弹性，味道鲜美。",
-        "image_url": "/chinesefood207/Shrimp Duplings/000000jpg",
+        "image_url": "/chinesefood207/Shrimp Duplings/000000.jpg",
         "code": 136,
         "nutrition": {
             "energy": 150,
@@ -2196,7 +2196,7 @@
         "chinese_name": "虾仁西兰花",
         "food_type": "虾类",
         "description": "虾仁西兰花以虾仁和西兰花为主要食材，将虾仁鲜嫩的口感与西兰花的清爽完美结合，营养丰富又美味。",
-        "image_url": "/chinesefood207/Shrimp broccoli/000000jpg",
+        "image_url": "/chinesefood207/Shrimp broccoli/000000.jpg",
         "code": 137,
         "nutrition": {
             "energy": 70,
@@ -2212,7 +2212,7 @@
         "chinese_name": "担担面",
         "food_type": "面类",
         "description": "担担面以面条为主料，搭配独特的酱料和配菜，口味麻辣鲜香，是四川地区的特色面食。",
-        "image_url": "/chinesefood207/Sichuan noodles with peppery sauce/000000jpg",
+        "image_url": "/chinesefood207/Sichuan noodles with peppery sauce/000000.jpg",
         "code": 138,
         "nutrition": {
             "energy": 160,
@@ -2228,7 +2228,7 @@
         "chinese_name": "西红柿牛腩",
         "food_type": "肉类",
         "description": "西红柿牛腩酸甜开胃，牛肉鲜嫩多汁，搭配浓郁的汤汁，十分下饭，是一道备受欢迎的家常菜。",
-        "image_url": "/chinesefood207/Sirloin tomatoes/000000jpg",
+        "image_url": "/chinesefood207/Sirloin tomatoes/000000.jpg",
         "code": 139,
         "nutrition": {
             "energy": 150,
@@ -2244,7 +2244,7 @@
         "chinese_name": "苏打饼干",
         "food_type": "其他",
         "description": "苏打饼干以面粉、酵母、小苏打等为原料，经过发酵、烘焙等工艺制成，口感酥脆，有淡淡的碱味，适合作为日常零食或搭配饮品食用。",
-        "image_url": "/chinesefood207/Soda biscuit/000000jpg",
+        "image_url": "/chinesefood207/Soda biscuit/000000.jpg",
         "code": 140,
         "nutrition": {
             "energy": 420,
@@ -2260,7 +2260,7 @@
         "chinese_name": "醋溜白菜",
         "food_type": "白菜类",
         "description": "醋溜白菜是一道传统的家常菜，以白菜为主要食材，经过醋溜的烹饪方式制作而成。口感脆爽，味道酸甜可口。",
-        "image_url": "/chinesefood207/Sour cabbage/000000jpg",
+        "image_url": "/chinesefood207/Sour cabbage/000000.jpg",
         "code": 141,
         "nutrition": {
             "energy": 30,
@@ -2276,7 +2276,7 @@
         "chinese_name": "豉油鸡",
         "food_type": "肉类",
         "description": "豉油鸡鸡肉色泽红亮，豉味浓郁，味道鲜香，皮滑肉嫩。",
-        "image_url": "/chinesefood207/Soy sauce chicken/000000jpg",
+        "image_url": "/chinesefood207/Soy sauce chicken/000000.jpg",
         "code": 142,
         "nutrition": {
             "energy": 180,
@@ -2292,7 +2292,7 @@
         "chinese_name": "毛豆",
         "food_type": "白菜类",
         "description": "毛豆是常见的食材，口感鲜嫩，味道清香，富含蛋白质和多种营养成分。",
-        "image_url": "/chinesefood207/Soybean/000000jpg",
+        "image_url": "/chinesefood207/Soybean/000000.jpg",
         "code": 143,
         "nutrition": {
             "energy": 120,
@@ -2308,7 +2308,7 @@
         "chinese_name": "椒盐蘑菇",
         "food_type": "果蔬类",
         "description": "椒盐蘑菇是一道美味的小吃，蘑菇经过油炸后外皮金黄酥脆，内部鲜嫩多汁，再撒上椒盐等调料，味道鲜香麻辣，十分可口。",
-        "image_url": "/chinesefood207/Spiced mushroom/000000jpg",
+        "image_url": "/chinesefood207/Spiced mushroom/000000.jpg",
         "code": 144,
         "nutrition": {
             "energy": 80,
@@ -2324,7 +2324,7 @@
         "chinese_name": "辣子鸡",
         "food_type": "肉类",
         "description": "辣子鸡鸡肉外酥里嫩，麻辣鲜香，颗粒分明，十分过瘾。",
-        "image_url": "/chinesefood207/Spicy Chicken/000000jpg",
+        "image_url": "/chinesefood207/Spicy Chicken/000000.jpg",
         "code": 145,
         "nutrition": {
             "energy": 220,
@@ -2340,7 +2340,7 @@
         "chinese_name": "辣白菜",
         "food_type": "白菜类",
         "description": "辣白菜是一种朝鲜族特色发酵食品，以白菜为主要原料，加入辣椒、大蒜、生姜等调料腌制发酵而成。具有酸辣可口、爽脆开胃的特点。",
-        "image_url": "/chinesefood207/Spicy cabbage/000000jpg",
+        "image_url": "/chinesefood207/Spicy cabbage/000000.jpg",
         "code": 146,
         "nutrition": {
             "energy": 25,
@@ -2356,7 +2356,7 @@
         "chinese_name": "香辣小龙虾",
         "food_type": "虾类",
         "description": "香辣小龙虾以小龙虾为主要食材，搭配辣椒等调料烹饪，虾肉鲜嫩，口味香辣。",
-        "image_url": "/chinesefood207/Spicy crayfish/000000jpg",
+        "image_url": "/chinesefood207/Spicy crayfish/000000.jpg",
         "code": 147,
         "nutrition": {
             "energy": 120,
@@ -2372,7 +2372,7 @@
         "chinese_name": "麻辣香锅",
         "food_type": "川菜",
         "description": "麻辣香锅以多种食材如肉类、蔬菜、海鲜等为原料，搭配特制的麻辣调料炒制而成，口味香辣过瘾，食材丰富多样。",
-        "image_url": "/chinesefood207/Spicy pot/000000jpg",
+        "image_url": "/chinesefood207/Spicy pot/000000.jpg",
         "code": 148,
         "nutrition": {
             "energy": 150,
@@ -2388,7 +2388,7 @@
         "chinese_name": "香辣虾",
         "food_type": "虾类",
         "description": "香辣虾以鲜虾为主料，加入辣椒等多种香料烹制，虾肉麻辣过瘾，口感香辣爽脆。",
-        "image_url": "/chinesefood207/Spicy shrimp/000000jpg",
+        "image_url": "/chinesefood207/Spicy shrimp/000000.jpg",
         "code": 149,
         "nutrition": {
             "energy": 130,
@@ -2404,7 +2404,7 @@
         "chinese_name": "菠菜猪肝汤",
         "food_type": "汤类",
         "description": "菠菜猪肝汤以菠菜和猪肝为主要食材，煮制而成，汤汁鲜美，菠菜嫩绿，猪肝嫩滑，富含铁元素。",
-        "image_url": "/chinesefood207/Spinach and pork liver soup/000000jpg",
+        "image_url": "/chinesefood207/Spinach and pork liver soup/000000.jpg",
         "code": 150,
         "nutrition": {
             "energy": 60,
@@ -2420,7 +2420,7 @@
         "chinese_name": "上汤娃娃菜",
         "food_type": "白菜类",
         "description": "上汤娃娃菜是一道常见的菜肴，以娃娃菜为主要食材，搭配上汤精心烹制。娃娃菜鲜嫩，汤汁浓郁，味道醇厚。",
-        "image_url": "/chinesefood207/Steamed Baby Cabbage/000000jpg",
+        "image_url": "/chinesefood207/Steamed Baby Cabbage/000000.jpg",
         "code": 151,
         "nutrition": {
             "energy": 20,
@@ -2436,7 +2436,7 @@
         "chinese_name": "小笼汤包",
         "food_type": "主食类",
         "description": "小笼汤包小巧玲珑，汤汁浓郁，外皮薄而有韧性，是具有特色的中式点心。",
-        "image_url": "/chinesefood207/Steamed Bun Stuffed/000000jpg",
+        "image_url": "/chinesefood207/Steamed Bun Stuffed/000000.jpg",
         "code": 152,
         "nutrition": {
             "energy": 200,
@@ -2452,7 +2452,7 @@
         "chinese_name": "口水鸡",
         "food_type": "肉类",
         "description": "口水鸡鸡肉鲜嫩，麻辣鲜香，酱汁浓郁，是一道经典的川菜美食。",
-        "image_url": "/chinesefood207/Steamed Chicken with Chili Sauce/000000jpg",
+        "image_url": "/chinesefood207/Steamed Chicken with Chili Sauce/000000.jpg",
         "code": 153,
         "nutrition": {
             "energy": 160,
@@ -2468,7 +2468,7 @@
         "chinese_name": "香菇蒸鸡",
         "food_type": "肉类",
         "description": "香菇蒸鸡嫩滑可口，香菇的香味融入鸡肉中，味道鲜美，营养丰富。",
-        "image_url": "/chinesefood207/Steamed Chicken with Mushroom/000000jpg",
+        "image_url": "/chinesefood207/Steamed Chicken with Mushroom/000000.jpg",
         "code": 154,
         "nutrition": {
             "energy": 120,
@@ -2484,7 +2484,7 @@
         "chinese_name": "剁椒鱼头",
         "food_type": "鱼类",
         "description": "剁椒鱼头以鱼头为主料，搭配剁椒蒸制而成，鱼头鲜嫩，剁椒香辣，味道浓郁。",
-        "image_url": "/chinesefood207/Steamed Fish Head with Diced Hot Red Peppers/000000jpg",
+        "image_url": "/chinesefood207/Steamed Fish Head with Diced Hot Red Peppers/000000.jpg",
         "code": 155,
         "nutrition": {
             "energy": 110,
@@ -2500,7 +2500,7 @@
         "chinese_name": "清蒸鲈鱼",
         "food_type": "鱼类",
         "description": "清蒸鲈鱼以鲈鱼为主料，经清蒸烹饪，鱼肉鲜嫩，口感清淡，保留原汁原味。",
-        "image_url": "/chinesefood207/Steamed Perch/000000jpg",
+        "image_url": "/chinesefood207/Steamed Perch/000000.jpg",
         "code": 156,
         "nutrition": {
             "energy": 100,
@@ -2516,7 +2516,7 @@
         "chinese_name": "烧麦",
         "food_type": "主食类",
         "description": "烧麦外形美观，糯米软糯，馅料丰富，口感鲜香，是常见的中式主食。",
-        "image_url": "/chinesefood207/Steamed Pork Dumplings/000000jpg",
+        "image_url": "/chinesefood207/Steamed Pork Dumplings/000000.jpg",
         "code": 157,
         "nutrition": {
             "energy": 180,
@@ -2532,7 +2532,7 @@
         "chinese_name": "鸡蛋羹",
         "food_type": "蛋类",
         "description": "鸡蛋羹是一道简单易做的美食，鸡蛋的鲜嫩口感在蒸煮过程中得以完美展现，口感细腻，营养丰富，易于消化，是老少皆宜的佳肴。",
-        "image_url": "/chinesefood207/Steamed egg custard/000000jpg",
+        "image_url": "/chinesefood207/Steamed egg custard/000000.jpg",
         "code": 158,
         "nutrition": {
             "energy": 80,
@@ -2548,7 +2548,7 @@
         "chinese_name": "粉蒸排骨",
         "food_type": "肉类",
         "description": "粉蒸排骨口感软糯，米粉香糯，排骨鲜嫩多汁，是一道具有浓郁地方特色的美食，常作为餐桌上的佳肴。",
-        "image_url": "/chinesefood207/Steamed pork with rice powder/000000jpg",
+        "image_url": "/chinesefood207/Steamed pork with rice powder/000000.jpg",
         "code": 159,
         "nutrition": {
             "energy": 200,
@@ -2564,7 +2564,7 @@
         "chinese_name": "蒜茸粉丝蒸虾",
         "food_type": "虾类",
         "description": "蒜茸粉丝蒸虾以鲜虾、粉丝和蒜蓉为主要食材，粉丝吸收了虾的鲜味和蒜蓉的香味，虾肉鲜嫩多汁，蒜香浓郁。",
-        "image_url": "/chinesefood207/Steamed shrimp with garlic and vermicelli/000000jpg",
+        "image_url": "/chinesefood207/Steamed shrimp with garlic and vermicelli/000000.jpg",
         "code": 160,
         "nutrition": {
             "energy": 120,
@@ -2580,7 +2580,7 @@
         "chinese_name": "包子",
         "food_type": "包子类",
         "description": "包子内馅多样，外皮松软，是广受欢迎的美食。",
-        "image_url": "/chinesefood207/Steamed stuffed bun/000000jpg",
+        "image_url": "/chinesefood207/Steamed stuffed bun/000000.jpg",
         "code": 161,
         "nutrition": {
             "energy": 220,
@@ -2596,7 +2596,7 @@
         "chinese_name": "肠粉",
         "food_type": "面食类",
         "description": "肠粉是一种米浆制成的薄皮食品，内裹各种馅料，如虾仁、牛肉、蔬菜等，口感软糯，搭配酱汁食用，风味独特。",
-        "image_url": "/chinesefood207/Steamed vermicelli roll/000000jpg",
+        "image_url": "/chinesefood207/Steamed vermicelli roll/000000.jpg",
         "code": 162,
         "nutrition": {
             "energy": 120,
@@ -2612,7 +2612,7 @@
         "chinese_name": "三杯鸡",
         "food_type": "肉类",
         "description": "三杯鸡鸡肉鲜嫩多汁，融合了米酒、香油与酱油的独特风味，香气扑鼻，令人回味无穷。",
-        "image_url": "/chinesefood207/Stewed Chicken with Three Cups Sauce/000000jpg",
+        "image_url": "/chinesefood207/Stewed Chicken with Three Cups Sauce/000000.jpg",
         "code": 163,
         "nutrition": {
             "energy": 180,
@@ -2628,7 +2628,7 @@
         "chinese_name": "红烧狮子头",
         "food_type": "肉类",
         "description": "红烧狮子头选用猪肉绞成肉馅，做成大肉丸子，经过煎、烧等工序，肉质鲜嫩，入口即化，搭配红烧酱汁，味道醇厚。",
-        "image_url": "/chinesefood207/Stewed Pork Ball in Brown Sauce/000000jpg",
+        "image_url": "/chinesefood207/Stewed Pork Ball in Brown Sauce/000000.jpg",
         "code": 164,
         "nutrition": {
             "energy": 220,
@@ -2644,7 +2644,7 @@
         "chinese_name": "土豆炖牛腩",
         "food_type": "肉类",
         "description": "土豆炖牛腩口感软糯，土豆吸收了牛肉的汤汁，味道浓郁，牛肉炖煮得十分软烂，是一道老少皆宜的美食。",
-        "image_url": "/chinesefood207/Stewed sirloin potatoes/000000jpg",
+        "image_url": "/chinesefood207/Stewed sirloin potatoes/000000.jpg",
         "code": 165,
         "nutrition": {
             "energy": 140,
@@ -2660,7 +2660,7 @@
         "chinese_name": "臭豆腐",
         "food_type": "豆腐类",
         "description": "臭豆腐是中国传统特色小吃之一，以其独特的臭味和丰富的口感而闻名。通常经过发酵和油炸等工艺制成，外皮酥脆，内部柔软，搭配特制的酱料，味道十分独特。",
-        "image_url": "/chinesefood207/Stinky tofu/000000jpg",
+        "image_url": "/chinesefood207/Stinky tofu/000000.jpg",
         "code": 166,
         "nutrition": {
             "energy": 150,
@@ -2676,7 +2676,7 @@
         "chinese_name": "石锅饭",
         "food_type": "饭类",
         "description": "石锅饭以米饭、配菜为主要原料，在石锅中加热烹制而成，米饭焦香，配菜丰富，别具风味。",
-        "image_url": "/chinesefood207/Stone pot of rice/000000jpg",
+        "image_url": "/chinesefood207/Stone pot of rice/000000.jpg",
         "code": 167,
         "nutrition": {
             "energy": 140,
@@ -2692,7 +2692,7 @@
         "chinese_name": "松鼠桂鱼",
         "food_type": "鱼类",
         "description": "松鼠桂鱼将桂鱼加工成松鼠形状，炸制后淋上酸甜的卤汁，造型优美，鱼肉外脆里嫩，酸甜适口。",
-        "image_url": "/chinesefood207/Sweet and Sour Mandarin Fish/000000jpg",
+        "image_url": "/chinesefood207/Sweet and Sour Mandarin Fish/000000.jpg",
         "code": 168,
         "nutrition": {
             "energy": 180,
@@ -2708,7 +2708,7 @@
         "chinese_name": "糖醋鲤鱼",
         "food_type": "鱼类",
         "description": "糖醋鲤鱼以鲤鱼为主料，经炸制后淋上糖醋汁，色泽红亮，外脆里嫩，酸甜可口。",
-        "image_url": "/chinesefood207/Sweet and sour fish/000000jpg",
+        "image_url": "/chinesefood207/Sweet and sour fish/000000.jpg",
         "code": 169,
         "nutrition": {
             "energy": 150,
@@ -2724,7 +2724,7 @@
         "chinese_name": "糖醋排骨",
         "food_type": "肉类",
         "description": "糖醋排骨色泽红亮，口味酸甜可口，肉质鲜嫩，是一道深受大众喜爱的传统中式菜肴，可搭配米饭食用。",
-        "image_url": "/chinesefood207/Sweet and sour spareribs/000000jpg",
+        "image_url": "/chinesefood207/Sweet and sour spareribs/000000.jpg",
         "code": 170,
         "nutrition": {
             "energy": 220,
@@ -2740,7 +2740,7 @@
         "chinese_name": "红薯粥",
         "food_type": "粥类",
         "description": "红薯粥以红薯和大米为主要原料熬制而成，红薯香甜软糯，粥品口感醇厚，富含膳食纤维和多种维生素，是营养丰富的养生粥品。",
-        "image_url": "/chinesefood207/Sweet potato porridge/000000jpg",
+        "image_url": "/chinesefood207/Sweet potato porridge/000000.jpg",
         "code": 171,
         "nutrition": {
             "energy": 70,
@@ -2756,7 +2756,7 @@
         "chinese_name": "冰糖雪梨",
         "food_type": "其他",
         "description": "冰糖雪梨是以雪梨、冰糖等为原料，炖煮而成的饮品，具有润肺止咳、清热降火等功效，口感清甜。",
-        "image_url": "/chinesefood207/Sweet stewed snow pear/000000jpg",
+        "image_url": "/chinesefood207/Sweet stewed snow pear/000000.jpg",
         "code": 172,
         "nutrition": {
             "energy": 60,
@@ -2772,7 +2772,7 @@
         "chinese_name": "汤圆",
         "food_type": "面食类",
         "description": "汤圆以糯米粉为皮，包裹各种甜或咸的馅料，如芝麻、豆沙、肉馅等，煮熟后口感软糯，甜润可口，是传统的中式点心。",
-        "image_url": "/chinesefood207/Tang-yuan/000000jpg",
+        "image_url": "/chinesefood207/Tang-yuan/000000.jpg",
         "code": 173,
         "nutrition": {
             "energy": 180,
@@ -2788,7 +2788,7 @@
         "chinese_name": "培根金针菇卷",
         "food_type": "肉类",
         "description": "培根金针菇卷将培根和金针菇搭配在一起，经过煎制，口感鲜香，是一道美味的小吃。",
-        "image_url": "/chinesefood207/Tiger lily buds in Baconic/000000jpg",
+        "image_url": "/chinesefood207/Tiger lily buds in Baconic/000000.jpg",
         "code": 174,
         "nutrition": {
             "energy": 150,
@@ -2804,7 +2804,7 @@
         "chinese_name": "西红柿鸡蛋汤",
         "food_type": "汤类",
         "description": "西红柿鸡蛋汤以西红柿和鸡蛋为主要食材，煮制而成，汤汁酸甜可口，鸡蛋嫩滑，营养丰富。",
-        "image_url": "/chinesefood207/Tomato and Egg Soup/000000jpg",
+        "image_url": "/chinesefood207/Tomato and Egg Soup/000000.jpg",
         "code": 175,
         "nutrition": {
             "energy": 40,
@@ -2820,7 +2820,7 @@
         "chinese_name": "凉拌西红柿",
         "food_type": "果蔬类",
         "description": "凉拌西红柿是一道清爽可口的凉菜，西红柿酸甜多汁，搭配调料后口感更佳，适合夏日食用。",
-        "image_url": "/chinesefood207/Tomato salad/000000jpg",
+        "image_url": "/chinesefood207/Tomato salad/000000.jpg",
         "code": 176,
         "nutrition": {
             "energy": 20,
@@ -2836,7 +2836,7 @@
         "chinese_name": "肚丝",
         "food_type": "肉类",
         "description": "肚丝通常选用猪肚切成丝状，经过烹饪后口感爽脆，味道鲜美，是一道受欢迎的菜肴。",
-        "image_url": "/chinesefood207/Tripe/000000jpg",
+        "image_url": "/chinesefood207/Tripe/000000.jpg",
         "code": 177,
         "nutrition": {
             "energy": 120,
@@ -2852,7 +2852,7 @@
         "chinese_name": "甲鱼",
         "food_type": "爬行类",
         "description": "甲鱼肉富含蛋白质和多种营养，具有滋补功效，常见做法有煲汤、红烧等，能展现其独特风味。",
-        "image_url": "/chinesefood207/Turtle/000000jpg",
+        "image_url": "/chinesefood207/Turtle/000000.jpg",
         "code": 178,
         "nutrition": {
             "energy": 90,
@@ -2868,7 +2868,7 @@
         "chinese_name": "西湖牛肉羹",
         "food_type": "汤类",
         "description": "西湖牛肉羹以牛肉、香菇、鸡蛋等为原料，经过勾芡等烹饪手法制成，口感滑嫩，味道鲜美。",
-        "image_url": "/chinesefood207/West Lake beef soup/000000jpg",
+        "image_url": "/chinesefood207/West Lake beef soup/000000.jpg",
         "code": 179,
         "nutrition": {
             "energy": 80,
@@ -2884,7 +2884,7 @@
         "chinese_name": "银耳汤",
         "food_type": "汤类",
         "description": "银耳汤以银耳为主要食材，煮制而成，汤汁浓稠，银耳软糯，口感清甜，具有润肺生津的功效。",
-        "image_url": "/chinesefood207/White fungus soup/000000jpg",
+        "image_url": "/chinesefood207/White fungus soup/000000.jpg",
         "code": 180,
         "nutrition": {
             "energy": 30,
@@ -2900,7 +2900,7 @@
         "chinese_name": "冬瓜汤",
         "food_type": "汤类",
         "description": "冬瓜汤以冬瓜为主要食材，煮制而成，汤汁清澈，冬瓜软烂，清淡爽口，有清热解暑的作用。",
-        "image_url": "/chinesefood207/White gourd soup/000000jpg",
+        "image_url": "/chinesefood207/White gourd soup/000000.jpg",
         "code": 181,
         "nutrition": {
             "energy": 15,
@@ -2916,7 +2916,7 @@
         "chinese_name": "扬州炒饭",
         "food_type": "主食类",
         "description": "扬州炒饭配料丰富，有鸡蛋、火腿、虾仁等，口感多样，是经典的中式主食。",
-        "image_url": "/chinesefood207/Yangzhou fried rice/000000jpg",
+        "image_url": "/chinesefood207/Yangzhou fried rice/000000.jpg",
         "code": 182,
         "nutrition": {
             "energy": 160,
@@ -2932,7 +2932,7 @@
         "chinese_name": "鱼香茄子",
         "food_type": "茄子类",
         "description": "鱼香茄子是一道常见的川菜，以茄子为主料，配以葱、姜、蒜、泡辣椒等调料烹制而成。成菜色泽红亮，肉质鲜嫩，具有鱼香味，口味咸、甜、酸、辣兼备。",
-        "image_url": "/chinesefood207/Yu-Shiang Shredded Pork/000000jpg",
+        "image_url": "/chinesefood207/Yu-Shiang Shredded Pork/000000.jpg",
         "code": 183,
         "nutrition": {
             "energy": 100,
@@ -2948,7 +2948,7 @@
         "chinese_name": "鱼香肉丝",
         "food_type": "肉类",
         "description": "鱼香肉丝具有咸、甜、酸、辣、鲜、香等特点，以泡辣椒、肉丝等为主要食材，色泽红亮，口感滑嫩，是一道具有四川特色的传统名菜。",
-        "image_url": "/chinesefood207/Yuba salad/000000jpg",
+        "image_url": "/chinesefood207/Yuba salad/000000.jpg",
         "code": 184,
         "nutrition": {
             "energy": 150,
@@ -2964,7 +2964,7 @@
         "chinese_name": "凉拌腐竹",
         "food_type": "豆制品类",
         "description": "凉拌腐竹是一道清爽可口的凉菜，腐竹口感筋道，搭配各种调料凉拌，味道鲜美，是餐桌上常见的美食。",
-        "image_url": "/chinesefood207/Yu-Shiang Eggplant/000000jpg",
+        "image_url": "/chinesefood207/Yu-Shiang Eggplant/000000.jpg",
         "code": 185,
         "nutrition": {
             "energy": 80,
@@ -2980,7 +2980,7 @@
         "chinese_name": "黄焖鸡",
         "food_type": "肉类",
         "description": "黄焖鸡鸡肉鲜嫩多汁，汤汁浓郁醇厚，配菜丰富，非常下饭。",
-        "image_url": "/chinesefood207/chicken braised with brown sauce/000000jpg",
+        "image_url": "/chinesefood207/chicken braised with brown sauce/000000.jpg",
         "code": 186,
         "nutrition": {
             "energy": 180,
@@ -2996,7 +2996,7 @@
         "chinese_name": "曲奇饼干",
         "food_type": "其他",
         "description": "曲奇饼干以面粉、黄油、糖等为原料，经过烘焙制成，造型多样，口感香甜酥脆，是受欢迎的休闲零食。",
-        "image_url": "/chinesefood207/cookies/000000jpg",
+        "image_url": "/chinesefood207/cookies/000000.jpg",
         "code": 187,
         "nutrition": {
             "energy": 450,
@@ -3012,7 +3012,7 @@
         "chinese_name": "鳝鱼",
         "food_type": "鱼类",
         "description": "鳝鱼肉嫩味鲜，营养价值高，富含多种维生素和矿物质，常见做法有红烧、炖汤等。",
-        "image_url": "/chinesefood207/eel/000000jpg",
+        "image_url": "/chinesefood207/eel/000000.jpg",
         "code": 188,
         "nutrition": {
             "energy": 130,
@@ -3028,7 +3028,7 @@
         "chinese_name": "家常早餐鸡蛋饼",
         "food_type": "主食类",
         "description": "家常早餐鸡蛋饼制作简单，鸡蛋香味浓郁，搭配蔬菜营养丰富，是受欢迎的早餐选择。",
-        "image_url": "/chinesefood207/egg omelet/000000jpg",
+        "image_url": "/chinesefood207/egg omelet/000000.jpg",
         "code": 189,
         "nutrition": {
             "energy": 200,
@@ -3044,7 +3044,7 @@
         "chinese_name": "炒花菜",
         "food_type": "果蔬类",
         "description": "炒花菜是一道常见的家常菜，花菜经过炒制后口感爽脆，味道鲜香，营养丰富，适合大众口味。",
-        "image_url": "/chinesefood207/fried cauliflower/000000jpg",
+        "image_url": "/chinesefood207/fried cauliflower/000000.jpg",
         "code": 190,
         "nutrition": {
             "energy": 30,
@@ -3060,7 +3060,7 @@
         "chinese_name": "炒面",
         "food_type": "面类",
         "description": "炒面将面条炒制而成，可搭配各种蔬菜和肉类，口感丰富，是常见的美食。",
-        "image_url": "/chinesefood207/fried noodles/000000jpg",
+        "image_url": "/chinesefood207/fried noodles/000000.jpg",
         "code": 191,
         "nutrition": {
             "energy": 180,
@@ -3076,7 +3076,7 @@
         "chinese_name": "河粉",
         "food_type": "面食类",
         "description": "河粉以大米为原料，磨成米浆后蒸制而成，口感爽滑，常搭配各种肉类、蔬菜和调料炒制，味道鲜美。",
-        "image_url": "/chinesefood207/fried rice noodles/000000jpg",
+        "image_url": "/chinesefood207/fried rice noodles/000000.jpg",
         "code": 192,
         "nutrition": {
             "energy": 140,
@@ -3092,7 +3092,7 @@
         "chinese_name": "烤鱼",
         "food_type": "鱼类",
         "description": "烤鱼将鱼经过烤制后，再加入各种调料和配菜，鱼肉外皮焦香，内部鲜嫩，口味丰富。",
-        "image_url": "/chinesefood207/grilled fish/000000jpg",
+        "image_url": "/chinesefood207/grilled fish/000000.jpg",
         "code": 193,
         "nutrition": {
             "energy": 120,
@@ -3108,7 +3108,7 @@
         "chinese_name": "冰激凌",
         "food_type": "其他",
         "description": "冰激凌以饮用水、牛奶、奶粉、奶油（或植物油脂）、食糖等为主要原料，加入适量食品添加剂，经混合、灭菌、均质、老化、凝冻、硬化等工艺制成的体积膨胀的冷冻食品，口感细腻、柔滑、清凉。",
-        "image_url": "/chinesefood207/ice cream/000000jpg",
+        "image_url": "/chinesefood207/ice cream/000000.jpg",
         "code": 194,
         "nutrition": {
             "energy": 200,
@@ -3124,7 +3124,7 @@
         "chinese_name": "花生米",
         "food_type": "坚果类",
         "description": "花生米是一种常见的坚果，口感香脆，可直接食用，也可用于烹饪菜肴。",
-        "image_url": "/chinesefood207/peanut/000000jpg",
+        "image_url": "/chinesefood207/peanut/000000.jpg",
         "code": 195,
         "nutrition": {
             "energy": 567,
@@ -3140,7 +3140,7 @@
         "chinese_name": "虎皮青椒",
         "food_type": "果蔬类",
         "description": "虎皮青椒是一道特色菜肴，青椒经过煎制形成类似虎皮的纹路，口感香辣，味道独特，具有浓郁的地方风味。",
-        "image_url": "/chinesefood207/pepper with tiger skin/000000jpg",
+        "image_url": "/chinesefood207/pepper with tiger skin/000000.jpg",
         "code": 196,
         "nutrition": {
             "energy": 50,
@@ -3156,7 +3156,7 @@
         "chinese_name": "叉烧",
         "food_type": "肉类",
         "description": "叉烧肉质软嫩多汁、色泽鲜明、香味四溢，是一道经典的粤菜，常用于搭配米饭或制作成叉烧包等美食。",
-        "image_url": "/chinesefood207/roast pork/000000jpg",
+        "image_url": "/chinesefood207/roast pork/000000.jpg",
         "code": 197,
         "nutrition": {
             "energy": 250,
@@ -3172,7 +3172,7 @@
         "chinese_name": "炒苦瓜",
         "food_type": "果蔬类",
         "description": "炒苦瓜是一道常见的家常菜，苦瓜经过炒制后，苦味有所减轻，口感清爽，具有独特的风味。",
-        "image_url": "/chinesefood207/sauteed bitter melon/000000jpg",
+        "image_url": "/chinesefood207/sauteed bitter melon/000000.jpg",
         "code": 198,
         "nutrition": {
             "energy": 25,
@@ -3188,7 +3188,7 @@
         "chinese_name": "炸酱面",
         "food_type": "面类",
         "description": "炸酱面以面条搭配炸酱，味道浓郁，是具有特色的中式面食。",
-        "image_url": "/chinesefood207/sauteed noodles with minced meat/000000jpg",
+        "image_url": "/chinesefood207/sauteed noodles with minced meat/000000.jpg",
         "code": 199,
         "nutrition": {
             "energy": 170,
@@ -3204,7 +3204,7 @@
         "chinese_name": "肉酱意大利面",
         "food_type": "面类",
         "description": "肉酱意大利面以意大利面为主料，搭配肉酱，口感浓郁，是西餐中的经典美食。",
-        "image_url": "/chinesefood207/spaghetti with meat sauce/000000jpg",
+        "image_url": "/chinesefood207/spaghetti with meat sauce/000000.jpg",
         "code": 200,
         "nutrition": {
             "energy": 180,
@@ -3220,7 +3220,7 @@
         "chinese_name": "鱿鱼",
         "food_type": "头足类",
         "description": "鱿鱼口感有嚼劲，可用于多种烹饪方式，如爆炒、烧烤等，是常见的海鲜食材。",
-        "image_url": "/chinesefood207/squid/000000jpg",
+        "image_url": "/chinesefood207/squid/000000.jpg",
         "code": 201,
         "nutrition": {
             "energy": 92,
@@ -3236,7 +3236,7 @@
         "chinese_name": "馒头",
         "food_type": "馒头类",
         "description": "馒头口感松软，是日常常见的主食。",
-        "image_url": "/chinesefood207/steamed bun/000000jpg",
+        "image_url": "/chinesefood207/steamed bun/000000.jpg",
         "code": 202,
         "nutrition": {
             "energy": 230,
@@ -3252,7 +3252,7 @@
         "chinese_name": "南瓜紫薯馒头",
         "food_type": "馒头类",
         "description": "南瓜紫薯馒头结合了南瓜的香甜和紫薯的软糯，口感丰富，营养美味。",
-        "image_url": "/chinesefood207/steamed bun with purple potato and pumpkin/000000jpg",
+        "image_url": "/chinesefood207/steamed bun with purple potato and pumpkin/000000.jpg",
         "code": 203,
         "nutrition": {
             "energy": 200,
@@ -3268,7 +3268,7 @@
         "chinese_name": "酿苦瓜",
         "food_type": "果蔬类",
         "description": "酿苦瓜是一道别具特色的菜肴，苦瓜内酿入馅料，口感丰富，苦味与馅料的味道相互融合，别具一番风味。",
-        "image_url": "/chinesefood207/stuffed bitter melon/000000jpg",
+        "image_url": "/chinesefood207/stuffed bitter melon/000000.jpg",
         "code": 204,
         "nutrition": {
             "energy": 60,
@@ -3284,7 +3284,7 @@
         "chinese_name": "吐司",
         "food_type": "其他",
         "description": "吐司以面粉、酵母、牛奶等为原料，经过发酵、烘焙等工艺制成，口感松软，适合搭配各种酱料和食材食用。",
-        "image_url": "/chinesefood207/toast/000000jpg",
+        "image_url": "/chinesefood207/toast/000000.jpg",
         "code": 205,
         "nutrition": {
             "energy": 290,
@@ -3300,7 +3300,7 @@
         "chinese_name": "炒空心菜",
         "food_type": "白菜类",
         "description": "炒空心菜是一道常见的蔬菜小炒，以空心菜为主要食材，通过快火翻炒制作。空心菜口感脆嫩，味道清新，能保留蔬菜本身的营养。",
-        "image_url": "/chinesefood207/tumis kangkung/000000jpg",
+        "image_url": "/chinesefood207/tumis kangkung/000000.jpg",
         "code": 206,
         "nutrition": {
             "energy": 25,
