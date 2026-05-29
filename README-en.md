@@ -28,11 +28,11 @@ English | [简体中文](./README.md)
 
 **Smart Food Eye** is a full-stack Web application designed for health management and dietary monitoring. It provides a comprehensive RBAC (Role-Based Access Control) admin framework and deeply integrates **YOLO (You Only Look Once)** food recognition technology. Users can upload food images to identify types in real-time and receive detailed nutritional analysis (calories, protein, fat, etc.), helping them manage their diet scientifically.
 
-This project is suitable as a template for undergraduate graduation projects or small-to-medium enterprise management backends, balancing cutting-edge technology (FastAPI async architecture, YOLOv8 model) with engineering practicality.
+This project is suitable as a template for undergraduate graduation projects or small-to-medium enterprise management backends, balancing cutting-edge technology (FastAPI async architecture, YOLOv11 model) with engineering practicality.
 
 ## ✨ Key Features
 
-- **🍱 Food Recognition**: Integrated YOLOv8 model for multi-object detection, automatic nutritional calculation, history management, and visualization.
+- **🍱 Food Recognition**: Integrated YOLOv11 model for multi-object detection, automatic nutritional calculation, history management, and visualization.
 - **🔐 Robust Permissions**: Fine-grained RBAC for users, roles, menus, departments, and APIs.
 - **🚀 Modern Tech Stack**:
   - **Backend**: FastAPI (Python 3.11) + Tortoise ORM + JWT + SQLite (supports MySQL/PostgreSQL).
@@ -204,7 +204,7 @@ A: Ensure a valid `.pt` weight file exists in `weights/`, and the image is clear
 ## 📝 Changelog
 
 - **v0.2.0 (2026-03)**:
-  - ✨ Added YOLOv8 food recognition module.
+  - ✨ Added YOLOv11 food recognition module.
   - 📊 Added nutrition analysis dashboard.
   - 🖼️ Optimized image display and annotation.
   - 🛠️ Switched to `uv` for backend dependency management.
@@ -230,4 +230,4 @@ Distributed under the [MIT License](./LICENSE).
   - [FastAPI](https://fastapi.tiangolo.com/)
   - [Vue.js](https://vuejs.org/)
   - [Naive UI](https://www.naiveui.com/)
-  - [Ultralytics](https://ultralytics.com/) (YOLOv8)
+  - [Ultralytics](https://ultralytics.com/) (YOLOv11)
