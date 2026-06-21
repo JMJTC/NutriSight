@@ -83,6 +83,15 @@ export const basicRoutes = [
           icon: 'mdi:history',
         },
       },
+      {
+        path: 'ai-advisor',
+        component: () => import('@/views/food/ai-advisor/index.vue'),
+        name: 'AiAdvisor',
+        meta: {
+          title: 'AI 营养顾问',
+          icon: 'carbon:chat-bot',
+        },
+      },
     ],
   },
   {

@@ -233,7 +233,7 @@ async def init_food_data():
     try:
         from app.models.food import FoodCategory
         from app.scripts.init_food_data import init_food_data as init_food_categories
-        
+
         # 检查是否已有食物类别数据
         count = await FoodCategory.all().count()
         if count == 0:
@@ -242,6 +242,23 @@ async def init_food_data():
             logger.info(f"Food data initialization complete. Created: {result['created']}, Skipped: {result['skipped']}")
         else:
             logger.info(f"Food categories already initialized. Total: {count}")
+
+        # 种子 AI 营养顾问菜单
+        from app.models.admin import Menu
+        ai_menu_exists = await Menu.filter(path="/food/ai-advisor").exists()
+        if not ai_menu_exists:
+            await Menu.create(
+                menu_type=MenuType.MENU,
+                name="AI营养顾问",
+                path="/food/ai-advisor",
+                order=7,
+                parent_id=0,
+                icon="carbon:chat-bot",
+                is_hidden=False,
+                component="/food/ai-advisor",
+                keepalive=False,
+            )
+            logger.info("AI advisor menu entry created.")
     except Exception as e:
         logger.error(f"Failed to initialize food data: {str(e)}")
 
