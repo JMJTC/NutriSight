@@ -10,6 +10,7 @@ from .menus import menus_router
 from .roles import roles_router
 from .users import users_router
 from .food import food_router
+from .ai.ai import ai_router
 
 v1_router = APIRouter()
 
@@ -22,4 +23,5 @@ v1_router.include_router(depts_router, prefix="/dept", dependencies=[DependPermi
 v1_router.include_router(auditlog_router, prefix="/auditlog", dependencies=[DependPermission])
 # Food router (DependPermission checked inside or optional?)
 # For now, let's keep it protected but maybe looser for dev
-v1_router.include_router(food_router, prefix="/food") 
+v1_router.include_router(food_router, prefix="/food")
+v1_router.include_router(ai_router, prefix="/ai")

@@ -12,9 +12,11 @@ from app.models.admin import Api, Menu, Role, User
 from app.schemas.base import Fail, Success
 from app.schemas.login import *
 from app.schemas.users import UpdatePassword, UserRegister, UserCreate, UserSelfUpdate
+from app.schemas.ai import AiConfigUpdate
 from app.settings import settings
 from app.utils.jwt_utils import create_access_token
 from app.utils.password import get_password_hash, verify_password
+from app.utils.crypto import encrypt_api_key, decrypt_api_key
 from tortoise.exceptions import IntegrityError
 
 router = APIRouter()
@@ -82,6 +84,7 @@ async def get_userinfo():
     data = await user_obj.to_dict(exclude_fields=["password"])
     if not data.get("avatar"):
         data["avatar"] = "https://avatars.githubusercontent.com/u/54677442?v=4"
+    data["has_api_key"] = bool(getattr(user_obj, "api_key", None))
     return Success(data=data)
 
 
@@ -166,6 +169,47 @@ async def update_user_password(req_in: UpdatePassword):
     user.password = get_password_hash(req_in.new_password)
     await user.save()
     return Success(msg="修改成功")
+
+
+@router.get("/profile/ai-config", summary="获取用户AI配置", dependencies=[DependAuth])
+async def get_ai_config():
+    user_id = CTX_USER_ID.get()
+    user = await User.get(id=user_id)
+    key = getattr(user, "api_key", None) or ""
+    masked = ""
+    if key:
+        d = decrypt_api_key(key)
+        masked = d[:4] + "****" + d[-4:] if len(d) > 8 else "****"
+    return Success(data={
+        "api_key": masked,
+        "ai_model": getattr(user, "ai_model", None) or "deepseek-chat",
+        "ai_base_url": getattr(user, "ai_base_url", None) or "",
+        "has_configured": bool(key),
+    })
+
+
+@router.put("/profile/ai-config", summary="更新用户AI配置", dependencies=[DependAuth])
+async def update_ai_config(req: AiConfigUpdate):
+    user_id = CTX_USER_ID.get()
+    user = await User.get(id=user_id)
+    if req.api_key is not None:
+        user.api_key = encrypt_api_key(req.api_key) if req.api_key else None
+    if req.ai_model is not None:
+        user.ai_model = req.ai_model
+    if req.ai_base_url is not None:
+        user.ai_base_url = req.ai_base_url
+    await user.save()
+    key = getattr(user, "api_key", None) or ""
+    masked = ""
+    if key:
+        d = decrypt_api_key(key)
+        masked = d[:4] + "****" + d[-4:] if len(d) > 8 else "****"
+    return Success(data={
+        "api_key": masked,
+        "ai_model": user.ai_model or "deepseek-chat",
+        "ai_base_url": user.ai_base_url or "",
+        "has_configured": bool(key),
+    }, msg="AI配置更新成功")
 
 
 @router.post("/update_avatar", summary="修改头像", dependencies=[DependAuth])
