@@ -24,6 +24,9 @@ class User(BaseModel, TimestampMixin):
     weight_kg = fields.DecimalField(max_digits=4, decimal_places=1, null=True, description="体重(kg)")
     gender = fields.IntField(null=True, description="性别 (1:男, 2:女, 3:其他)")
     age = fields.IntField(null=True, description="年龄")
+    api_key = fields.TextField(null=True, description="用户AI API Key（加密存储）")
+    ai_model = fields.CharField(max_length=100, null=True, default="deepseek-chat", description="用户选择的AI模型")
+    ai_base_url = fields.CharField(max_length=255, null=True, description="自定义AI API地址")
 
     class Meta:
         table = "user"
