@@ -32,6 +32,7 @@ import { NEmpty, NAvatar, NInput, NButton, useMessage } from 'naive-ui'
 import TheIcon from '@/components/icon/TheIcon.vue'
 import AiStreamRenderer from './AiStreamRenderer.vue'
 import api from '@/api'
+import { getToken } from '@/utils'
 
 const props = defineProps({ context: { type: String, default: '' } })
 const msgRef = useMessage()
@@ -48,7 +49,7 @@ async function send() {
   streaming.value = true; sc.value = ''; await nextTick(); scroll()
 
   try {
-    const tok = localStorage.getItem('access_token') || ''
+    const tok = getToken() || ''
     const r = await fetch(api.aiChatStreamUrl(), {
       method: 'POST', headers: { 'Content-Type': 'application/json', 'token': tok },
       body: JSON.stringify({ messages: msgs.value.map(m=>({role:m.role,content:m.content})), context: props.context })

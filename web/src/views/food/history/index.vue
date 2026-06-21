@@ -81,6 +81,7 @@ import { ref, onMounted, h, reactive } from 'vue'
 import { NButton, NTag, useMessage, NPopconfirm, NSpace } from 'naive-ui'
 import { CheckmarkCircleOutline } from '@vicons/ionicons5'
 import api from '@/api'
+import { getToken } from '@/utils'
 import TheIcon from '@/components/icon/TheIcon.vue'
 import AiStreamRenderer from '@/components/ai/AiStreamRenderer.vue'
 
@@ -277,7 +278,7 @@ const viewDetail = async (row) => {
       aiContent.value = ''
       recommendationLoading.value = true
 
-      const token = localStorage.getItem('access_token') || ''
+      const token = getToken() || ''
       try {
         const response = await fetch(api.aiAnalyzeRecordStreamUrl(row.id), {
           method: 'POST',

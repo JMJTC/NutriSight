@@ -3,6 +3,7 @@ import { useMessage } from 'naive-ui'
 import { useRouter } from 'vue-router'
 import api from '@/api'
 import { useUserStore } from '@/store'
+import { getToken } from '@/utils'
 
 export function useFoodRecognition() {
   const message = useMessage()
@@ -163,7 +164,7 @@ export function useFoodRecognition() {
     if (!recordId) return
     aiAnalysisLoading.value = true
     aiAnalysis.value = ''
-    const token = localStorage.getItem('access_token') || ''
+    const token = getToken() || ''
     try {
       const response = await fetch(api.aiAnalyzeRecordStreamUrl(recordId), {
         method: 'POST',
