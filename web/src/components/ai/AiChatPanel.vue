@@ -48,7 +48,7 @@ async function send() {
   streaming.value = true; sc.value = ''; await nextTick(); scroll()
 
   try {
-    const tok = localStorage.getItem('token') || ''
+    const tok = localStorage.getItem('access_token') || ''
     const r = await fetch(api.aiChatStreamUrl(), {
       method: 'POST', headers: { 'Content-Type': 'application/json', 'token': tok },
       body: JSON.stringify({ messages: msgs.value.map(m=>({role:m.role,content:m.content})), context: props.context })

@@ -163,7 +163,7 @@ export function useFoodRecognition() {
     if (!recordId) return
     aiAnalysisLoading.value = true
     aiAnalysis.value = ''
-    const token = localStorage.getItem('token') || ''
+    const token = localStorage.getItem('access_token') || ''
     try {
       const response = await fetch(api.aiAnalyzeRecordStreamUrl(recordId), {
         method: 'POST',

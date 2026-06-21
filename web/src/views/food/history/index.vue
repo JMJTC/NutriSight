@@ -277,7 +277,7 @@ const viewDetail = async (row) => {
       aiContent.value = ''
       recommendationLoading.value = true
 
-      const token = localStorage.getItem('token') || ''
+      const token = localStorage.getItem('access_token') || ''
       try {
         const response = await fetch(api.aiAnalyzeRecordStreamUrl(row.id), {
           method: 'POST',
