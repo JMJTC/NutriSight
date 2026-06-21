@@ -90,5 +90,9 @@ class Settings(BaseSettings):
     }
     DATETIME_FORMAT: str = "%Y-%m-%d %H:%M:%S"
 
+    # AI / LLM configuration (formalized in Task 8)
+    AI_DEFAULT_MODEL: str = "deepseek-chat"
+    AI_DEFAULT_BASE_URL: str = "https://api.deepseek.com"
+
 
 settings = Settings()
