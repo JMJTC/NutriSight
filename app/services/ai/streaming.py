@@ -12,11 +12,14 @@ from app.services.ai.prompts import (
 async def sse_generator(user_id: int, scenario: str, **kwargs) -> AsyncIterator[str]:
     from app.models.admin import User
 
+    from app.utils.crypto import decrypt_api_key
+
     user = await User.get(id=user_id)
-    api_key = getattr(user, "api_key", None)
-    if not api_key:
+    api_key_enc = getattr(user, "api_key", None)
+    if not api_key_enc:
         yield _sse("error", "请先在个人资料中配置 AI API Key")
         return
+    api_key = decrypt_api_key(api_key_enc)
 
     base_url = getattr(user, "ai_base_url", None)
     model = getattr(user, "ai_model", None)

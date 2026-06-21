@@ -19,6 +19,9 @@ class BaseUser(BaseModel):
     weight_kg: Optional[float] = Field(None, ge=30.0, le=200.0, description="体重(kg)")
     gender: Optional[int] = Field(None, ge=1, le=3, description="性别 (1:男, 2:女, 3:其他)")
     age: Optional[int] = Field(None, ge=1, le=120, description="年龄")
+    ai_model: Optional[str] = None
+    ai_base_url: Optional[str] = None
+    has_api_key: bool = False
 
 
 class UserCreate(BaseModel):
@@ -62,6 +65,9 @@ class UserSelfUpdate(BaseModel):
     weight_kg: float = Field(..., ge=30.0, le=200.0, description="体重(kg)")
     gender: int = Field(..., ge=1, le=3, description="性别 (1:男, 2:女, 3:其他)")
     age: int = Field(..., ge=1, le=120, description="年龄")
+    api_key: Optional[str] = None
+    ai_model: Optional[str] = None
+    ai_base_url: Optional[str] = None
 
 
 class UserRegister(BaseModel):

@@ -11,21 +11,17 @@ from app.services.ai.prompts import (
     build_history_recommendation_prompt,
 )
 
-try:
-    from app.utils.crypto import decrypt_api_key
-except ImportError:
-    decrypt_api_key = lambda x: x  # stub — replaced by Task 6
-
-
 class AiService:
 
     @staticmethod
     async def _get_user_ai_config(user_id: int) -> tuple:
+        from app.utils.crypto import decrypt_api_key
+
         user = await User.get(id=user_id)
-        api_key = getattr(user, "api_key", None)
-        if not api_key:
+        encrypted_key = getattr(user, "api_key", None)
+        if not encrypted_key:
             raise CustomException(message="请先在个人资料中配置 AI API Key", code=400)
-        api_key = decrypt_api_key(api_key)
+        api_key = decrypt_api_key(encrypted_key)
         base_url = getattr(user, "ai_base_url", None)
         model = getattr(user, "ai_model", None)
         return api_key, base_url, model
