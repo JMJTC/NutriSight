@@ -77,6 +77,11 @@
           :confidence="primaryFood.confidence"
         />
       </div>
+
+      <n-card v-if="aiAnalysis || aiAnalysisLoading" title="AI 智能分析" class="mt-4">
+        <n-spin v-if="aiAnalysisLoading && !aiAnalysis" />
+        <AiStreamRenderer v-if="aiAnalysis" :content="aiAnalysis" />
+      </n-card>
     </div>
 
     <FoodEncyclopedia v-model:visible="showEncyclopedia" />
@@ -86,6 +91,7 @@
 <script setup>
 import { RestaurantOutline } from '@vicons/ionicons5'
 import FoodEncyclopedia from '@/components/food/FoodEncyclopedia.vue'
+import AiStreamRenderer from '@/components/ai/AiStreamRenderer.vue'
 import NutritionDashboard from '@/components/food/NutritionDashboard.vue'
 import FoodRecognitionAnalysisStep from '@/components/food/recognition/FoodRecognitionAnalysisStep.vue'
 import FoodRecognitionRecommendStep from '@/components/food/recognition/FoodRecognitionRecommendStep.vue'
@@ -94,6 +100,8 @@ import FoodRecognitionUploadStep from '@/components/food/recognition/FoodRecogni
 import { useFoodRecognition } from './useFoodRecognition'
 
 const {
+  aiAnalysis,
+  aiAnalysisLoading,
   currentNutrition,
   currentStep,
   getImageUrl,

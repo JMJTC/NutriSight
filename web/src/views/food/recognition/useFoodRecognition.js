@@ -17,6 +17,8 @@ export function useFoodRecognition() {
   const hasShownProfileDialog = ref(false)
   const recommendationTips = ref([])
   const recommendationLoading = ref(false)
+  const aiAnalysis = ref('')
+  const aiAnalysisLoading = ref(false)
 
   const isValidHeight = (value) => Number.isFinite(value) && value >= 130 && value <= 250
   const isValidWeight = (value) => Number.isFinite(value) && value >= 30 && value <= 200
@@ -157,6 +159,37 @@ export function useFoodRecognition() {
     }
   }
 
+  const fetchAiAnalysis = async (recordId) => {
+    if (!recordId) return
+    aiAnalysisLoading.value = true
+    aiAnalysis.value = ''
+    const token = localStorage.getItem('token') || ''
+    try {
+      const response = await fetch(api.aiAnalyzeRecordStreamUrl(recordId), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'token': token },
+      })
+      const reader = response.body.getReader()
+      const decoder = new TextDecoder()
+      let buffer = ''
+      while (true) {
+        const { done, value } = await reader.read()
+        if (done) break
+        buffer += decoder.decode(value, { stream: true })
+        const lines = buffer.split('\n')
+        buffer = lines.pop() || ''
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            try {
+              const data = JSON.parse(line.slice(6))
+              if (data.type === 'token') aiAnalysis.value += data.content
+            } catch {}
+          }
+        }
+      }
+    } catch {} finally { aiAnalysisLoading.value = false }
+  }
+
   const uploadByRawFile = async (rawFile) => {
     if (!ensureProfileComplete('上传识别')) return
 
@@ -173,6 +206,7 @@ export function useFoodRecognition() {
       recommendationTips.value = []
       message.success('识别成功 (Recognized Successfully)')
       currentStep.value = 2
+      fetchAiAnalysis(res.data?.record_id)
     } catch (error) {
       message.error(error?.message || '请求出错')
     } finally {
@@ -199,6 +233,7 @@ export function useFoodRecognition() {
       recommendationTips.value = []
       message.success('识别成功 (Recognized Successfully)')
       currentStep.value = 2
+      fetchAiAnalysis(res.data?.record_id)
       onFinish?.()
     } catch (error) {
       message.error(error?.message || '请求出错')
@@ -236,8 +271,11 @@ export function useFoodRecognition() {
   })
 
   return {
+    aiAnalysis,
+    aiAnalysisLoading,
     currentNutrition,
     currentStep,
+    fetchAiAnalysis,
     getImageUrl,
     goToStep,
     handleUpload,
