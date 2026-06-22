@@ -68,6 +68,7 @@ export default {
   aiAnalyzeRecordStreamUrl: (id) =>
     `${import.meta.env.VITE_API_BASE_URL || ''}/api/v1/ai/analyze/record/${id}/stream`,
   aiAnalyzeHistory: () => request.post('/ai/analyze/history'),
+  getAiRecommendation: (recordId) => request.get(`/ai/recommendation/${recordId}`),
   // ai chat
   aiChat: (data = {}) => request.post('/ai/chat', data),
   aiChatStreamUrl: () => `${import.meta.env.VITE_API_BASE_URL || ''}/api/v1/ai/chat/stream`,

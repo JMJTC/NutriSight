@@ -69,7 +69,15 @@
             <span>AI 正在生成建议...</span>
           </div>
           <AiStreamRenderer v-else-if="aiContent" :content="aiContent" />
-          <n-empty v-else description="暂无营养建议" />
+          <div v-else class="recommend-actions">
+            <n-button type="primary" ghost size="small" @click="generateAiSuggestion">
+              <template #icon><TheIcon icon="carbon:ai-status" :size="16" /></template>
+              生成 AI 建议
+            </n-button>
+          </div>
+          <div v-if="aiContent && !recommendationLoading" class="recommend-actions mt-2">
+            <n-button size="tiny" ghost @click="generateAiSuggestion">重新生成</n-button>
+          </div>
         </div>
       </div>
     </n-modal>
@@ -278,38 +286,58 @@ const viewDetail = async (row) => {
       aiContent.value = ''
       recommendationLoading.value = true
 
-      const token = getToken() || ''
+      // Check cache first
       try {
-        const response = await fetch(api.aiAnalyzeRecordStreamUrl(row.id), {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'token': token },
-        })
-        const reader = response.body.getReader()
-        const decoder = new TextDecoder()
-        let buffer = ''
-        while (true) {
-          const { done, value } = await reader.read()
-          if (done) break
-          buffer += decoder.decode(value, { stream: true })
-          const lines = buffer.split('\n')
-          buffer = lines.pop() || ''
-          for (const line of lines) {
-            if (line.startsWith('data: ')) {
-              try {
-                const data = JSON.parse(line.slice(6))
-                if (data.type === 'token') { aiContent.value += data.content }
-                else if (data.type === 'error') { recommendationTips.value = [data.content] }
-              } catch {}
-            }
-          }
+        const cached = await api.getAiRecommendation(row.id)
+        if (cached.code === 200 && cached.data?.content) {
+          aiContent.value = cached.data.content
+          recommendationLoading.value = false
+          return
         }
-      } catch {
-        if (!aiContent.value) recommendationTips.value = ['AI 分析请求失败']
-      } finally {
-        recommendationLoading.value = false
-      }
+      } catch {}
+
+      // No cache — show generate button instead of auto-calling
+      recommendationLoading.value = false
     }
   } catch (error) { message.error('获取详情失败') }
+}
+
+async function generateAiSuggestion() {
+  if (!currentRecord.value) return
+  const recordId = currentRecord.value.record_id || currentRecord.value.id
+  aiContent.value = ''
+  recommendationLoading.value = true
+
+  const token = getToken() || ''
+  try {
+    const response = await fetch(api.aiAnalyzeRecordStreamUrl(recordId), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'token': token },
+    })
+    const reader = response.body.getReader()
+    const decoder = new TextDecoder()
+    let buffer = ''
+    while (true) {
+      const { done, value } = await reader.read()
+      if (done) break
+      buffer += decoder.decode(value, { stream: true })
+      const lines = buffer.split('\n')
+      buffer = lines.pop() || ''
+      for (const line of lines) {
+        if (line.startsWith('data: ')) {
+          try {
+            const data = JSON.parse(line.slice(6))
+            if (data.type === 'token') { aiContent.value += data.content }
+            else if (data.type === 'error') { recommendationTips.value = [data.content] }
+          } catch {}
+        }
+      }
+    }
+  } catch {
+    if (!aiContent.value) recommendationTips.value = ['AI 分析请求失败']
+  } finally {
+    recommendationLoading.value = false
+  }
 }
 
 onMounted(() => {
@@ -355,5 +383,13 @@ onMounted(() => {
 .advice-text {
   color: #334155;
   line-height: 1.7;
+}
+.recommend-actions {
+  display: flex;
+  justify-content: center;
+  padding: 16px;
+}
+.mt-2 {
+  margin-top: 8px;
 }
 </style>

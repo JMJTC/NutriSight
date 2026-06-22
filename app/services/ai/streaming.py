@@ -11,7 +11,7 @@ from app.services.ai.prompts import (
 
 async def sse_generator(user_id: int, scenario: str, **kwargs) -> AsyncIterator[str]:
     from app.models.admin import User
-
+    from app.models.food import NutritionRecommendation
     from app.utils.crypto import decrypt_api_key
 
     user = await User.get(id=user_id)
@@ -24,6 +24,7 @@ async def sse_generator(user_id: int, scenario: str, **kwargs) -> AsyncIterator[
     base_url = getattr(user, "ai_base_url", None)
     model = getattr(user, "ai_model", None)
     messages = _build_messages(scenario, **kwargs)
+    record_id = kwargs.get("record_id")
 
     try:
         full = ""
@@ -31,7 +32,22 @@ async def sse_generator(user_id: int, scenario: str, **kwargs) -> AsyncIterator[
             full += token
             yield _sse("token", token)
             await asyncio.sleep(0)
-        yield _sse("done", "", {"content": full})
+
+        # Persist result
+        saved_id = None
+        if record_id:
+            try:
+                rec = await NutritionRecommendation.create(
+                    user=user,
+                    record_id=record_id,
+                    content=full,
+                    reference=f"AI分析 record_id={record_id} model={model}",
+                )
+                saved_id = rec.id
+            except Exception as e:
+                logger.error(f"Failed to save AI recommendation: {str(e)}")
+
+        yield _sse("done", "", {"content": full, "record_id": saved_id})
     except Exception as exc:
         logger.error(f"SSE error: {str(exc)}")
         yield _sse("error", str(exc))

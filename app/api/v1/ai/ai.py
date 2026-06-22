@@ -35,8 +35,21 @@ async def analyze_record_stream(record_id: int):
     items, totals = await ai_service._build_record_context(record_id)
     profile = await ai_service._get_user_profile(user_id)
     return create_streaming_response(
-        user_id=user_id, scenario="analysis",
+        user_id=user_id, scenario="analysis", record_id=record_id,
         food_items=items, nutrition_totals=totals, user_profile=profile)
+
+
+@ai_router.get("/recommendation/{record_id}", summary="获取记录的AI建议缓存", dependencies=[DependAuth])
+async def get_record_recommendation(record_id: int):
+    from app.models.food import NutritionRecommendation
+
+    user_id = CTX_USER_ID.get()
+    rec = await NutritionRecommendation.filter(
+        user_id=user_id, record_id=record_id
+    ).order_by("-created_at").first()
+    if not rec:
+        return Fail(code=404, msg="暂无AI建议")
+    return Success(data={"content": rec.content, "created_at": rec.created_at.isoformat()})
 
 
 @ai_router.post("/analyze/history", summary="AI分析历史", dependencies=[DependAuth])
