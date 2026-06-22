@@ -23,5 +23,5 @@ v1_router.include_router(depts_router, prefix="/dept", dependencies=[DependPermi
 v1_router.include_router(auditlog_router, prefix="/auditlog", dependencies=[DependPermission])
 # Food router (DependPermission checked inside or optional?)
 # For now, let's keep it protected but maybe looser for dev
-v1_router.include_router(food_router, prefix="/food")
-v1_router.include_router(ai_router, prefix="/ai")
+v1_router.include_router(food_router, prefix="/food", tags=["食物识别模块"])
+v1_router.include_router(ai_router, prefix="/ai", tags=["AI营养分析模块"])
