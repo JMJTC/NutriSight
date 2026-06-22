@@ -232,14 +232,15 @@ async def init_food_data():
     """初始化食物识别模块数据"""
     try:
         from app.models.food import FoodCategory
-        from app.scripts.init_food_data import init_food_data as init_food_categories
+        from app.scripts.init_integrated_food_data import load_and_insert_data, clear_existing_data
 
         # 检查是否已有食物类别数据
         count = await FoodCategory.all().count()
         if count == 0:
             logger.info("No food categories found, initializing food data...")
-            result = await init_food_categories()
-            logger.info(f"Food data initialization complete. Created: {result['created']}, Skipped: {result['skipped']}")
+            await clear_existing_data()
+            await load_and_insert_data()
+            logger.info("Food data initialization complete")
         else:
             logger.info(f"Food categories already initialized. Total: {count}")
 
