@@ -3,7 +3,7 @@
     <div class="chat-msgs" ref="mc">
       <n-empty v-if="!msgs.length && !streaming" description="向 AI 营养顾问提问吧" class="chat-empty" />
       <div v-for="(m,i) in msgs" :key="i" class="chat-msg" :class="m.role">
-        <n-avatar v-if="m.role==='assistant'" :size="32" src="/logo.png" />
+        <n-avatar v-if="m.role==='assistant'" :size="32" color="#10b981" style="font-weight:700;font-size:14px">AI</n-avatar>
         <n-avatar v-else :size="32">U</n-avatar>
         <div class="msg-body">
           <div class="msg-role">{{ m.role==='assistant'?'AI 顾问':'我' }}</div>
@@ -12,7 +12,7 @@
         </div>
       </div>
       <div v-if="streaming" class="chat-msg assistant">
-        <n-avatar :size="32" src="/logo.png" />
+        <n-avatar :size="32" color="#10b981" style="font-weight:700;font-size:14px">AI</n-avatar>
         <div class="msg-body"><div class="msg-role">AI 顾问</div><AiStreamRenderer :content="sc" /></div>
       </div>
     </div>
