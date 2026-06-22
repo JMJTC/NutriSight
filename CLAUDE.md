@@ -152,6 +152,36 @@ web/src/
 - `web/src/store/modules/permission/index.js` — Permission/menu generation logic
 - `web/src/utils/http/` — Axios wrapper with token injection
 
+## Development Workflow
+
+### Branch isolation with git worktrees
+
+Different branches often have different database schemas. Sharing `db.sqlite3` across branches leads to migration conflicts (e.g., "duplicate column name"). Use git worktrees to give each feature branch its own directory and database:
+
+```bash
+# Create a worktree for a new feature (from the main branch)
+git worktree add ../vue-fastapi-admin-<feature> <base-branch>
+
+# Or from the current directory for an existing branch
+git worktree add ../vue-fastapi-admin-<feature> <feature-branch>
+```
+
+Each worktree has its own files, `db.sqlite3`, and `migrations/` — no cross-branch pollution.
+
+**Worktree lifecycle:**
+```bash
+git worktree list                    # list all worktrees
+git worktree remove ../vue-fastapi-admin-<feature>  # clean up when done
+```
+
+**Note:** Python venv (`.venv`) is not shared between worktrees — each worktree may need `uv sync` separately, or use the same venv path.
+
+### Database migrations on feature branches
+
+Migrations are auto-generated and applied at startup via `aerich`. When switching between worktrees with different schemas:
+- Use separate `db.sqlite3` (automatic with worktrees)
+- If the database gets corrupted or migration conflicts occur, reset: `rm db.sqlite3` (dev only)
+
 ## Git Commits
 
 - Message format: `<prefix>: <brief description>` — concise, key information only.
