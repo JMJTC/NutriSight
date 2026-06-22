@@ -183,12 +183,46 @@ export function useFoodRecognition() {
           if (line.startsWith('data: ')) {
             try {
               const data = JSON.parse(line.slice(6))
-              if (data.type === 'token') aiAnalysis.value += data.content
+              if (data.type === 'token') {
+                aiAnalysis.value += data.content
+              } else if (data.type === 'error') {
+                if (data.content && data.content.includes('AI API Key')) {
+                  aiAnalysisLoading.value = false
+                  await loadRecommendationSilent()
+                  return
+                }
+                aiAnalysis.value = `AI 分析失败：${data.content || '服务异常'}`
+              } else if (data.type === 'done') {
+                // stream completed normally
+              }
             } catch {}
           }
         }
       }
-    } catch {} finally { aiAnalysisLoading.value = false }
+    } catch {
+      if (!aiAnalysis.value) aiAnalysis.value = 'AI 分析请求失败，请检查网络后重试。'
+    } finally {
+      aiAnalysisLoading.value = false
+    }
+  }
+
+  const loadRecommendationSilent = async () => {
+    if (!result.value?.record_id) return
+    recommendationLoading.value = true
+    try {
+      const res = await api.generateFoodRecordRecommendation(result.value.record_id)
+      const tips = Array.isArray(res.data?.tips) ? res.data.tips : []
+      recommendationTips.value = tips
+      if (tips.length > 0) {
+        aiAnalysis.value =
+          '> ⚠️ AI 智能分析暂不可用（未配置 API Key），以下为基于规则生成的分析：\n\n' +
+          tips.map((tip, i) => `${i + 1}. ${tip}`).join('\n\n')
+      }
+    } catch {
+      aiAnalysis.value = ''
+    } finally {
+      recommendationLoading.value = false
+    }
   }
 
   const uploadByRawFile = async (rawFile) => {

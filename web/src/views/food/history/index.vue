@@ -306,6 +306,7 @@ async function generateAiSuggestion() {
   if (!currentRecord.value) return
   const recordId = currentRecord.value.record_id || currentRecord.value.id
   aiContent.value = ''
+  recommendationTips.value = []
   recommendationLoading.value = true
 
   const token = getToken() || ''
@@ -328,13 +329,40 @@ async function generateAiSuggestion() {
           try {
             const data = JSON.parse(line.slice(6))
             if (data.type === 'token') { aiContent.value += data.content }
-            else if (data.type === 'error') { recommendationTips.value = [data.content] }
+            else if (data.type === 'error') {
+              if (data.content && data.content.includes('AI API Key')) {
+                recommendationLoading.value = false
+                await loadRuleBasedFallback(recordId)
+                return
+              }
+              recommendationTips.value = [data.content || 'AI 服务异常']
+            }
           } catch {}
         }
       }
     }
   } catch {
     if (!aiContent.value) recommendationTips.value = ['AI 分析请求失败']
+  } finally {
+    recommendationLoading.value = false
+  }
+}
+
+async function loadRuleBasedFallback(recordId) {
+  recommendationLoading.value = true
+  try {
+    const res = await api.generateFoodRecordRecommendation(recordId)
+    const tips = Array.isArray(res.data?.tips) ? res.data.tips : []
+    recommendationTips.value = tips
+    if (tips.length > 0) {
+      aiContent.value =
+        '> ⚠️ AI 智能分析暂不可用（未配置 API Key），以下为基于规则生成的分析：\n\n' +
+        tips.map((tip, i) => `${i + 1}. ${tip}`).join('\n\n')
+    } else {
+      aiContent.value = ''
+    }
+  } catch {
+    recommendationTips.value = ['基于规则的分析生成失败']
   } finally {
     recommendationLoading.value = false
   }
