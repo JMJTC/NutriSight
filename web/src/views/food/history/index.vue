@@ -63,22 +63,21 @@
             </tbody>
           </n-table>
 
-          <n-divider dashed>营养建议</n-divider>
-          <div v-if="recommendationLoading" class="recommend-loading">
+          <n-divider dashed>AI 营养建议</n-divider>
+          <div v-if="recommendationLoading && !aiContent" class="recommend-loading">
             <n-spin size="small" />
             <span>AI 正在生成建议...</span>
           </div>
-          <n-list v-else-if="recommendationTips.length" :bordered="false">
-            <n-list-item v-for="(advice, index) in recommendationTips" :key="index">
-              <template #prefix>
-                <n-icon color="#10b981" :size="20">
-                  <CheckmarkCircleOutline />
-                </n-icon>
-              </template>
-              <span class="advice-text">{{ advice }}</span>
-            </n-list-item>
-          </n-list>
-          <n-empty v-else description="暂无营养建议" />
+          <AiStreamRenderer v-else-if="aiContent" :content="aiContent" />
+          <div v-else class="recommend-actions">
+            <n-button type="primary" ghost size="small" @click="generateAiSuggestion">
+              <template #icon><TheIcon icon="carbon:ai-status" :size="16" /></template>
+              生成 AI 建议
+            </n-button>
+          </div>
+          <div v-if="aiContent && !recommendationLoading" class="recommend-actions mt-2">
+            <n-button size="tiny" ghost @click="generateAiSuggestion">重新生成</n-button>
+          </div>
         </div>
       </div>
     </n-modal>
@@ -90,7 +89,9 @@ import { ref, onMounted, h, reactive } from 'vue'
 import { NButton, NTag, useMessage, NPopconfirm, NSpace } from 'naive-ui'
 import { CheckmarkCircleOutline } from '@vicons/ionicons5'
 import api from '@/api'
+import { getToken } from '@/utils'
 import TheIcon from '@/components/icon/TheIcon.vue'
+import AiStreamRenderer from '@/components/ai/AiStreamRenderer.vue'
 
 const message = useMessage()
 const loading = ref(false)
@@ -100,6 +101,7 @@ const currentRecord = ref(null)
 const checkedRowKeys = ref([])
 const recommendationLoading = ref(false)
 const recommendationTips = ref([])
+const aiContent = ref('')
 
 const pagination = reactive({
   page: 1,
@@ -281,20 +283,88 @@ const viewDetail = async (row) => {
       currentRecord.value = res.data
       showDetail.value = true
       recommendationTips.value = []
+      aiContent.value = ''
       recommendationLoading.value = true
+
+      // Check cache first
       try {
-        const recRes = await api.generateFoodRecordRecommendation(row.id)
-        if (recRes.code === 200) {
-          recommendationTips.value = Array.isArray(recRes.data?.tips) ? recRes.data.tips : []
+        const cached = await api.getAiRecommendation(row.id)
+        if (cached.code === 200 && cached.data?.content) {
+          aiContent.value = cached.data.content
+          recommendationLoading.value = false
+          return
         }
-      } catch {
-        recommendationTips.value = []
-      } finally {
-        recommendationLoading.value = false
+      } catch {}
+
+      // No cache — show generate button instead of auto-calling
+      recommendationLoading.value = false
+    }
+  } catch (error) { message.error('获取详情失败') }
+}
+
+async function generateAiSuggestion() {
+  if (!currentRecord.value) return
+  const recordId = currentRecord.value.record_id || currentRecord.value.id
+  aiContent.value = ''
+  recommendationTips.value = []
+  recommendationLoading.value = true
+
+  const token = getToken() || ''
+  try {
+    const response = await fetch(api.aiAnalyzeRecordStreamUrl(recordId), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'token': token },
+    })
+    const reader = response.body.getReader()
+    const decoder = new TextDecoder()
+    let buffer = ''
+    while (true) {
+      const { done, value } = await reader.read()
+      if (done) break
+      buffer += decoder.decode(value, { stream: true })
+      const lines = buffer.split('\n')
+      buffer = lines.pop() || ''
+      for (const line of lines) {
+        if (line.startsWith('data: ')) {
+          try {
+            const data = JSON.parse(line.slice(6))
+            if (data.type === 'token') { aiContent.value += data.content }
+            else if (data.type === 'error') {
+              if (data.content && data.content.includes('AI API Key')) {
+                recommendationLoading.value = false
+                await loadRuleBasedFallback(recordId)
+                return
+              }
+              recommendationTips.value = [data.content || 'AI 服务异常']
+            }
+          } catch {}
+        }
       }
     }
-  } catch (error) {
-    message.error('获取详情失败')
+  } catch {
+    if (!aiContent.value) recommendationTips.value = ['AI 分析请求失败']
+  } finally {
+    recommendationLoading.value = false
+  }
+}
+
+async function loadRuleBasedFallback(recordId) {
+  recommendationLoading.value = true
+  try {
+    const res = await api.generateFoodRecordRecommendation(recordId)
+    const tips = Array.isArray(res.data?.tips) ? res.data.tips : []
+    recommendationTips.value = tips
+    if (tips.length > 0) {
+      aiContent.value =
+        '> ⚠️ AI 智能分析暂不可用（未配置 API Key），以下为基于规则生成的分析：\n\n' +
+        tips.map((tip, i) => `${i + 1}. ${tip}`).join('\n\n')
+    } else {
+      aiContent.value = ''
+    }
+  } catch {
+    recommendationTips.value = ['基于规则的分析生成失败']
+  } finally {
+    recommendationLoading.value = false
   }
 }
 
@@ -341,5 +411,13 @@ onMounted(() => {
 .advice-text {
   color: #334155;
   line-height: 1.7;
+}
+.recommend-actions {
+  display: flex;
+  justify-content: center;
+  padding: 16px;
+}
+.mt-2 {
+  margin-top: 8px;
 }
 </style>

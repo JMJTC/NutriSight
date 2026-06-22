@@ -237,70 +237,39 @@ async def init_food_data():
     """
     try:
         from pathlib import Path
-        from app.models.food import FoodCategory, Nutrition
-        # 首先判断是否已存在食物类别
+        from app.models.food import FoodCategory
+        from app.scripts.init_integrated_food_data import load_and_insert_data, clear_existing_data
+
         count = await FoodCategory.all().count()
         if count > 0:
             logger.info(f"Food categories already initialized. Total: {count}")
             return
 
-        # 尝试读取集成映射文件
         mapping_path = Path(settings.BASE_DIR) / "deploy" / "integrated_food_mapping.json"
         if mapping_path.exists():
-            logger.info(f"Mapping file found at {mapping_path}, initializing from mapping...")
-            try:
-                import json
-                with open(mapping_path, 'r', encoding='utf-8') as f:
-                    data = json.load(f)
+            logger.info("No food categories found, initializing from integrated mapping...")
+            await clear_existing_data()
+            await load_and_insert_data()
+            logger.info("Food data initialization complete")
+        else:
+            logger.warning("Mapping file not found, skipping food data init")
 
-                created = 0
-                skipped = 0
-                for key, item in data.items():
-                    try:
-                        existing = await FoodCategory.get_or_none(code=item.get('code'))
-                        if existing:
-                            skipped += 1
-                            continue
-
-                        category = await FoodCategory.create(
-                            name=item.get('english_name') or item.get('name'),
-                            chinese_name=item.get('chinese_name'),
-                            code=item.get('code'),
-                            food_type=item.get('food_type'),
-                            description=item.get('description'),
-                            image_url=item.get('image_url'),
-                        )
-
-                        nutrition_data = item.get('nutrition') or {}
-                        await Nutrition.create(
-                            food=category,
-                            energy=nutrition_data.get('energy', 0.0),
-                            protein=nutrition_data.get('protein', 0.0),
-                            fat=nutrition_data.get('fat', 0.0),
-                            carbohydrate=nutrition_data.get('carbohydrate', 0.0),
-                            fiber=nutrition_data.get('fiber', 0.0),
-                            sodium=nutrition_data.get('sodium', 0.0),
-                        )
-
-                        created += 1
-                    except Exception as e:
-                        logger.error(f"Failed to insert mapping item {key}: {str(e)}")
-                        skipped += 1
-
-                logger.info(f"Mapping initialization complete. Created: {created}, Skipped/Errors: {skipped}")
-                return
-            except Exception as e:
-                logger.error(f"Failed to initialize from mapping file: {str(e)}")
-
-        # 回退到内置默认初始化脚本
-        try:
-            from app.scripts.init_food_data import init_food_data as _init_default_food
-            logger.info("Initializing default food data...")
-            result = await _init_default_food()
-            logger.info(f"Food data initialization complete. Created: {result.get('created')}, Skipped: {result.get('skipped')}")
-        except Exception as e:
-            logger.error(f"Failed to run default food data initializer: {str(e)}")
-
+        # 种子 AI 营养顾问菜单
+        from app.models.admin import Menu
+        ai_menu_exists = await Menu.filter(path="/food/ai-advisor").exists()
+        if not ai_menu_exists:
+            await Menu.create(
+                menu_type=MenuType.MENU,
+                name="AI营养顾问",
+                path="/food/ai-advisor",
+                order=7,
+                parent_id=0,
+                icon="carbon:chat-bot",
+                is_hidden=False,
+                component="/food/ai-advisor",
+                keepalive=False,
+            )
+            logger.info("AI advisor menu entry created.")
     except Exception as e:
         logger.error(f"Failed to initialize food data: {str(e)}")
 

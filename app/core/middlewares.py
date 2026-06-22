@@ -100,6 +100,8 @@ class HttpAuditLogMiddleware(BaseHTTPMiddleware):
         content_type = response.headers.get("content-type", "").lower()
         if "application/json" not in content_type and "text/" not in content_type:
             return None
+        if "text/event-stream" in content_type:
+            return None
 
         if hasattr(response, "body"):
             body = response.body

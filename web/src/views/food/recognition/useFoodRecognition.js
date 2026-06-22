@@ -3,6 +3,7 @@ import { useMessage } from 'naive-ui'
 import { useRouter } from 'vue-router'
 import api from '@/api'
 import { useUserStore } from '@/store'
+import { getToken } from '@/utils'
 
 export function useFoodRecognition() {
   const message = useMessage()
@@ -17,6 +18,8 @@ export function useFoodRecognition() {
   const hasShownProfileDialog = ref(false)
   const recommendationTips = ref([])
   const recommendationLoading = ref(false)
+  const aiAnalysis = ref('')
+  const aiAnalysisLoading = ref(false)
 
   const isValidHeight = (value) => Number.isFinite(value) && value >= 130 && value <= 250
   const isValidWeight = (value) => Number.isFinite(value) && value >= 30 && value <= 200
@@ -157,6 +160,71 @@ export function useFoodRecognition() {
     }
   }
 
+  const fetchAiAnalysis = async (recordId) => {
+    if (!recordId) return
+    aiAnalysisLoading.value = true
+    aiAnalysis.value = ''
+    const token = getToken() || ''
+    try {
+      const response = await fetch(api.aiAnalyzeRecordStreamUrl(recordId), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'token': token },
+      })
+      const reader = response.body.getReader()
+      const decoder = new TextDecoder()
+      let buffer = ''
+      while (true) {
+        const { done, value } = await reader.read()
+        if (done) break
+        buffer += decoder.decode(value, { stream: true })
+        const lines = buffer.split('\n')
+        buffer = lines.pop() || ''
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            try {
+              const data = JSON.parse(line.slice(6))
+              if (data.type === 'token') {
+                aiAnalysis.value += data.content
+              } else if (data.type === 'error') {
+                if (data.content && data.content.includes('AI API Key')) {
+                  aiAnalysisLoading.value = false
+                  await loadRecommendationSilent()
+                  return
+                }
+                aiAnalysis.value = `AI 分析失败：${data.content || '服务异常'}`
+              } else if (data.type === 'done') {
+                // stream completed normally
+              }
+            } catch {}
+          }
+        }
+      }
+    } catch {
+      if (!aiAnalysis.value) aiAnalysis.value = 'AI 分析请求失败，请检查网络后重试。'
+    } finally {
+      aiAnalysisLoading.value = false
+    }
+  }
+
+  const loadRecommendationSilent = async () => {
+    if (!result.value?.record_id) return
+    recommendationLoading.value = true
+    try {
+      const res = await api.generateFoodRecordRecommendation(result.value.record_id)
+      const tips = Array.isArray(res.data?.tips) ? res.data.tips : []
+      recommendationTips.value = tips
+      if (tips.length > 0) {
+        aiAnalysis.value =
+          '> ⚠️ AI 智能分析暂不可用（未配置 API Key），以下为基于规则生成的分析：\n\n' +
+          tips.map((tip, i) => `${i + 1}. ${tip}`).join('\n\n')
+      }
+    } catch {
+      aiAnalysis.value = ''
+    } finally {
+      recommendationLoading.value = false
+    }
+  }
+
   const uploadByRawFile = async (rawFile) => {
     if (!ensureProfileComplete('上传识别')) return
 
@@ -173,6 +241,7 @@ export function useFoodRecognition() {
       recommendationTips.value = []
       message.success('识别成功 (Recognized Successfully)')
       currentStep.value = 2
+      fetchAiAnalysis(res.data?.record_id)
     } catch (error) {
       message.error(error?.message || '请求出错')
     } finally {
@@ -199,6 +268,7 @@ export function useFoodRecognition() {
       recommendationTips.value = []
       message.success('识别成功 (Recognized Successfully)')
       currentStep.value = 2
+      fetchAiAnalysis(res.data?.record_id)
       onFinish?.()
     } catch (error) {
       message.error(error?.message || '请求出错')
@@ -236,8 +306,11 @@ export function useFoodRecognition() {
   })
 
   return {
+    aiAnalysis,
+    aiAnalysisLoading,
     currentNutrition,
     currentStep,
+    fetchAiAnalysis,
     getImageUrl,
     goToStep,
     handleUpload,

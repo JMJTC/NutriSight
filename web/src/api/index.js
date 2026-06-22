@@ -60,4 +60,18 @@ export default {
   updateFoodCategoryWithUpload: (id, formData) =>
     request.put(`/food/categories/${id}/upload`, formData),
   updateNutritionInfo: (foodId, data) => request.put(`/food/nutrition/${foodId}`, data),
+  // ai config
+  getAiConfig: () => request.get('/base/profile/ai-config'),
+  updateAiConfig: (data = {}) => request.put('/base/profile/ai-config', data),
+  // ai analysis
+  aiAnalyzeRecord: (id) => request.post(`/ai/analyze/record/${id}`),
+  aiAnalyzeRecordStreamUrl: (id) =>
+    `${import.meta.env.VITE_API_BASE_URL || ''}/api/v1/ai/analyze/record/${id}/stream`,
+  aiAnalyzeHistory: () => request.post('/ai/analyze/history'),
+  getAiRecommendation: (recordId) => request.get(`/ai/recommendation/${recordId}`),
+  // ai chat
+  aiChat: (data = {}) => request.post('/ai/chat', data),
+  aiChatStreamUrl: () => `${import.meta.env.VITE_API_BASE_URL || ''}/api/v1/ai/chat/stream`,
+  // ai test
+  aiTestConnection: () => request.post('/ai/test'),
 }

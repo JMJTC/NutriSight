@@ -17,6 +17,7 @@ import { useI18n } from 'vue-i18n'
 import CommonPage from '@/components/page/CommonPage.vue'
 import { useUserStore } from '@/store'
 import api from '@/api'
+import AiConfigForm from '@/components/ai/AiConfigForm.vue'
 
 const { t } = useI18n()
 const userStore = useUserStore()
@@ -429,6 +430,11 @@ function validatePasswordSame(rule, value) {
             {{ $t('common.buttons.update') }}
           </NButton>
         </NForm>
+      </NTabPane>
+      <NTabPane name="ai" tab="AI 配置">
+        <div class="m-30" style="max-width: 500px">
+          <AiConfigForm />
+        </div>
       </NTabPane>
     </NTabs>
   </CommonPage>
