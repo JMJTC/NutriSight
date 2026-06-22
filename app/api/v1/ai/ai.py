@@ -9,7 +9,7 @@ from app.services.ai.streaming import create_streaming_response
 from app.core.exceptions import CustomException
 from app.log import logger
 
-ai_router = APIRouter()
+ai_router = APIRouter(tags=["AI服务"])
 
 
 @ai_router.post("/analyze/record/{record_id}", summary="AI分析识别记录", dependencies=[DependAuth])
